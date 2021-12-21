@@ -71,8 +71,8 @@ module inter_read (
 		for (i = 0; i < ROMASTERS; i = i + 1) begin : m_data1
 			always @(*) begin
 				master_data_rdata_o[i * DATA_WIDTH+:DATA_WIDTH] = 0;
-				master_data_rvalid_o[i] = 0;
 				master_data_gnt_o[i] = 0;
+				master_data_rvalid[i] = 0;
 				begin : sv2v_autoblock_3
 					reg signed [31:0] j;
 					for (j = 0; j < ROSLAVES; j = j + 1)

@@ -3,11 +3,11 @@
     `default_nettype wire
 `else
     `include "axi_uart.v"
-    `include "icesoc_top.v"
     `include "inter_read.v"
     `include "inter.v"
     `include "peripheral.v"
     `include "sky130_sram_1kbyte_1rw1r_32x256_8.v"
+    `include "soric_soc.v"
     `include "uart_rx.v"
     `include "uart_to_mem.v"
     `include "uart_tx.v"
