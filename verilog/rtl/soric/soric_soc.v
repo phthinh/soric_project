@@ -3,13 +3,9 @@
 //need to check the address width through the application.
 
 module soric_soc #(
-   parameter SLAVE_ADDR_WIDTH = 10,
-   parameter ADDR_WIDTH       = 12,
-   parameter MASTERS          =  4,
-   parameter SLAVES           =  3,
-   parameter ROMASTERS        =  2,
-   parameter ROSLAVES         =  2,
-   parameter ROMASTER_ADDR_WIDTH=11
+    parameter NCORE = 2,  
+    parameter NSRAM = 4,
+    parameter NPERI = 1  // peripherals
 ) (
 `ifdef USE_POWER_PINS
     inout vccd1,	// User area 1 1.8V supply
@@ -67,6 +63,14 @@ module soric_soc #(
    output wire        wbs_ack_o,
    output wire [31:0] wbs_dat_o
 );
+
+   localparam MASTERS          = NCORE + 2;
+   localparam SLAVES           = NSRAM + NPERI;    //3
+   localparam SLAVE_ADDR_WIDTH = 11;     // SRAM blocks of 2 kB
+   localparam ADDR_WIDTH       = 14;      //12
+   localparam ROMASTERS        = NCORE;
+   localparam ROSLAVES         = NSRAM;  //2 
+   localparam ROMASTER_ADDR_WIDTH=13;   //11
 
     wire clk_i = wb_clk_i;      //main clock 20mhz
     wire reset = wb_rst_i;
@@ -217,8 +221,15 @@ assign master_data_addr_to_inter[  (2 * ADDR_WIDTH) - 1 : 1 * ADDR_WIDTH]= {flex
     wire [(ROSLAVES * SLAVE_ADDR_WIDTH) - 1:0] slave_data_addr_to_inter_ro;
     wire [(ROSLAVES * 32) - 1:0] slave_data_rdata_to_inter_ro;
 
-inter_read inter_read_i
-(
+inter_read #(
+    .DATA_WIDTH(32),
+    .M_ADDR_WIDTH( ROMASTER_ADDR_WIDTH),
+    .S_ADDR_WIDTH( SLAVE_ADDR_WIDTH   ),
+    .ROMASTERS(    ROMASTERS          ),
+    .ROSLAVES(     ROSLAVES           ),
+    .M_ADDR_MATCH({ 13'h1800 ,13'h1000, 13'h0800, 13'h0000} ),
+    .M_ADDR_MASK( { 13'h1800, 13'h1800, 13'h1800, 13'h1800} )
+)   inter_read_i (
     .clk(clk_i),
     .reset(reset),
     .master_data_req_i(master_data_req_to_inter_ro),
@@ -229,9 +240,31 @@ inter_read inter_read_i
     .slave_data_req_o(slave_data_req_to_inter_ro), //active low
     .slave_data_addr_o(slave_data_addr_to_inter_ro),
     .slave_data_rdata_i(slave_data_rdata_to_inter_ro),
-    .slave_data_gnt_i(2'd3)
+    .slave_data_gnt_i( {ROSLAVES{1'b1}} )
 );
 
+genvar i;
+generate
+    for (i=0; i < NSRAM; i++) begin : gen_sram_block
+sky130_sram_2kbyte_1rw1r_32x512_8 sram_i(
+//sram sram_2_i(
+// Port 0: RW
+    .clk0(clk_i),
+    .csb0(!slave_data_req_to_inter[i]),
+    .web0(!slave_data_we_to_inter[ i]),
+    .wmask0(slave_data_be_to_inter[  ((i+1) * 4) - 1 -: 4]),
+    .addr0(slave_data_addr_to_inter[ ((i+1) * SLAVE_ADDR_WIDTH) - 1 -: (SLAVE_ADDR_WIDTH  - 2)]),
+    .din0(slave_data_wdata_to_inter[ ((i+1) * 32) - 1 -: 32 ]),
+    .dout0(slave_data_rdata_to_inter[((i+1) * 32) - 1 -: 32 ]),
+// Port 1: R
+    .clk1(clk_i),
+    .csb1(!slave_data_req_to_inter_ro[i]),
+    .addr1(slave_data_addr_to_inter_ro[ ((i+1) * SLAVE_ADDR_WIDTH) - 1 -: (SLAVE_ADDR_WIDTH  - 2)]),
+    .dout1(slave_data_rdata_to_inter_ro[((i+1) * 32) - 1 -: 32 ])
+  );
+    end
+endgenerate
+/*
 sky130_sram_1kbyte_1rw1r_32x256_8 sram_1_i(
 //sram sram_1_i(
 // Port 0: RW
@@ -239,33 +272,67 @@ sky130_sram_1kbyte_1rw1r_32x256_8 sram_1_i(
     .csb0(!slave_data_req_to_inter[0]),
     .web0(!slave_data_we_to_inter[0]),
     .wmask0(slave_data_be_to_inter[( ((32 / 8))) - 1 :0]),
-    .addr0(slave_data_addr_to_inter[ (SLAVE_ADDR_WIDTH) - 1 : 0]),
+    .addr0(slave_data_addr_to_inter[ (SLAVE_ADDR_WIDTH) - 1 : 2]),
     .din0(slave_data_wdata_to_inter[  31 : 0 ]),
     .dout0(slave_data_rdata_to_inter[ 31 : 0 ]),
 // Port 1: R
     .clk1(clk_i),
     .csb1(!slave_data_req_to_inter_ro[0]),
-    .addr1(slave_data_addr_to_inter_ro[(SLAVE_ADDR_WIDTH) - 1 : 0]),
+    .addr1(slave_data_addr_to_inter_ro[(SLAVE_ADDR_WIDTH) - 1 : 2]),
     .dout1(slave_data_rdata_to_inter_ro[31 : 0])
   );
 
-//use sram module name
 sky130_sram_1kbyte_1rw1r_32x256_8 sram_2_i(
 //sram sram_2_i(
 // Port 0: RW
     .clk0(clk_i),
     .csb0(!slave_data_req_to_inter[1]),
-    .web0(!slave_data_we_to_inter[1]),
-    .wmask0(slave_data_be_to_inter[( (2 * (32 / 8))) - 1 : ((32 / 8))]),
-    .addr0(slave_data_addr_to_inter[ (2 * SLAVE_ADDR_WIDTH) - 1 : SLAVE_ADDR_WIDTH]),
-    .din0(slave_data_wdata_to_inter[ (2 * 32) - 1 : 32 ]),
-    .dout0(slave_data_rdata_to_inter[ (2 * 32) - 1 : 32 ]),
+    .web0(!slave_data_we_to_inter[ 1]),
+    .wmask0(slave_data_be_to_inter[(    (2 * (32 / 8))) - 1 -: ((32 / 8))]),
+    .addr0(slave_data_addr_to_inter[    (2 * SLAVE_ADDR_WIDTH) - 1 -: (SLAVE_ADDR_WIDTH  - 2)]),
+    .din0(slave_data_wdata_to_inter[    (2 * 32) - 1 -: 32 ]),
+    .dout0(slave_data_rdata_to_inter[   (2 * 32) - 1 -: 32 ]),
 // Port 1: R
     .clk1(clk_i),
     .csb1(!slave_data_req_to_inter_ro[1]),
-    .addr1(slave_data_addr_to_inter_ro[(2 * SLAVE_ADDR_WIDTH) - 1 : SLAVE_ADDR_WIDTH]),
-    .dout1(slave_data_rdata_to_inter_ro[ (2 * 32) - 1 : 32 ])
+    .addr1(slave_data_addr_to_inter_ro[ (2 * SLAVE_ADDR_WIDTH) - 1 -: (SLAVE_ADDR_WIDTH  - 2)]),
+    .dout1(slave_data_rdata_to_inter_ro[(2 * 32) - 1 -: 32 ])
   );
+
+sky130_sram_1kbyte_1rw1r_32x256_8 sram_3_i(
+//sram sram_3_i(
+// Port 0: RW
+    .clk0(clk_i),
+    .csb0(!slave_data_req_to_inter[2]),
+    .web0(!slave_data_we_to_inter[ 2]),
+    .wmask0(slave_data_be_to_inter[(  (3 * (32/8))) - 1 -: ((32/8))]),
+    .addr0(slave_data_addr_to_inter[  (3 * SLAVE_ADDR_WIDTH) - 1 -: (SLAVE_ADDR_WIDTH  - 2)]),
+    .din0(slave_data_wdata_to_inter[  (3 * 32) - 1 -: 32 ]),
+    .dout0(slave_data_rdata_to_inter[ (3 * 32) - 1 -: 32 ]),
+// Port 1: R
+    .clk1(clk_i),
+    .csb1(!slave_data_req_to_inter_ro[2]),
+    .addr1(slave_data_addr_to_inter_ro[ (3 * SLAVE_ADDR_WIDTH) - 1 -: (SLAVE_ADDR_WIDTH  - 2)]),
+    .dout1(slave_data_rdata_to_inter_ro[(3 * 32) - 1 -: 32 ])
+  );
+
+sky130_sram_1kbyte_1rw1r_32x256_8 sram_4_i(
+//sram sram_2_i(
+// Port 0: RW
+    .clk0(clk_i),
+    .csb0(!slave_data_req_to_inter[3]),
+    .web0(!slave_data_we_to_inter[ 3]),
+    .wmask0(slave_data_be_to_inter[( (4 * (32 / 8))) - 1 -: ((32 / 8))]),
+    .addr0(slave_data_addr_to_inter[ (4 * SLAVE_ADDR_WIDTH) - 1 -: (SLAVE_ADDR_WIDTH  - 2)]),
+    .din0(slave_data_wdata_to_inter[ (4 * 32) - 1 -: 32 ]),
+    .dout0(slave_data_rdata_to_inter[(4 * 32) - 1 -: 32 ]),
+// Port 1: R
+    .clk1(clk_i),
+    .csb1(!slave_data_req_to_inter_ro[3]),
+    .addr1(slave_data_addr_to_inter_ro[ (4 * SLAVE_ADDR_WIDTH) - 1 -: (SLAVE_ADDR_WIDTH  - 2)]),
+    .dout1(slave_data_rdata_to_inter_ro[(4 * 32) - 1 -: 32 ])
+  );
+*/
 
 
 // Read/Write interconnection (Memory and Peripherals)
@@ -273,7 +340,7 @@ sky130_sram_1kbyte_1rw1r_32x256_8 sram_2_i(
     assign master_data_wdata_to_inter[ (3 * 32) - 1        : 2 * 32]          = wbs_dat_i;
     assign master_data_be_to_inter[  ( (3 * (32 / 8))) - 1 : 2 * (32 / 8)]    = wbs_sel_i;
     assign master_data_req_to_inter[2]                                        = wbs_stb_i & wbs_cyc_i;
-    assign master_data_we_to_inter[2]                                         = wbs_we_i;
+    assign master_data_we_to_inter[ 2]                                        = wbs_we_i;
     assign wbs_dat_o = master_data_rdata_to_inter[ (3 * 32) - 1 : 2 * 32];
     assign wbs_ack_o = master_data_gnt_to_inter[2] & master_data_rvalid_to_inter[2];     //todo check ack
 
@@ -303,8 +370,12 @@ uart_to_mem #(
 
 inter #(
     .DATA_WIDTH(32),
-    .MASTERS(4),
-    .SLAVES(3)
+    .MASTER_ADDR_WIDTH( ADDR_WIDTH       ),
+    .SLAVE_ADDR_WIDTH(  SLAVE_ADDR_WIDTH ),
+    .MASTERS(           MASTERS          ),
+    .SLAVES(            SLAVES           ),
+    .MASTER_ADDR_MATCH( { 14'h2000, 14'h1800, 14'h1000, 14'h0800, 14'h0000} ),
+    .MASTER_ADDR_MASK(  { 14'h3800, 14'h3800, 14'h3800, 14'h3800, 14'h3800} )
 ) inter_i (
     .clk(clk_i),
     .reset(reset),
@@ -322,62 +393,25 @@ inter #(
     .slave_data_be_o(slave_data_be_to_inter),
     .slave_data_wdata_o(slave_data_wdata_to_inter),
     .slave_data_rdata_i(slave_data_rdata_to_inter),
-    .slave_data_rvalid_i(slave_data_rvalid),
-    .slave_data_gnt_i({ slave_data_gnt_peri1_i,2'd3})
+    .slave_data_rvalid_i({slave_data_gnt_peri1_i, {NSRAM{1'b1}} }),
+    .slave_data_gnt_i({   slave_data_gnt_peri1_i, {NSRAM{1'b1}} })
 );
 
-assign slave_data_rvalid[0] = slave_data_rvalid_write[0] | slave_data_rvalid_read[0];
-assign slave_data_rvalid[1] = slave_data_rvalid_write[1] | slave_data_rvalid_read[1];
-assign slave_data_rvalid[2] = slave_data_rvalid_write[2] | slave_data_rvalid_read[2];
-
 wire slave_data_rvalid_peri1_i;
-wire [SLAVES - 1:0]slave_data_rvalid_source = {slave_data_rvalid_peri1_i, 2'd3};
-
-//for sram interfaces rvalid should be high following gnt(1) + we_o(0)
-genvar i;
-
-generate
-    for (i = 0; i < SLAVES; i = i + 1) begin
-        always @(posedge clk_i)
-        begin
-            if(reset == 1)
-                slave_data_rvalid_read[i] = 0;
-            else if(slave_data_req_to_inter[i] == 1'b1 && slave_data_we_to_inter[i] == 1'b0)
-                slave_data_rvalid_read[i] = slave_data_rvalid_source[i];
-            else
-                slave_data_rvalid_read[i] = 0;
-        end
-    end
-endgenerate
-genvar j;
-generate
-    for (j = 0; j < SLAVES; j = j + 1) begin
-        always @(posedge clk_i)
-        begin
-            if(reset == 1)
-                slave_data_rvalid_write[j] = 0;
-            else if(slave_data_req_to_inter[j] == 1'b1 && slave_data_we_to_inter[j] == 1'b1)
-                slave_data_rvalid_write[j] = slave_data_rvalid_source[j];
-            else
-                slave_data_rvalid_write[j] = 0;
-        end
-    end
-endgenerate
-
 peripheral #(
     .DATA_WIDTH(32),
     .ADDR_WIDTH(SLAVE_ADDR_WIDTH)
 ) peripheral1 (
     .clk(clk_i),
     .reset(reset),
-    .slave_data_addr_i(slave_data_addr_to_inter[ (  3 * SLAVE_ADDR_WIDTH) - 1 : 2 * SLAVE_ADDR_WIDTH]),
-    .slave_data_we_i(slave_data_we_to_inter[2]),
-    .slave_data_be_i(slave_data_be_to_inter[(      (3 * (32 / 8))) - 1 : 2 * ((32 / 8))]),
-    .slave_data_wdata_i(slave_data_wdata_to_inter[ (3 *  32) - 1 : 2 * 32 ]),
-    .slave_data_rdata_o(slave_data_rdata_to_inter[ (3 *  32) - 1 : 2 * 32 ]),
+    .slave_data_addr_i(slave_data_addr_to_inter[ (  5 * SLAVE_ADDR_WIDTH) - 1  -: SLAVE_ADDR_WIDTH]),
+    .slave_data_we_i(slave_data_we_to_inter[4]),
+    .slave_data_be_i(slave_data_be_to_inter[       (5 *  4) - 1 -:  4 ]),
+    .slave_data_wdata_i(slave_data_wdata_to_inter[ (5 * 32) - 1 -: 32 ]),
+    .slave_data_rdata_o(slave_data_rdata_to_inter[ (5 * 32) - 1 -: 32 ]),
     .slave_data_rvalid_o(slave_data_rvalid_peri1_i),
     .slave_data_gnt_o(slave_data_gnt_peri1_i),
-    .data_req_i(slave_data_req_to_inter[2]),
+    .data_req_i(slave_data_req_to_inter[4]),
     .rxd_uart(rxd_uart),
     .txd_uart(txd_uart)
 );

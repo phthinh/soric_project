@@ -31,22 +31,24 @@ module inter #(
 
         input clk;
         input reset;
-        input wire [MASTERS - 1:0] master_data_req_i;
         input wire [(MASTERS * MASTER_ADDR_WIDTH) - 1:0] master_data_addr_i;
-        input wire [MASTERS - 1:0] master_data_we_i;
-        input wire [(MASTERS * (DATA_WIDTH / 8)) - 1:0] master_data_be_i;
-        input wire [(MASTERS * DATA_WIDTH) - 1:0] master_data_wdata_i;
-        output reg [(MASTERS * DATA_WIDTH) - 1:0] master_data_rdata_o;
-        output reg [MASTERS - 1:0] master_data_rvalid_o;
-        output reg [MASTERS - 1:0] master_data_gnt_o;
-        output reg [SLAVES - 1:0] slave_data_req_o;
-        output reg [(SLAVES * SLAVE_ADDR_WIDTH) - 1:0] slave_data_addr_o;
-        output reg [SLAVES - 1:0] slave_data_we_o;
-        output reg [(SLAVES * (DATA_WIDTH / 8)) - 1:0] slave_data_be_o;
-        output reg [(SLAVES * DATA_WIDTH) - 1:0] slave_data_wdata_o;
-        input wire [(SLAVES * DATA_WIDTH) - 1:0] slave_data_rdata_i;
-        input wire [SLAVES - 1:0] slave_data_rvalid_i;
-        input wire [SLAVES - 1:0] slave_data_gnt_i;
+        input wire [(MASTERS * DATA_WIDTH)        - 1:0] master_data_wdata_i;
+        input wire [(MASTERS * (DATA_WIDTH / 8))  - 1:0] master_data_be_i;
+        input wire [ MASTERS                      - 1:0] master_data_req_i;
+        input wire [ MASTERS                      - 1:0] master_data_we_i;
+        output reg [(MASTERS * DATA_WIDTH)        - 1:0] master_data_rdata_o;
+        output reg [ MASTERS                      - 1:0] master_data_rvalid_o;
+        output reg [ MASTERS                      - 1:0] master_data_gnt_o;
+
+        output reg [(SLAVES * SLAVE_ADDR_WIDTH)   - 1:0] slave_data_addr_o;
+        output reg [(SLAVES * DATA_WIDTH)         - 1:0] slave_data_wdata_o;
+        output reg [(SLAVES * (DATA_WIDTH / 8))   - 1:0] slave_data_be_o;
+        output reg [ SLAVES                       - 1:0] slave_data_req_o;
+        output reg [ SLAVES                       - 1:0] slave_data_we_o;
+        input wire [(SLAVES * DATA_WIDTH)         - 1:0] slave_data_rdata_i;
+        input wire [ SLAVES                       - 1:0] slave_data_rvalid_i;
+        input wire [ SLAVES                       - 1:0] slave_data_gnt_i;
+
         reg arb_to_master_grant [MASTERS - 1:0];
      //   wire arb_active;
         genvar i;
@@ -123,6 +125,7 @@ module inter #(
                         end
          endgenerate
 
+        wire [SLAVES - 1:0]  slave_data_rvalid;
         generate
         for (i = 0; i < MASTERS; i = i + 1)
                 begin :m_data1
@@ -137,13 +140,37 @@ module inter #(
                                         if (arbiter_grant[(k * MASTERS) + i] == 1'b1)
                                         begin
                                                 master_data_rdata_o[i * DATA_WIDTH+:DATA_WIDTH] = slave_data_rdata_i[k * DATA_WIDTH+:DATA_WIDTH];
-                                                master_data_rvalid_o[i] = slave_data_rvalid_i[k];
+                                                master_data_rvalid_o[i] = slave_data_rvalid[k];
                                                 master_data_gnt_o[i] = slave_data_gnt_i[k] & master_data_req_i[i] ;
                                         end
                                 end
                         end
                 end
         endgenerate
+
+    reg  [SLAVES - 1:0]  slave_data_rvalid_write;
+    reg  [SLAVES - 1:0]  slave_data_rvalid_read;
+    assign slave_data_rvalid = slave_data_rvalid_write | slave_data_rvalid_read;
+
+    //for sram interfaces rvalid should be high following gnt(1) + we_o(0)
+    generate
+        for (i = 0; i < SLAVES; i = i + 1) begin : gen_slave_data_rvalid
+            always @(posedge clk) begin
+                if (reset) slave_data_rvalid_read[i] = 0;
+                else       slave_data_rvalid_read[i] = slave_data_rvalid_i[i] && 
+                                                       slave_data_req_o[i]    && 
+                                                       ~slave_data_we_o[i];
+            end
+
+            always @(posedge clk) begin
+                if (reset) slave_data_rvalid_write[i] = 0;                   
+                else       slave_data_rvalid_write[i] = slave_data_rvalid_i[i] &&
+                                                        slave_data_req_o[i]    && 
+                                                        slave_data_we_o[i];
+            end
+        end
+    endgenerate
+
 endmodule
 
 
