@@ -105,7 +105,7 @@ module flexbex_ibex_alu (
 	end
 	assign comparison_result_o = cmp_result;
 	always @(*) begin
-		result_o = 1'sb0;
+		result_o = {32 {1'sb0}};
 		case (operator_i)
 			5'd4: result_o = operand_a_i & operand_b_i;
 			5'd3: result_o = operand_a_i | operand_b_i;

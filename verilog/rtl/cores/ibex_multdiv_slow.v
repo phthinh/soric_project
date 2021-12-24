@@ -174,7 +174,7 @@ module ibex_multdiv_slow (
 					multdiv_count_d = 5'd31;
 				end
 				3'd1: begin
-					op_a_shift_d = 1'sb0;
+					op_a_shift_d = {33 {1'sb0}};
 					op_numerator_d = (sign_a ? alu_adder_i : op_a_i);
 					md_state_d = 3'd2;
 				end

@@ -90,7 +90,7 @@ module ibex_fetch_fifo (
 		if (ResetAll) begin : g_instr_addr_ra
 			always @(posedge clk_i or negedge rst_ni)
 				if (!rst_ni)
-					instr_addr_q <= 1'sb0;
+					instr_addr_q <= {31 {1'sb0}};
 				else if (instr_addr_en)
 					instr_addr_q <= instr_addr_d;
 		end
@@ -130,7 +130,7 @@ module ibex_fetch_fifo (
 	assign err_d[DEPTH - 1] = in_err_i;
 	always @(posedge clk_i or negedge rst_ni)
 		if (!rst_ni)
-			valid_q <= 1'sb0;
+			valid_q <= {DEPTH {1'sb0}};
 		else
 			valid_q <= valid_d;
 	generate
@@ -138,8 +138,8 @@ module ibex_fetch_fifo (
 			if (ResetAll) begin : g_rdata_ra
 				always @(posedge clk_i or negedge rst_ni)
 					if (!rst_ni) begin
-						rdata_q[i * 32+:32] <= 1'sb0;
-						err_q[i] <= 1'sb0;
+						rdata_q[i * 32+:32] <= {32 {1'sb0}};
+						err_q[i] <= 1'b0;
 					end
 					else if (entry_en[i]) begin
 						rdata_q[i * 32+:32] <= rdata_d[i * 32+:32];

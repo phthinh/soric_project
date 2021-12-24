@@ -115,7 +115,7 @@ module flexbex_ibex_cs_registers (
 	reg [3:0] mstatus_n;
 	reg [31:0] exception_pc;
 	always @(*) begin
-		csr_rdata_int = 1'sb0;
+		csr_rdata_int = {32 {1'sb0}};
 		case (csr_addr_i)
 			12'h300: csr_rdata_int = {19'b0000000000000000000, mstatus_q[1-:2], 3'b000, mstatus_q[2], 3'h0, mstatus_q[3], 3'h0};
 			12'h305: csr_rdata_int = boot_addr_i;
@@ -232,12 +232,12 @@ module flexbex_ibex_cs_registers (
 	always @(posedge clk or negedge rst_n)
 		if (!rst_n) begin
 			mstatus_q <= 4'b0011;
-			mepc_q <= 1'sb0;
-			mcause_q <= 1'sb0;
-			depc_q <= 1'sb0;
+			mepc_q <= {32 {1'sb0}};
+			mcause_q <= {6 {1'sb0}};
+			depc_q <= {32 {1'sb0}};
 			dcsr_q <= 32'b00000000000000000000000000000011;
-			dscratch0_q <= 1'sb0;
-			dscratch1_q <= 1'sb0;
+			dscratch0_q <= {32 {1'sb0}};
+			dscratch1_q <= {32 {1'sb0}};
 		end
 		else begin
 			mstatus_q <= {mstatus_n[3], mstatus_n[2], 2'b11};
@@ -272,8 +272,8 @@ module flexbex_ibex_cs_registers (
 		is_pcmr = 1'b0;
 		is_pcer = 1'b0;
 		pccr_all_sel = 1'b0;
-		pccr_index = 1'sb0;
-		perf_rdata = 1'sb0;
+		pccr_index = {5 {1'sb0}};
+		perf_rdata = {32 {1'sb0}};
 		if (csr_access_i) begin
 			case (csr_addr_i)
 				12'h7a0: begin
@@ -338,14 +338,14 @@ module flexbex_ibex_cs_registers (
 	end
 	always @(posedge clk or negedge rst_n)
 		if (!rst_n) begin
-			PCER_q <= 1'sb0;
+			PCER_q <= {N_PERF_COUNTERS {1'sb0}};
 			PCMR_q <= 2'h3;
 			begin : sv2v_autoblock_2
 				reg signed [31:0] r;
 				for (r = 0; r < N_PERF_REGS; r = r + 1)
 					begin
-						PCCR_q[r * 32+:32] <= 1'sb0;
-						PCCR_inc_q[r] <= 1'sb0;
+						PCCR_q[r * 32+:32] <= {32 {1'sb0}};
+						PCCR_inc_q[r] <= 1'b0;
 					end
 			end
 		end

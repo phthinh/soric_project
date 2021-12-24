@@ -342,7 +342,6 @@ module ibex_alu (
 				localparam [127:0] FLIP_MASK_L = 128'h22001100004400004411000011000000;
 				localparam [127:0] FLIP_MASK_R = 128'h00880044000022000000882200000088;
 				wire [31:0] SHUFFLE_MASK_NOT [0:3];
-				genvar i;
 				for (i = 0; i < 4; i = i + 1) begin : gen_shuffle_mask_not
 					assign SHUFFLE_MASK_NOT[i] = ~(SHUFFLE_MASK_L[(3 - i) * 32+:32] | SHUFFLE_MASK_R[(3 - i) * 32+:32]);
 				end
@@ -440,8 +439,8 @@ module ibex_alu (
 						assign lrotc_stage[stg][((2 * (16 >> stg)) * (seg + 1)) - 1:(2 * (16 >> stg)) * seg] = {{16 >> stg {1'b0}}, {16 >> stg {1'b1}}} << bitcnt_partial_q[((32 - ((16 >> stg) * ((2 * seg) + 1))) * 6) + ($clog2(16 >> stg) >= 0 ? $clog2(16 >> stg) : ($clog2(16 >> stg) + ($clog2(16 >> stg) >= 0 ? $clog2(16 >> stg) + 1 : 1 - $clog2(16 >> stg))) - 1)-:($clog2(16 >> stg) >= 0 ? $clog2(16 >> stg) + 1 : 1 - $clog2(16 >> stg))];
 						assign butterfly_mask_l[stg][((16 >> stg) * ((2 * seg) + 2)) - 1:(16 >> stg) * ((2 * seg) + 1)] = ~lrotc_stage[stg][((16 >> stg) * ((2 * seg) + 2)) - 1:(16 >> stg) * ((2 * seg) + 1)];
 						assign butterfly_mask_r[stg][((16 >> stg) * ((2 * seg) + 1)) - 1:(16 >> stg) * (2 * seg)] = ~lrotc_stage[stg][((16 >> stg) * ((2 * seg) + 2)) - 1:(16 >> stg) * ((2 * seg) + 1)];
-						assign butterfly_mask_l[stg][((16 >> stg) * ((2 * seg) + 1)) - 1:(16 >> stg) * (2 * seg)] = 1'sb0;
-						assign butterfly_mask_r[stg][((16 >> stg) * ((2 * seg) + 2)) - 1:(16 >> stg) * ((2 * seg) + 1)] = 1'sb0;
+						assign butterfly_mask_l[stg][((16 >> stg) * ((2 * seg) + 1)) - 1:(16 >> stg) * (2 * seg)] = {((((16 >> stg) * ((2 * seg) + 1)) - 1) >= ((16 >> stg) * (2 * seg)) ? ((((16 >> stg) * ((2 * seg) + 1)) - 1) - ((16 >> stg) * (2 * seg))) + 1 : (((16 >> stg) * (2 * seg)) - (((16 >> stg) * ((2 * seg) + 1)) - 1)) + 1) {1'sb0}};
+						assign butterfly_mask_r[stg][((16 >> stg) * ((2 * seg) + 2)) - 1:(16 >> stg) * ((2 * seg) + 1)] = {((((16 >> stg) * ((2 * seg) + 2)) - 1) >= ((16 >> stg) * ((2 * seg) + 1)) ? ((((16 >> stg) * ((2 * seg) + 2)) - 1) - ((16 >> stg) * ((2 * seg) + 1))) + 1 : (((16 >> stg) * ((2 * seg) + 1)) - (((16 >> stg) * ((2 * seg) + 2)) - 1)) + 1) {1'sb0}};
 					end
 				end
 				for (stg = 0; stg < 5; stg = stg + 1) begin : gen_butterfly_not
@@ -539,23 +538,23 @@ module ibex_alu (
 			else begin : gen_alu_rvb_notfull
 				wire [31:0] unused_imd_val_q_1;
 				assign unused_imd_val_q_1 = imd_val_q_i[0+:32];
-				wire [32:1] sv2v_tmp_F189D;
-				assign sv2v_tmp_F189D = 1'sb0;
-				always @(*) shuffle_result = sv2v_tmp_F189D;
-				wire [32:1] sv2v_tmp_F770D;
-				assign sv2v_tmp_F770D = 1'sb0;
-				always @(*) butterfly_result = sv2v_tmp_F770D;
-				wire [32:1] sv2v_tmp_02B8B;
-				assign sv2v_tmp_02B8B = 1'sb0;
-				always @(*) invbutterfly_result = sv2v_tmp_02B8B;
-				wire [32:1] sv2v_tmp_B9A55;
-				assign sv2v_tmp_B9A55 = 1'sb0;
-				always @(*) clmul_result = sv2v_tmp_B9A55;
-				assign bitcnt_partial_lsb_d = 1'sb0;
-				assign bitcnt_partial_msb_d = 1'sb0;
-				assign clmul_result_rev = 1'sb0;
-				assign crc_bmode = 1'sb0;
-				assign crc_hmode = 1'sb0;
+				wire [32:1] sv2v_tmp_20F91;
+				assign sv2v_tmp_20F91 = {32 {1'sb0}};
+				always @(*) shuffle_result = sv2v_tmp_20F91;
+				wire [32:1] sv2v_tmp_231ED;
+				assign sv2v_tmp_231ED = {32 {1'sb0}};
+				always @(*) butterfly_result = sv2v_tmp_231ED;
+				wire [32:1] sv2v_tmp_021D5;
+				assign sv2v_tmp_021D5 = {32 {1'sb0}};
+				always @(*) invbutterfly_result = sv2v_tmp_021D5;
+				wire [32:1] sv2v_tmp_303ED;
+				assign sv2v_tmp_303ED = {32 {1'sb0}};
+				always @(*) clmul_result = sv2v_tmp_303ED;
+				assign bitcnt_partial_lsb_d = {32 {1'sb0}};
+				assign bitcnt_partial_msb_d = {32 {1'sb0}};
+				assign clmul_result_rev = {32 {1'sb0}};
+				assign crc_bmode = 1'b0;
+				assign crc_hmode = 1'b0;
 			end
 			always @(*)
 				case (operator_i)
@@ -602,7 +601,7 @@ module ibex_alu (
 						else begin
 							imd_val_d_o = {operand_a_i, 32'h00000000};
 							imd_val_we_o = 2'b00;
-							multicycle_result = 1'sb0;
+							multicycle_result = {32 {1'sb0}};
 						end
 					7'd50, 7'd51:
 						if (RV32B == 32'sd2) begin
@@ -616,12 +615,12 @@ module ibex_alu (
 						else begin
 							imd_val_d_o = {operand_a_i, 32'h00000000};
 							imd_val_we_o = 2'b00;
-							multicycle_result = 1'sb0;
+							multicycle_result = {32 {1'sb0}};
 						end
 					default: begin
 						imd_val_d_o = {operand_a_i, 32'h00000000};
 						imd_val_we_o = 2'b00;
-						multicycle_result = 1'sb0;
+						multicycle_result = {32 {1'sb0}};
 					end
 				endcase
 		end
@@ -632,33 +631,33 @@ module ibex_alu (
 			assign unused_butterfly_result = butterfly_result;
 			wire [31:0] unused_invbutterfly_result;
 			assign unused_invbutterfly_result = invbutterfly_result;
-			assign bitcnt_result = 1'sb0;
-			assign minmax_result = 1'sb0;
-			wire [32:1] sv2v_tmp_B3EA0;
-			assign sv2v_tmp_B3EA0 = 1'sb0;
-			always @(*) pack_result = sv2v_tmp_B3EA0;
-			assign sext_result = 1'sb0;
-			wire [32:1] sv2v_tmp_C8829;
-			assign sv2v_tmp_C8829 = 1'sb0;
-			always @(*) singlebit_result = sv2v_tmp_C8829;
-			wire [32:1] sv2v_tmp_F744D;
-			assign sv2v_tmp_F744D = 1'sb0;
-			always @(*) rev_result = sv2v_tmp_F744D;
-			wire [32:1] sv2v_tmp_F189D;
-			assign sv2v_tmp_F189D = 1'sb0;
-			always @(*) shuffle_result = sv2v_tmp_F189D;
-			wire [32:1] sv2v_tmp_F770D;
-			assign sv2v_tmp_F770D = 1'sb0;
-			always @(*) butterfly_result = sv2v_tmp_F770D;
-			wire [32:1] sv2v_tmp_02B8B;
-			assign sv2v_tmp_02B8B = 1'sb0;
-			always @(*) invbutterfly_result = sv2v_tmp_02B8B;
-			wire [32:1] sv2v_tmp_B9A55;
-			assign sv2v_tmp_B9A55 = 1'sb0;
-			always @(*) clmul_result = sv2v_tmp_B9A55;
-			wire [32:1] sv2v_tmp_8750A;
-			assign sv2v_tmp_8750A = 1'sb0;
-			always @(*) multicycle_result = sv2v_tmp_8750A;
+			assign bitcnt_result = {6 {1'sb0}};
+			assign minmax_result = {32 {1'sb0}};
+			wire [32:1] sv2v_tmp_00CD3;
+			assign sv2v_tmp_00CD3 = {32 {1'sb0}};
+			always @(*) pack_result = sv2v_tmp_00CD3;
+			assign sext_result = {32 {1'sb0}};
+			wire [32:1] sv2v_tmp_7B185;
+			assign sv2v_tmp_7B185 = {32 {1'sb0}};
+			always @(*) singlebit_result = sv2v_tmp_7B185;
+			wire [32:1] sv2v_tmp_8CF85;
+			assign sv2v_tmp_8CF85 = {32 {1'sb0}};
+			always @(*) rev_result = sv2v_tmp_8CF85;
+			wire [32:1] sv2v_tmp_20F91;
+			assign sv2v_tmp_20F91 = {32 {1'sb0}};
+			always @(*) shuffle_result = sv2v_tmp_20F91;
+			wire [32:1] sv2v_tmp_231ED;
+			assign sv2v_tmp_231ED = {32 {1'sb0}};
+			always @(*) butterfly_result = sv2v_tmp_231ED;
+			wire [32:1] sv2v_tmp_021D5;
+			assign sv2v_tmp_021D5 = {32 {1'sb0}};
+			always @(*) invbutterfly_result = sv2v_tmp_021D5;
+			wire [32:1] sv2v_tmp_303ED;
+			assign sv2v_tmp_303ED = {32 {1'sb0}};
+			always @(*) clmul_result = sv2v_tmp_303ED;
+			wire [32:1] sv2v_tmp_1FECF;
+			assign sv2v_tmp_1FECF = {32 {1'sb0}};
+			always @(*) multicycle_result = sv2v_tmp_1FECF;
 			wire [64:1] sv2v_tmp_78BC2;
 			assign sv2v_tmp_78BC2 = {2 {32'b00000000000000000000000000000000}};
 			always @(*) imd_val_d_o = sv2v_tmp_78BC2;
@@ -668,7 +667,7 @@ module ibex_alu (
 		end
 	endgenerate
 	always @(*) begin
-		result_o = 1'sb0;
+		result_o = {32 {1'sb0}};
 		case (operator_i)
 			7'd2, 7'd5, 7'd3, 7'd6, 7'd4, 7'd7: result_o = bwlogic_result;
 			7'd0, 7'd1, 7'd19, 7'd20, 7'd21: result_o = adder_result;

@@ -48,7 +48,7 @@ module ibex_register_file_latch (
 	);
 	always @(posedge clk_int or negedge rst_ni) begin : sample_wdata
 		if (!rst_ni)
-			wdata_a_q <= 1'sb0;
+			wdata_a_q <= {DataWidth {1'sb0}};
 		else if (we_a_i)
 			wdata_a_q <= wdata_a_i;
 	end
@@ -108,9 +108,9 @@ module ibex_register_file_latch (
 		else begin : g_normal_r0
 			wire unused_dummy_instr_id;
 			assign unused_dummy_instr_id = dummy_instr_id_i;
-			wire [DataWidth:1] sv2v_tmp_450E3;
-			assign sv2v_tmp_450E3 = 1'sb0;
-			always @(*) mem[0] = sv2v_tmp_450E3;
+			wire [DataWidth:1] sv2v_tmp_94E31;
+			assign sv2v_tmp_94E31 = {DataWidth {1'sb0}};
+			always @(*) mem[0] = sv2v_tmp_94E31;
 		end
 	endgenerate
 endmodule

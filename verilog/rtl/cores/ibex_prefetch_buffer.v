@@ -124,7 +124,7 @@ module ibex_prefetch_buffer (
 		if (ResetAll) begin : g_stored_addr_ra
 			always @(posedge clk_i or negedge rst_ni)
 				if (!rst_ni)
-					stored_addr_q <= 1'sb0;
+					stored_addr_q <= {32 {1'sb0}};
 				else if (stored_addr_en)
 					stored_addr_q <= stored_addr_d;
 		end
@@ -140,7 +140,7 @@ module ibex_prefetch_buffer (
 		if (ResetAll) begin : g_fetch_addr_ra
 			always @(posedge clk_i or negedge rst_ni)
 				if (!rst_ni)
-					fetch_addr_q <= 1'sb0;
+					fetch_addr_q <= {32 {1'sb0}};
 				else if (fetch_addr_en)
 					fetch_addr_q <= fetch_addr_d;
 		end

@@ -88,11 +88,11 @@ module ibex_multdiv_fast (
 	assign div_en_internal = div_en_i & ~div_hold;
 	always @(posedge clk_i or negedge rst_ni)
 		if (!rst_ni) begin
-			div_counter_q <= 1'sb0;
+			div_counter_q <= {5 {1'sb0}};
 			md_state_q <= 3'd0;
-			op_numerator_q <= 1'sb0;
-			op_quotient_q <= 1'sb0;
-			div_by_zero_q <= 1'sb0;
+			op_numerator_q <= {32 {1'sb0}};
+			op_quotient_q <= {32 {1'sb0}};
+			div_by_zero_q <= 1'b0;
 		end
 		else if (div_en_internal) begin
 			div_counter_q <= div_counter_d;
@@ -191,7 +191,7 @@ module ibex_multdiv_fast (
 						mult3_op_a = op_a_i[31:16];
 						mult3_op_b = op_b_i[31:16];
 						mac_res_d = mac_res;
-						summand1 = 1'sb0;
+						summand1 = {34 {1'sb0}};
 						summand2 = accum;
 						summand3 = $unsigned(mult3_res);
 						mult_state_d = 1'd0;
@@ -232,7 +232,7 @@ module ibex_multdiv_fast (
 						mult_op_b = op_b_i[15:0];
 						sign_a = 1'b0;
 						sign_b = 1'b0;
-						accum = 1'sb0;
+						accum = {34 {1'sb0}};
 						mac_res_d = mac_res;
 						mult_state_d = 2'd1;
 					end
@@ -318,7 +318,7 @@ module ibex_multdiv_fast (
 		case (md_state_q)
 			3'd0: begin
 				if (operator_i == 2'd2) begin
-					op_remainder_d = 1'sb1;
+					op_remainder_d = {34 {1'sb1}};
 					md_state_d = (!data_ind_timing_i && equal_to_zero_i ? 3'd6 : 3'd1);
 					div_by_zero_d = equal_to_zero_i;
 				end
@@ -331,7 +331,7 @@ module ibex_multdiv_fast (
 				div_counter_d = 5'd31;
 			end
 			3'd1: begin
-				op_quotient_d = 1'sb0;
+				op_quotient_d = {32 {1'sb0}};
 				op_numerator_d = (div_sign_a ? alu_adder_i : op_a_i);
 				md_state_d = 3'd2;
 				div_counter_d = 5'd31;

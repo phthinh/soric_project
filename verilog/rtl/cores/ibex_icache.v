@@ -247,7 +247,7 @@ module ibex_icache (
 		if (ResetAll) begin : g_prefetch_addr_ra
 			always @(posedge clk_i or negedge rst_ni)
 				if (!rst_ni)
-					prefetch_addr_q <= 1'sb0;
+					prefetch_addr_q <= {32 {1'sb0}};
 				else if (prefetch_addr_en)
 					prefetch_addr_q <= prefetch_addr_d;
 		end
@@ -321,8 +321,8 @@ module ibex_icache (
 		if (ResetAll) begin : g_lookup_addr_ra
 			always @(posedge clk_i or negedge rst_ni)
 				if (!rst_ni) begin
-					lookup_addr_ic1 <= 1'sb0;
-					fill_in_ic1 <= 1'sb0;
+					lookup_addr_ic1 <= {(31 >= (ibex_pkg_IC_INDEX_HI + 1) ? 32 - (ibex_pkg_IC_INDEX_HI + 1) : ibex_pkg_IC_INDEX_HI - 29) {1'sb0}};
+					fill_in_ic1 <= {4 {1'sb0}};
 				end
 				else if (lookup_grant_ic0) begin
 					lookup_addr_ic1 <= lookup_addr_ic0[31:ibex_pkg_IC_INDEX_HI + 1];
@@ -378,7 +378,6 @@ module ibex_icache (
 			reg [1:0] ecc_correction_ways_q;
 			reg [ibex_pkg_IC_INDEX_W - 1:0] lookup_index_ic1;
 			reg [ibex_pkg_IC_INDEX_W - 1:0] ecc_correction_index_q;
-			genvar way;
 			for (way = 0; way < ibex_pkg_IC_NUM_WAYS; way = way + 1) begin : gen_tag_ecc
 				wire [1:0] tag_err_bank_ic1;
 				wire [27:0] tag_rdata_padded_ic1;
@@ -412,7 +411,7 @@ module ibex_icache (
 			if (ResetAll) begin : g_lookup_ind_ra
 				always @(posedge clk_i or negedge rst_ni)
 					if (!rst_ni)
-						lookup_index_ic1 <= 1'sb0;
+						lookup_index_ic1 <= {ibex_pkg_IC_INDEX_W {1'sb0}};
 					else if (lookup_grant_ic0)
 						lookup_index_ic1 <= lookup_addr_ic0[ibex_pkg_IC_INDEX_HI-:ibex_pkg_IC_INDEX_W];
 			end
@@ -424,8 +423,8 @@ module ibex_icache (
 			if (ResetAll) begin : g_ecc_correction_ra
 				always @(posedge clk_i or negedge rst_ni)
 					if (!rst_ni) begin
-						ecc_correction_ways_q <= 1'sb0;
-						ecc_correction_index_q <= 1'sb0;
+						ecc_correction_ways_q <= {2 {1'sb0}};
+						ecc_correction_index_q <= {ibex_pkg_IC_INDEX_W {1'sb0}};
 					end
 					else if (ecc_err_ic1) begin
 						ecc_correction_ways_q <= ecc_correction_ways_d;
@@ -446,8 +445,8 @@ module ibex_icache (
 		else begin : gen_no_data_ecc
 			assign ecc_err_ic1 = 1'b0;
 			assign ecc_write_req = 1'b0;
-			assign ecc_write_ways = 1'sb0;
-			assign ecc_write_index = 1'sb0;
+			assign ecc_write_ways = {2 {1'sb0}};
+			assign ecc_write_index = {ibex_pkg_IC_INDEX_W {1'sb0}};
 			assign hit_data_ic1 = hit_data_ecc_ic1;
 		end
 		if (BranchCache) begin : gen_caching_logic
@@ -460,7 +459,7 @@ module ibex_icache (
 			assign cache_cnt_d = (branch_i ? CACHE_AHEAD[1:0] : cache_cnt_q - {1'b0, cache_cnt_dec});
 			always @(posedge clk_i or negedge rst_ni)
 				if (!rst_ni)
-					cache_cnt_q <= 1'sb0;
+					cache_cnt_q <= {CACHE_CNT_W {1'sb0}};
 				else
 					cache_cnt_q <= cache_cnt_d;
 			assign fill_cache_new = (((branch_i | |cache_cnt_q) & icache_enable_i) & ~icache_inval_i) & ~inval_prog_q;
@@ -470,7 +469,7 @@ module ibex_icache (
 		end
 	endgenerate
 	always @(*) begin
-		fb_fill_level = 1'sb0;
+		fb_fill_level = {2 {1'sb0}};
 		begin : sv2v_autoblock_2
 			reg signed [31:0] i;
 			for (i = 0; i < NUM_FB; i = i + 1)
@@ -530,16 +529,16 @@ module ibex_icache (
 			always @(posedge clk_i or negedge rst_ni)
 				if (!rst_ni) begin
 					fill_busy_q[fb] <= 1'b0;
-					fill_older_q[fb * NUM_FB+:NUM_FB] <= 1'sb0;
+					fill_older_q[fb * NUM_FB+:NUM_FB] <= {32'd4 {1'sb0}};
 					fill_stale_q[fb] <= 1'b0;
 					fill_cache_q[fb] <= 1'b0;
 					fill_hit_q[fb] <= 1'b0;
-					fill_ext_cnt_q[(ibex_pkg_IC_LINE_BEATS_W >= 0 ? 0 : ibex_pkg_IC_LINE_BEATS_W) + (fb * (ibex_pkg_IC_LINE_BEATS_W >= 0 ? ibex_pkg_IC_LINE_BEATS_W + 1 : 1 - ibex_pkg_IC_LINE_BEATS_W))+:(ibex_pkg_IC_LINE_BEATS_W >= 0 ? ibex_pkg_IC_LINE_BEATS_W + 1 : 1 - ibex_pkg_IC_LINE_BEATS_W)] <= 1'sb0;
+					fill_ext_cnt_q[(ibex_pkg_IC_LINE_BEATS_W >= 0 ? 0 : ibex_pkg_IC_LINE_BEATS_W) + (fb * (ibex_pkg_IC_LINE_BEATS_W >= 0 ? ibex_pkg_IC_LINE_BEATS_W + 1 : 1 - ibex_pkg_IC_LINE_BEATS_W))+:(ibex_pkg_IC_LINE_BEATS_W >= 0 ? ibex_pkg_IC_LINE_BEATS_W + 1 : 1 - ibex_pkg_IC_LINE_BEATS_W)] <= {(ibex_pkg_IC_LINE_BEATS_W >= 0 ? ibex_pkg_IC_LINE_BEATS_W + 1 : 1 - ibex_pkg_IC_LINE_BEATS_W) {1'sb0}};
 					fill_ext_hold_q[fb] <= 1'b0;
 					fill_ext_done_q[fb] <= 1'b0;
-					fill_rvd_cnt_q[(ibex_pkg_IC_LINE_BEATS_W >= 0 ? 0 : ibex_pkg_IC_LINE_BEATS_W) + (fb * (ibex_pkg_IC_LINE_BEATS_W >= 0 ? ibex_pkg_IC_LINE_BEATS_W + 1 : 1 - ibex_pkg_IC_LINE_BEATS_W))+:(ibex_pkg_IC_LINE_BEATS_W >= 0 ? ibex_pkg_IC_LINE_BEATS_W + 1 : 1 - ibex_pkg_IC_LINE_BEATS_W)] <= 1'sb0;
+					fill_rvd_cnt_q[(ibex_pkg_IC_LINE_BEATS_W >= 0 ? 0 : ibex_pkg_IC_LINE_BEATS_W) + (fb * (ibex_pkg_IC_LINE_BEATS_W >= 0 ? ibex_pkg_IC_LINE_BEATS_W + 1 : 1 - ibex_pkg_IC_LINE_BEATS_W))+:(ibex_pkg_IC_LINE_BEATS_W >= 0 ? ibex_pkg_IC_LINE_BEATS_W + 1 : 1 - ibex_pkg_IC_LINE_BEATS_W)] <= {(ibex_pkg_IC_LINE_BEATS_W >= 0 ? ibex_pkg_IC_LINE_BEATS_W + 1 : 1 - ibex_pkg_IC_LINE_BEATS_W) {1'sb0}};
 					fill_ram_done_q[fb] <= 1'b0;
-					fill_out_cnt_q[(ibex_pkg_IC_LINE_BEATS_W >= 0 ? 0 : ibex_pkg_IC_LINE_BEATS_W) + (fb * (ibex_pkg_IC_LINE_BEATS_W >= 0 ? ibex_pkg_IC_LINE_BEATS_W + 1 : 1 - ibex_pkg_IC_LINE_BEATS_W))+:(ibex_pkg_IC_LINE_BEATS_W >= 0 ? ibex_pkg_IC_LINE_BEATS_W + 1 : 1 - ibex_pkg_IC_LINE_BEATS_W)] <= 1'sb0;
+					fill_out_cnt_q[(ibex_pkg_IC_LINE_BEATS_W >= 0 ? 0 : ibex_pkg_IC_LINE_BEATS_W) + (fb * (ibex_pkg_IC_LINE_BEATS_W >= 0 ? ibex_pkg_IC_LINE_BEATS_W + 1 : 1 - ibex_pkg_IC_LINE_BEATS_W))+:(ibex_pkg_IC_LINE_BEATS_W >= 0 ? ibex_pkg_IC_LINE_BEATS_W + 1 : 1 - ibex_pkg_IC_LINE_BEATS_W)] <= {(ibex_pkg_IC_LINE_BEATS_W >= 0 ? ibex_pkg_IC_LINE_BEATS_W + 1 : 1 - ibex_pkg_IC_LINE_BEATS_W) {1'sb0}};
 				end
 				else if (fill_entry_en[fb]) begin
 					fill_busy_q[fb] <= fill_busy_d[fb];
@@ -559,7 +558,7 @@ module ibex_icache (
 			if (ResetAll) begin : g_fill_addr_ra
 				always @(posedge clk_i or negedge rst_ni)
 					if (!rst_ni)
-						fill_addr_q[fb] <= 1'sb0;
+						fill_addr_q[fb] <= {32 {1'sb0}};
 					else if (fill_addr_en[fb])
 						fill_addr_q[fb] <= lookup_addr_ic0;
 			end
@@ -571,7 +570,7 @@ module ibex_icache (
 			if (ResetAll) begin : g_fill_way_ra
 				always @(posedge clk_i or negedge rst_ni)
 					if (!rst_ni)
-						fill_way_q[fb] <= 1'sb0;
+						fill_way_q[fb] <= {2 {1'sb0}};
 					else if (fill_way_en[fb])
 						fill_way_q[fb] <= sel_way_ic1;
 			end
@@ -586,14 +585,14 @@ module ibex_icache (
 				assign fill_err_d[(fb * ibex_pkg_IC_LINE_BEATS) + b] = (((((instr_pmp_err_i & fill_alloc[fb]) & fill_spec_req) & (lookup_addr_ic0[2:ibex_pkg_BUS_W] == b[ibex_pkg_IC_LINE_BEATS_W - 1:0])) | ((instr_pmp_err_i & fill_ext_arb[fb]) & (fill_ext_off[fb * ibex_pkg_IC_LINE_BEATS_W+:ibex_pkg_IC_LINE_BEATS_W] == b[ibex_pkg_IC_LINE_BEATS_W - 1:0]))) | ((fill_rvd_arb[fb] & instr_err_i) & (fill_rvd_off[fb * ibex_pkg_IC_LINE_BEATS_W+:ibex_pkg_IC_LINE_BEATS_W] == b[ibex_pkg_IC_LINE_BEATS_W - 1:0]))) | (fill_busy_q[fb] & fill_err_q[(fb * ibex_pkg_IC_LINE_BEATS) + b]);
 				always @(posedge clk_i or negedge rst_ni)
 					if (!rst_ni)
-						fill_err_q[(fb * ibex_pkg_IC_LINE_BEATS) + b] <= 1'sb0;
+						fill_err_q[(fb * ibex_pkg_IC_LINE_BEATS) + b] <= 1'b0;
 					else if (fill_entry_en[fb])
 						fill_err_q[(fb * ibex_pkg_IC_LINE_BEATS) + b] <= fill_err_d[(fb * ibex_pkg_IC_LINE_BEATS) + b];
 				assign fill_data_en[(fb * ibex_pkg_IC_LINE_BEATS) + b] = fill_hit_ic1[fb] | ((fill_rvd_arb[fb] & ~fill_hit_q[fb]) & (fill_rvd_off[fb * ibex_pkg_IC_LINE_BEATS_W+:ibex_pkg_IC_LINE_BEATS_W] == b[ibex_pkg_IC_LINE_BEATS_W - 1:0]));
 				if (ResetAll) begin : g_fill_data_ra
 					always @(posedge clk_i or negedge rst_ni)
 						if (!rst_ni)
-							fill_data_q[fb][b * ibex_pkg_BUS_SIZE+:ibex_pkg_BUS_SIZE] <= 1'sb0;
+							fill_data_q[fb][b * ibex_pkg_BUS_SIZE+:ibex_pkg_BUS_SIZE] <= {32'd32 {1'sb0}};
 						else if (fill_data_en[(fb * ibex_pkg_IC_LINE_BEATS) + b])
 							fill_data_q[fb][b * ibex_pkg_BUS_SIZE+:ibex_pkg_BUS_SIZE] <= fill_data_d[fb][b * ibex_pkg_BUS_SIZE+:ibex_pkg_BUS_SIZE];
 				end
@@ -606,7 +605,7 @@ module ibex_icache (
 		end
 	endgenerate
 	always @(*) begin
-		fill_ext_req_addr = 1'sb0;
+		fill_ext_req_addr = {30 {1'sb0}};
 		begin : sv2v_autoblock_3
 			reg signed [31:0] i;
 			for (i = 0; i < NUM_FB; i = i + 1)
@@ -615,9 +614,9 @@ module ibex_icache (
 		end
 	end
 	always @(*) begin
-		fill_ram_req_addr = 1'sb0;
-		fill_ram_req_way = 1'sb0;
-		fill_ram_req_data = 1'sb0;
+		fill_ram_req_addr = {32 {1'sb0}};
+		fill_ram_req_way = {2 {1'sb0}};
+		fill_ram_req_data = {64 {1'sb0}};
 		begin : sv2v_autoblock_4
 			reg signed [31:0] i;
 			for (i = 0; i < NUM_FB; i = i + 1)
@@ -629,8 +628,8 @@ module ibex_icache (
 		end
 	end
 	always @(*) begin
-		fill_out_data = 1'sb0;
-		fill_out_err = 1'sb0;
+		fill_out_data = {64 {1'sb0}};
+		fill_out_err = {ibex_pkg_IC_LINE_BEATS {1'sb0}};
 		begin : sv2v_autoblock_5
 			reg signed [31:0] i;
 			for (i = 0; i < NUM_FB; i = i + 1)
@@ -647,7 +646,7 @@ module ibex_icache (
 	assign line_data = (|fill_data_hit ? hit_data_ic1 : fill_out_data);
 	assign line_err = (|fill_data_hit ? {ibex_pkg_IC_LINE_BEATS {1'b0}} : fill_out_err);
 	always @(*) begin
-		line_data_muxed = 1'sb0;
+		line_data_muxed = {32 {1'sb0}};
 		line_err_muxed = 1'b0;
 		begin : sv2v_autoblock_6
 			reg signed [31:0] i;
@@ -667,8 +666,8 @@ module ibex_icache (
 		if (ResetAll) begin : g_skid_data_ra
 			always @(posedge clk_i or negedge rst_ni)
 				if (!rst_ni) begin
-					skid_data_q <= 1'sb0;
-					skid_err_q <= 1'sb0;
+					skid_data_q <= {16 {1'sb0}};
+					skid_err_q <= 1'b0;
 				end
 				else if (skid_en) begin
 					skid_data_q <= skid_data_d;
@@ -702,7 +701,7 @@ module ibex_icache (
 		if (ResetAll) begin : g_output_addr_ra
 			always @(posedge clk_i or negedge rst_ni)
 				if (!rst_ni)
-					output_addr_q <= 1'sb0;
+					output_addr_q <= {31 {1'sb0}};
 				else if (output_addr_en)
 					output_addr_q <= output_addr_d;
 		end
@@ -714,7 +713,7 @@ module ibex_icache (
 	endgenerate
 	localparam [31:0] ibex_pkg_IC_OUTPUT_BEATS = 2;
 	always @(*) begin
-		output_data_lo = 1'sb0;
+		output_data_lo = {16 {1'sb0}};
 		begin : sv2v_autoblock_7
 			reg signed [31:0] i;
 			for (i = 0; i < ibex_pkg_IC_OUTPUT_BEATS; i = i + 1)
@@ -723,7 +722,7 @@ module ibex_icache (
 		end
 	end
 	always @(*) begin
-		output_data_hi = 1'sb0;
+		output_data_hi = {16 {1'sb0}};
 		begin : sv2v_autoblock_8
 			reg signed [31:0] i;
 			for (i = 0; i < 1; i = i + 1)
@@ -755,7 +754,7 @@ module ibex_icache (
 		if (ResetAll) begin : g_inval_index_ra
 			always @(posedge clk_i or negedge rst_ni)
 				if (!rst_ni)
-					inval_index_q <= 1'sb0;
+					inval_index_q <= {ibex_pkg_IC_INDEX_W {1'sb0}};
 				else if (inval_prog_d)
 					inval_index_q <= inval_index_d;
 		end

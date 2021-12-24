@@ -271,7 +271,7 @@ module ibex_cs_registers (
 	localparam [31:0] ibex_pkg_CSR_MTIX_BIT = 7;
 	localparam [31:0] ibex_pkg_CSR_MVENDORID_VALUE = 32'b00000000000000000000000000000000;
 	always @(*) begin
-		csr_rdata_int = 1'sb0;
+		csr_rdata_int = {32 {1'sb0}};
 		illegal_csr = 1'b0;
 		case (csr_addr_i)
 			12'hf11: csr_rdata_int = ibex_pkg_CSR_MVENDORID_VALUE;
@@ -288,7 +288,7 @@ module ibex_cs_registers (
 				else
 					illegal_csr = 1'b1;
 			12'h300: begin
-				csr_rdata_int = 1'sb0;
+				csr_rdata_int = {32 {1'sb0}};
 				csr_rdata_int[ibex_pkg_CSR_MSTATUS_MIE_BIT] = mstatus_q[5];
 				csr_rdata_int[ibex_pkg_CSR_MSTATUS_MPIE_BIT] = mstatus_q[4];
 				csr_rdata_int[ibex_pkg_CSR_MSTATUS_MPP_BIT_HIGH:ibex_pkg_CSR_MSTATUS_MPP_BIT_LOW] = mstatus_q[3-:2];
@@ -297,20 +297,20 @@ module ibex_cs_registers (
 			end
 			12'h301: csr_rdata_int = MISA_VALUE;
 			12'h304: begin
-				csr_rdata_int = 1'sb0;
+				csr_rdata_int = {32 {1'sb0}};
 				csr_rdata_int[ibex_pkg_CSR_MSIX_BIT] = mie_q[17];
 				csr_rdata_int[ibex_pkg_CSR_MTIX_BIT] = mie_q[16];
 				csr_rdata_int[ibex_pkg_CSR_MEIX_BIT] = mie_q[15];
 				csr_rdata_int[ibex_pkg_CSR_MFIX_BIT_HIGH:ibex_pkg_CSR_MFIX_BIT_LOW] = mie_q[14-:15];
 			end
-			12'h306: csr_rdata_int = 1'sb0;
+			12'h306: csr_rdata_int = {32 {1'sb0}};
 			12'h340: csr_rdata_int = mscratch_q;
 			12'h305: csr_rdata_int = mtvec_q;
 			12'h341: csr_rdata_int = mepc_q;
 			12'h342: csr_rdata_int = {mcause_q[5], 26'b00000000000000000000000000, mcause_q[4:0]};
 			12'h343: csr_rdata_int = mtval_q;
 			12'h344: begin
-				csr_rdata_int = 1'sb0;
+				csr_rdata_int = {32 {1'sb0}};
 				csr_rdata_int[ibex_pkg_CSR_MSIX_BIT] = mip[17];
 				csr_rdata_int[ibex_pkg_CSR_MTIX_BIT] = mip[16];
 				csr_rdata_int[ibex_pkg_CSR_MEIX_BIT] = mip[15];
@@ -318,7 +318,7 @@ module ibex_cs_registers (
 			end
 			12'h747:
 				if (PMPEnable) begin
-					csr_rdata_int = 1'sb0;
+					csr_rdata_int = {32 {1'sb0}};
 					csr_rdata_int[ibex_pkg_CSR_MSECCFG_MML_BIT] = pmp_mseccfg[0];
 					csr_rdata_int[ibex_pkg_CSR_MSECCFG_MMWP_BIT] = pmp_mseccfg[1];
 					csr_rdata_int[ibex_pkg_CSR_MSECCFG_RLB_BIT] = pmp_mseccfg[2];
@@ -327,7 +327,7 @@ module ibex_cs_registers (
 					illegal_csr = 1'b1;
 			12'h757:
 				if (PMPEnable)
-					csr_rdata_int = 1'sb0;
+					csr_rdata_int = {32 {1'sb0}};
 				else
 					illegal_csr = 1'b1;
 			12'h3a0: csr_rdata_int = {pmp_cfg_rdata[3], pmp_cfg_rdata[2], pmp_cfg_rdata[1], pmp_cfg_rdata[0]};
@@ -383,19 +383,19 @@ module ibex_cs_registers (
 				illegal_csr = ~DbgTriggerEn;
 			end
 			12'h7a3: begin
-				csr_rdata_int = 1'sb0;
+				csr_rdata_int = {32 {1'sb0}};
 				illegal_csr = ~DbgTriggerEn;
 			end
 			12'h7a8: begin
-				csr_rdata_int = 1'sb0;
+				csr_rdata_int = {32 {1'sb0}};
 				illegal_csr = ~DbgTriggerEn;
 			end
 			12'h7aa: begin
-				csr_rdata_int = 1'sb0;
+				csr_rdata_int = {32 {1'sb0}};
 				illegal_csr = ~DbgTriggerEn;
 			end
 			12'h7c0: csr_rdata_int = {{26 {1'b0}}, cpuctrl_q};
-			12'h7c1: csr_rdata_int = 1'sb0;
+			12'h7c1: csr_rdata_int = {32 {1'sb0}};
 			default: illegal_csr = 1'b1;
 		endcase
 	end
@@ -430,8 +430,8 @@ module ibex_cs_registers (
 		mstack_epc_d = mepc_q;
 		mstack_cause_d = mcause_q;
 		mcountinhibit_we = 1'b0;
-		mhpmcounter_we = 1'sb0;
-		mhpmcounterh_we = 1'sb0;
+		mhpmcounter_we = {32 {1'sb0}};
+		mhpmcounterh_we = {32 {1'sb0}};
 		cpuctrl_we = 1'b0;
 		if (csr_we_int)
 			case (csr_addr_i)
@@ -571,7 +571,7 @@ module ibex_cs_registers (
 	ibex_csr #(
 		.Width(32),
 		.ShadowCopy(1'b0),
-		.ResetValue(1'sb0)
+		.ResetValue('0)
 	) u_mepc_csr(
 		.clk_i(clk_i),
 		.rst_ni(rst_ni),
@@ -587,7 +587,7 @@ module ibex_cs_registers (
 	ibex_csr #(
 		.Width(18),
 		.ShadowCopy(1'b0),
-		.ResetValue(1'sb0)
+		.ResetValue('0)
 	) u_mie_csr(
 		.clk_i(clk_i),
 		.rst_ni(rst_ni),
@@ -599,7 +599,7 @@ module ibex_cs_registers (
 	ibex_csr #(
 		.Width(32),
 		.ShadowCopy(1'b0),
-		.ResetValue(1'sb0)
+		.ResetValue('0)
 	) u_mscratch_csr(
 		.clk_i(clk_i),
 		.rst_ni(rst_ni),
@@ -611,7 +611,7 @@ module ibex_cs_registers (
 	ibex_csr #(
 		.Width(6),
 		.ShadowCopy(1'b0),
-		.ResetValue(1'sb0)
+		.ResetValue('0)
 	) u_mcause_csr(
 		.clk_i(clk_i),
 		.rst_ni(rst_ni),
@@ -623,7 +623,7 @@ module ibex_cs_registers (
 	ibex_csr #(
 		.Width(32),
 		.ShadowCopy(1'b0),
-		.ResetValue(1'sb0)
+		.ResetValue('0)
 	) u_mtval_csr(
 		.clk_i(clk_i),
 		.rst_ni(rst_ni),
@@ -660,7 +660,7 @@ module ibex_cs_registers (
 	ibex_csr #(
 		.Width(32),
 		.ShadowCopy(1'b0),
-		.ResetValue(1'sb0)
+		.ResetValue('0)
 	) u_depc_csr(
 		.clk_i(clk_i),
 		.rst_ni(rst_ni),
@@ -672,7 +672,7 @@ module ibex_cs_registers (
 	ibex_csr #(
 		.Width(32),
 		.ShadowCopy(1'b0),
-		.ResetValue(1'sb0)
+		.ResetValue('0)
 	) u_dscratch0_csr(
 		.clk_i(clk_i),
 		.rst_ni(rst_ni),
@@ -684,7 +684,7 @@ module ibex_cs_registers (
 	ibex_csr #(
 		.Width(32),
 		.ShadowCopy(1'b0),
-		.ResetValue(1'sb0)
+		.ResetValue('0)
 	) u_dscratch1_csr(
 		.clk_i(clk_i),
 		.rst_ni(rst_ni),
@@ -709,7 +709,7 @@ module ibex_cs_registers (
 	ibex_csr #(
 		.Width(32),
 		.ShadowCopy(1'b0),
-		.ResetValue(1'sb0)
+		.ResetValue('0)
 	) u_mstack_epc_csr(
 		.clk_i(clk_i),
 		.rst_ni(rst_ni),
@@ -721,7 +721,7 @@ module ibex_cs_registers (
 	ibex_csr #(
 		.Width(6),
 		.ShadowCopy(1'b0),
-		.ResetValue(1'sb0)
+		.ResetValue('0)
 	) u_mstack_cause_csr(
 		.clk_i(clk_i),
 		.rst_ni(rst_ni),
@@ -760,22 +760,22 @@ module ibex_cs_registers (
 						always @(*) begin
 							pmp_addr_rdata[i] = pmp_addr[i];
 							if ((pmp_cfg[i][4-:2] == 2'b00) || (pmp_cfg[i][4-:2] == 2'b01))
-								pmp_addr_rdata[i][PMPGranularity - 1:0] = 1'sb0;
+								pmp_addr_rdata[i][PMPGranularity - 1:0] = {PMPGranularity {1'sb0}};
 						end
 					end
 					else begin : g_pmp_g2
 						always @(*) begin
 							pmp_addr_rdata[i] = {pmp_addr[i], {PMPGranularity - 1 {1'b1}}};
 							if ((pmp_cfg[i][4-:2] == 2'b00) || (pmp_cfg[i][4-:2] == 2'b01))
-								pmp_addr_rdata[i][PMPGranularity - 1:0] = 1'sb0;
+								pmp_addr_rdata[i][PMPGranularity - 1:0] = {PMPGranularity {1'sb0}};
 						end
 					end
 				end
 				else begin : g_other_regions
-					assign pmp_cfg_rdata[i] = 1'sb0;
-					wire [32:1] sv2v_tmp_96282;
-					assign sv2v_tmp_96282 = 1'sb0;
-					always @(*) pmp_addr_rdata[i] = sv2v_tmp_96282;
+					assign pmp_cfg_rdata[i] = {8 {1'sb0}};
+					wire [32:1] sv2v_tmp_F29DF;
+					assign sv2v_tmp_F29DF = {32 {1'sb0}};
+					always @(*) pmp_addr_rdata[i] = sv2v_tmp_F29DF;
 				end
 			end
 			for (i = 0; i < PMPNumRegions; i = i + 1) begin : g_pmp_csrs
@@ -803,7 +803,7 @@ module ibex_cs_registers (
 				ibex_csr #(
 					.Width(6),
 					.ShadowCopy(ShadowCSR),
-					.ResetValue(1'sb0)
+					.ResetValue('0)
 				) u_pmp_cfg_csr(
 					.clk_i(clk_i),
 					.rst_ni(rst_ni),
@@ -822,7 +822,7 @@ module ibex_cs_registers (
 				ibex_csr #(
 					.Width(PMPAddrWidth),
 					.ShadowCopy(ShadowCSR),
-					.ResetValue(1'sb0)
+					.ResetValue('0)
 				) u_pmp_addr_csr(
 					.clk_i(clk_i),
 					.rst_ni(rst_ni),
@@ -842,7 +842,7 @@ module ibex_cs_registers (
 			ibex_csr #(
 				.Width(3),
 				.ShadowCopy(ShadowCSR),
-				.ResetValue(1'sb0)
+				.ResetValue('0)
 			) u_pmp_mseccfg(
 				.clk_i(clk_i),
 				.rst_ni(rst_ni),
@@ -857,17 +857,17 @@ module ibex_cs_registers (
 		else begin : g_no_pmp_tieoffs
 			genvar i;
 			for (i = 0; i < ibex_pkg_PMP_MAX_REGIONS; i = i + 1) begin : g_rdata
-				wire [32:1] sv2v_tmp_96282;
-				assign sv2v_tmp_96282 = 1'sb0;
-				always @(*) pmp_addr_rdata[i] = sv2v_tmp_96282;
-				assign pmp_cfg_rdata[i] = 1'sb0;
+				wire [32:1] sv2v_tmp_F29DF;
+				assign sv2v_tmp_F29DF = {32 {1'sb0}};
+				always @(*) pmp_addr_rdata[i] = sv2v_tmp_F29DF;
+				assign pmp_cfg_rdata[i] = {8 {1'sb0}};
 			end
 			for (i = 0; i < PMPNumRegions; i = i + 1) begin : g_outputs
 				assign csr_pmp_cfg_o[((PMPNumRegions - 1) - i) * 6+:6] = 6'b000000;
-				assign csr_pmp_addr_o[((PMPNumRegions - 1) - i) * 34+:34] = 1'sb0;
+				assign csr_pmp_addr_o[((PMPNumRegions - 1) - i) * 34+:34] = {34 {1'sb0}};
 			end
 			assign pmp_csr_err = 1'b0;
-			assign pmp_mseccfg = 1'sb0;
+			assign pmp_mseccfg = {3 {1'sb0}};
 		end
 	endgenerate
 	assign csr_pmp_mseccfg_o = pmp_mseccfg;
@@ -904,16 +904,16 @@ module ibex_cs_registers (
 			reg signed [31:0] i;
 			for (i = 0; i < 32; i = i + 1)
 				begin : gen_mhpmevent_active
-					mhpmevent[i] = 1'sb0;
+					mhpmevent[i] = {32 {1'sb0}};
 					mhpmevent[i][i] = 1'b1;
 				end
 		end
-		mhpmevent[1] = 1'sb0;
+		mhpmevent[1] = {32 {1'sb0}};
 		begin : sv2v_autoblock_3
 			reg [31:0] i;
 			for (i = 3 + MHPMCounterNum; i < 32; i = i + 1)
 				begin : gen_mhpmevent_inactive
-					mhpmevent[i] = 1'sb0;
+					mhpmevent[i] = {32 {1'sb0}};
 				end
 		end
 	end
@@ -941,7 +941,7 @@ module ibex_cs_registers (
 		.counter_val_upd_o(minstret_next)
 	);
 	assign mhpmcounter[2] = (instr_ret_spec_i & ~mcountinhibit[2] ? minstret_next : minstret_raw);
-	assign mhpmcounter[1] = 1'sb0;
+	assign mhpmcounter[1] = {64 {1'sb0}};
 	assign unused_mhpmcounter_we_1 = mhpmcounter_we[1];
 	assign unused_mhpmcounterh_we_1 = mhpmcounterh_we[1];
 	assign unused_mhpmcounter_incr_1 = mhpmcounter_incr[1];
@@ -975,7 +975,7 @@ module ibex_cs_registers (
 				end
 			end
 			else begin : gen_unimp
-				assign mhpmcounter[Cnt] = 1'sb0;
+				assign mhpmcounter[Cnt] = {64 {1'sb0}};
 				if (Cnt == 10) begin : gen_no_compressed_instr_cnt
 					wire unused_instr_ret_compressed_spec_i;
 					assign unused_instr_ret_compressed_spec_i = instr_ret_compressed_spec_i;
@@ -997,7 +997,7 @@ module ibex_cs_registers (
 	endgenerate
 	always @(posedge clk_i or negedge rst_ni)
 		if (!rst_ni)
-			mcountinhibit_q <= 1'sb0;
+			mcountinhibit_q <= {((MHPMCounterNum + 2) >= 0 ? MHPMCounterNum + 3 : 1 - (MHPMCounterNum + 2)) {1'sb0}};
 		else
 			mcountinhibit_q <= mcountinhibit_d;
 	generate
@@ -1017,7 +1017,6 @@ module ibex_cs_registers (
 			wire [DbgHwBreakNum - 1:0] tmatch_value_we;
 			wire [DbgHwBreakNum - 1:0] trigger_match;
 			assign tselect_we = (csr_we_int & debug_mode_i) & (csr_addr_i == 12'h7a0);
-			genvar i;
 			for (i = 0; i < DbgHwBreakNum; i = i + 1) begin : g_dbg_tmatch_we
 				assign tmatch_control_we[i] = (((i[DbgHwNumLen - 1:0] == tselect_q) & csr_we_int) & debug_mode_i) & (csr_addr_i == 12'h7a1);
 				assign tmatch_value_we[i] = (((i[DbgHwNumLen - 1:0] == tselect_q) & csr_we_int) & debug_mode_i) & (csr_addr_i == 12'h7a2);
@@ -1028,7 +1027,7 @@ module ibex_cs_registers (
 			ibex_csr #(
 				.Width(DbgHwNumLen),
 				.ShadowCopy(1'b0),
-				.ResetValue(1'sb0)
+				.ResetValue('0)
 			) u_tselect_csr(
 				.clk_i(clk_i),
 				.rst_ni(rst_ni),
@@ -1041,7 +1040,7 @@ module ibex_cs_registers (
 				ibex_csr #(
 					.Width(1),
 					.ShadowCopy(1'b0),
-					.ResetValue(1'sb0)
+					.ResetValue('0)
 				) u_tmatch_control_csr(
 					.clk_i(clk_i),
 					.rst_ni(rst_ni),
@@ -1053,7 +1052,7 @@ module ibex_cs_registers (
 				ibex_csr #(
 					.Width(32),
 					.ShadowCopy(1'b0),
-					.ResetValue(1'sb0)
+					.ResetValue('0)
 				) u_tmatch_value_csr(
 					.clk_i(clk_i),
 					.rst_ni(rst_ni),
@@ -1114,7 +1113,7 @@ module ibex_cs_registers (
 			assign cpuctrl_d[2] = 1'b0;
 			assign cpuctrl_d[5-:3] = 3'b000;
 			assign dummy_instr_seed_en_o = 1'b0;
-			assign dummy_instr_seed_o = 1'sb0;
+			assign dummy_instr_seed_o = {32 {1'sb0}};
 		end
 	endgenerate
 	assign dummy_instr_en_o = cpuctrl_q[2];
@@ -1133,7 +1132,7 @@ module ibex_cs_registers (
 	ibex_csr #(
 		.Width(6),
 		.ShadowCopy(ShadowCSR),
-		.ResetValue(1'sb0)
+		.ResetValue('0)
 	) u_cpuctrl_csr(
 		.clk_i(clk_i),
 		.rst_ni(rst_ni),

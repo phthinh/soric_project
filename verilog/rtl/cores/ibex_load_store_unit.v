@@ -139,7 +139,7 @@ module ibex_load_store_unit (
 		endcase
 	always @(posedge clk_i or negedge rst_ni)
 		if (!rst_ni)
-			rdata_q <= 1'sb0;
+			rdata_q <= {24 {1'sb0}};
 		else if (rdata_update)
 			rdata_q <= data_rdata_i[31:8];
 	always @(posedge clk_i or negedge rst_ni)
@@ -158,7 +158,7 @@ module ibex_load_store_unit (
 	assign addr_last_d = (addr_incr_req_o ? data_addr_w_aligned : data_addr);
 	always @(posedge clk_i or negedge rst_ni)
 		if (!rst_ni)
-			addr_last_q <= 1'sb0;
+			addr_last_q <= {32 {1'sb0}};
 		else if (addr_update)
 			addr_last_q <= addr_last_d;
 	always @(*)
@@ -308,9 +308,9 @@ module ibex_load_store_unit (
 	always @(posedge clk_i or negedge rst_ni)
 		if (!rst_ni) begin
 			ls_fsm_cs <= 3'd0;
-			handle_misaligned_q <= 1'sb0;
-			pmp_err_q <= 1'sb0;
-			lsu_err_q <= 1'sb0;
+			handle_misaligned_q <= 1'b0;
+			pmp_err_q <= 1'b0;
+			lsu_err_q <= 1'b0;
 		end
 		else begin
 			ls_fsm_cs <= ls_fsm_ns;

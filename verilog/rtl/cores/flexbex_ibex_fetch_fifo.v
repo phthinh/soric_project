@@ -122,10 +122,10 @@ module flexbex_ibex_fetch_fifo (
 		if (!rst_n) begin
 			addr_Q <= {DEPTH {32'b00000000000000000000000000000000}};
 			rdata_Q <= {DEPTH {32'b00000000000000000000000000000000}};
-			valid_Q <= 1'sb0;
+			valid_Q <= {3 {1'sb0}};
 		end
 		else if (clear_i)
-			valid_Q <= 1'sb0;
+			valid_Q <= {3 {1'sb0}};
 		else begin
 			addr_Q <= addr_n;
 			rdata_Q <= rdata_n;

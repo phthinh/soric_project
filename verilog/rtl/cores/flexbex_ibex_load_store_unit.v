@@ -189,8 +189,8 @@ module flexbex_ibex_load_store_unit (
 	always @(posedge clk or negedge rst_n)
 		if (!rst_n) begin
 			CS <= 3'd0;
-			rdata_q <= 1'sb0;
-			data_misaligned_q <= 1'sb0;
+			rdata_q <= {32 {1'sb0}};
+			data_misaligned_q <= 1'b0;
 			misaligned_addr_o <= 32'b00000000000000000000000000000000;
 		end
 		else begin

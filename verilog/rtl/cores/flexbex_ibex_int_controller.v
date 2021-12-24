@@ -28,7 +28,7 @@ module flexbex_ibex_int_controller (
 	assign irq_id_ctrl_o = irq_id_q;
 	always @(posedge clk or negedge rst_n)
 		if (!rst_n) begin
-			irq_id_q <= 1'sb0;
+			irq_id_q <= {5 {1'sb0}};
 			exc_ctrl_cs <= 2'd0;
 		end
 		else begin

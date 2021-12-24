@@ -71,7 +71,7 @@ module flexbex_ibex_if_stage (
 	wire [31:0] fetch_addr;
 	reg [31:0] exc_pc;
 	always @(*) begin : EXC_PC_MUX
-		exc_pc = 1'sb0;
+		exc_pc = {32 {1'sb0}};
 		case (exc_pc_mux_i)
 			3'd0: exc_pc = {boot_addr_i[31:8], 8'h84};
 			3'd1: exc_pc = {boot_addr_i[31:8], 8'h88};
@@ -84,7 +84,7 @@ module flexbex_ibex_if_stage (
 		endcase
 	end
 	always @(*) begin
-		fetch_addr_n = 1'sb0;
+		fetch_addr_n = {32 {1'sb0}};
 		case (pc_mux_i)
 			3'd0: fetch_addr_n = {boot_addr_i[31:8], 8'h80};
 			3'd1: fetch_addr_n = jump_target_ex_i;
@@ -156,10 +156,10 @@ module flexbex_ibex_if_stage (
 	always @(posedge clk or negedge rst_n) begin : IF_ID_PIPE_REGISTERS
 		if (!rst_n) begin
 			instr_valid_id_o <= 1'b0;
-			instr_rdata_id_o <= 1'sb0;
+			instr_rdata_id_o <= {32 {1'sb0}};
 			illegal_c_insn_id_o <= 1'b0;
 			is_compressed_id_o <= 1'b0;
-			pc_id_o <= 1'sb0;
+			pc_id_o <= {32 {1'sb0}};
 		end
 		else if (if_valid_o) begin
 			instr_valid_id_o <= 1'b1;

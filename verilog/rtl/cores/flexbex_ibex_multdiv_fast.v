@@ -66,12 +66,12 @@ module flexbex_ibex_multdiv_fast (
 	always @(posedge clk or negedge rst_n) begin : proc_mult_state_q
 		if (!rst_n) begin
 			mult_state_q <= 2'd0;
-			mac_res_q <= 1'sb0;
-			div_counter_q <= 1'sb0;
+			mac_res_q <= {34 {1'sb0}};
+			div_counter_q <= {5 {1'sb0}};
 			divcurr_state_q <= 3'd0;
-			op_denominator_q <= 1'sb0;
-			op_numerator_q <= 1'sb0;
-			op_quotient_q <= 1'sb0;
+			op_denominator_q <= {32 {1'sb0}};
+			op_numerator_q <= {32 {1'sb0}};
+			op_quotient_q <= {32 {1'sb0}};
 		end
 		else begin
 			if (mult_en_i)
@@ -119,7 +119,7 @@ module flexbex_ibex_multdiv_fast (
 		case (divcurr_state_q)
 			3'd0: begin
 				if (operator_i == 2'd2) begin
-					op_reminder_n = 1'sb1;
+					op_reminder_n = {34 {1'sb1}};
 					divcurr_state_n = (equal_to_zero ? 3'd6 : 3'd1);
 				end
 				else begin
@@ -131,7 +131,7 @@ module flexbex_ibex_multdiv_fast (
 				div_counter_n = 5'd31;
 			end
 			3'd1: begin
-				op_quotient_n = 1'sb0;
+				op_quotient_n = {32 {1'sb0}};
 				op_numerator_n = (div_sign_a ? alu_adder_i : op_a_i);
 				divcurr_state_n = 3'd2;
 				div_counter_n = 5'd31;
@@ -192,7 +192,7 @@ module flexbex_ibex_multdiv_fast (
 				mult_op_b = op_b_i[15:0];
 				sign_a = 1'b0;
 				sign_b = 1'b0;
-				accum = 1'sb0;
+				accum = {34 {1'sb0}};
 				mac_res_n = mac_res;
 				mult_state_n = 2'd1;
 			end

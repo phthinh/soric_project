@@ -10,7 +10,7 @@ module flexbex_ibex_compressed_decoder (
 	output reg illegal_instr_o;
 	always @(*) begin
 		illegal_instr_o = 1'b0;
-		instr_o = 1'sb0;
+		instr_o = {32 {1'sb0}};
 		case (instr_i[1:0])
 			2'b00:
 				case (instr_i[15:13])

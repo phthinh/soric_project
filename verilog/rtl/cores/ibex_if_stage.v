@@ -296,14 +296,14 @@ module ibex_if_stage (
 		if (ResetAll) begin : g_instr_rdata_ra
 			always @(posedge clk_i or negedge rst_ni)
 				if (!rst_ni) begin
-					instr_rdata_id_o <= 1'sb0;
-					instr_rdata_alu_id_o <= 1'sb0;
-					instr_fetch_err_o <= 1'sb0;
-					instr_fetch_err_plus2_o <= 1'sb0;
-					instr_rdata_c_id_o <= 1'sb0;
-					instr_is_compressed_id_o <= 1'sb0;
-					illegal_c_insn_id_o <= 1'sb0;
-					pc_id_o <= 1'sb0;
+					instr_rdata_id_o <= {32 {1'sb0}};
+					instr_rdata_alu_id_o <= {32 {1'sb0}};
+					instr_fetch_err_o <= 1'b0;
+					instr_fetch_err_plus2_o <= 1'b0;
+					instr_rdata_c_id_o <= {16 {1'sb0}};
+					instr_is_compressed_id_o <= 1'b0;
+					illegal_c_insn_id_o <= 1'b0;
+					pc_id_o <= {32 {1'sb0}};
 				end
 				else if (if_id_pipe_reg_we) begin
 					instr_rdata_id_o <= instr_out;
@@ -358,7 +358,7 @@ module ibex_if_stage (
 			if (ResetAll) begin : g_bp_taken_ra
 				always @(posedge clk_i or negedge rst_ni)
 					if (!rst_ni)
-						instr_bp_taken_q <= 1'sb0;
+						instr_bp_taken_q <= 1'b0;
 					else if (if_id_pipe_reg_we)
 						instr_bp_taken_q <= instr_bp_taken_d;
 			end
@@ -377,9 +377,9 @@ module ibex_if_stage (
 			if (ResetAll) begin : g_instr_skid_ra
 				always @(posedge clk_i or negedge rst_ni)
 					if (!rst_ni) begin
-						instr_skid_bp_taken_q <= 1'sb0;
-						instr_skid_data_q <= 1'sb0;
-						instr_skid_addr_q <= 1'sb0;
+						instr_skid_bp_taken_q <= 1'b0;
+						instr_skid_data_q <= {32 {1'sb0}};
+						instr_skid_addr_q <= {32 {1'sb0}};
 					end
 					else if (instr_skid_en) begin
 						instr_skid_bp_taken_q <= predict_branch_taken;

@@ -76,9 +76,9 @@ module flexbex_ibex_core (
 	input wire [31:0] eFPGA_result_c_i;
 	output wire eFPGA_write_strobe_o;
 	input eFPGA_fpga_done_i;
-	output wire eFPGA_en_o;
-	output wire [1:0] eFPGA_operator_o;
-	output wire [3:0] eFPGA_delay_o;
+	output eFPGA_en_o;
+	output [1:0] eFPGA_operator_o;
+	output [3:0] eFPGA_delay_o;
 	wire eFPGA_en;
 	assign eFPGA_en_o = eFPGA_en;
 	wire [1:0] eFPGA_operator;

@@ -42,21 +42,21 @@ module ibex_counter (
 	reg [CounterWidth - 1:0] counter_q;
 	always @(posedge clk_i or negedge rst_ni)
 		if (!rst_ni)
-			counter_q <= 1'sb0;
+			counter_q <= {CounterWidth {1'sb0}};
 		else
 			counter_q <= counter_d;
 	generate
 		if (CounterWidth < 64) begin : g_counter_narrow
 			wire [63:CounterWidth] unused_counter_load;
 			assign counter[CounterWidth - 1:0] = counter_q;
-			assign counter[63:CounterWidth] = 1'sb0;
+			assign counter[63:CounterWidth] = {(63 >= CounterWidth ? 64 - CounterWidth : CounterWidth - 62) {1'sb0}};
 			if (ProvideValUpd) begin : g_counter_val_upd_o
 				assign counter_val_upd_o[CounterWidth - 1:0] = counter_upd;
 			end
 			else begin : g_no_counter_val_upd_o
-				assign counter_val_upd_o[CounterWidth - 1:0] = 1'sb0;
+				assign counter_val_upd_o[CounterWidth - 1:0] = {CounterWidth {1'sb0}};
 			end
-			assign counter_val_upd_o[63:CounterWidth] = 1'sb0;
+			assign counter_val_upd_o[63:CounterWidth] = {(63 >= CounterWidth ? 64 - CounterWidth : CounterWidth - 62) {1'sb0}};
 			assign unused_counter_load = counter_load[63:CounterWidth];
 		end
 		else begin : g_counter_full
@@ -65,7 +65,7 @@ module ibex_counter (
 				assign counter_val_upd_o = counter_upd;
 			end
 			else begin : g_no_counter_val_upd_o
-				assign counter_val_upd_o = 1'sb0;
+				assign counter_val_upd_o = {64 {1'sb0}};
 			end
 		end
 	endgenerate

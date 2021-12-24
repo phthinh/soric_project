@@ -121,7 +121,7 @@ module flexbex_ibex_prefetch_buffer (
 	always @(posedge clk or negedge rst_n)
 		if (!rst_n) begin
 			CS <= 2'd0;
-			instr_addr_q <= 1'sb0;
+			instr_addr_q <= {32 {1'sb0}};
 		end
 		else begin
 			CS <= NS;

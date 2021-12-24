@@ -378,12 +378,12 @@ module ibex_id_stage (
 			wire [2:0] unused_b_mux_sel;
 			assign unused_a_mux_sel = bt_a_mux_sel;
 			assign unused_b_mux_sel = bt_b_mux_sel;
-			wire [32:1] sv2v_tmp_FACAA;
-			assign sv2v_tmp_FACAA = 1'sb0;
-			always @(*) bt_a_operand_o = sv2v_tmp_FACAA;
-			wire [32:1] sv2v_tmp_A4AF9;
-			assign sv2v_tmp_A4AF9 = 1'sb0;
-			always @(*) bt_b_operand_o = sv2v_tmp_A4AF9;
+			wire [32:1] sv2v_tmp_8B1C9;
+			assign sv2v_tmp_8B1C9 = {32 {1'sb0}};
+			always @(*) bt_a_operand_o = sv2v_tmp_8B1C9;
+			wire [32:1] sv2v_tmp_61F2D;
+			assign sv2v_tmp_61F2D = {32 {1'sb0}};
+			always @(*) bt_b_operand_o = sv2v_tmp_61F2D;
 			always @(*) begin : immediate_b_mux
 				case (imm_b_mux_sel)
 					3'd0: imm_b = imm_i_type;
@@ -404,7 +404,7 @@ module ibex_id_stage (
 		for (i = 0; i < 2; i = i + 1) begin : gen_intermediate_val_reg
 			always @(posedge clk_i or negedge rst_ni) begin : intermediate_val_reg
 				if (!rst_ni)
-					imd_val_q[(1 - i) * 34+:34] <= 1'sb0;
+					imd_val_q[(1 - i) * 34+:34] <= {34 {1'sb0}};
 				else if (imd_val_we_ex_i[i])
 					imd_val_q[(1 - i) * 34+:34] <= imd_val_d_ex_i[(1 - i) * 34+:34];
 			end

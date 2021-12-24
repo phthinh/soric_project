@@ -82,13 +82,13 @@ module ibex_wb_stage (
 			if (ResetAll) begin : g_wb_regs_ra
 				always @(posedge clk_i or negedge rst_ni)
 					if (!rst_ni) begin
-						rf_we_wb_q <= 1'sb0;
-						rf_waddr_wb_q <= 1'sb0;
-						rf_wdata_wb_q <= 1'sb0;
+						rf_we_wb_q <= 1'b0;
+						rf_waddr_wb_q <= {5 {1'sb0}};
+						rf_wdata_wb_q <= {32 {1'sb0}};
 						wb_instr_type_q <= 2'd0;
-						wb_pc_q <= 1'sb0;
-						wb_compressed_q <= 1'sb0;
-						wb_count_q <= 1'sb0;
+						wb_pc_q <= {32 {1'sb0}};
+						wb_compressed_q <= 1'b0;
+						wb_count_q <= 1'b0;
 					end
 					else if (en_wb_i) begin
 						rf_we_wb_q <= rf_we_id_i;
@@ -146,7 +146,7 @@ module ibex_wb_stage (
 			assign unused_pc_id = pc_id_i;
 			assign outstanding_load_wb_o = 1'b0;
 			assign outstanding_store_wb_o = 1'b0;
-			assign pc_wb_o = 1'sb0;
+			assign pc_wb_o = {32 {1'sb0}};
 			assign rf_write_wb_o = 1'b0;
 			assign rf_wdata_fwd_wb_o = 32'b00000000000000000000000000000000;
 			assign instr_done_wb_o = 1'b0;

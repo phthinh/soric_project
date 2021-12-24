@@ -273,7 +273,7 @@ module ibex_controller (
 		csr_restore_mret_id_o = 1'b0;
 		csr_restore_dret_id_o = 1'b0;
 		csr_save_cause_o = 1'b0;
-		csr_mtval_o = 1'sb0;
+		csr_mtval_o = {32 {1'sb0}};
 		pc_mux_o = 3'd0;
 		pc_set_o = 1'b0;
 		pc_set_spec_o = 1'b0;
