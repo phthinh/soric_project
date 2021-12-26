@@ -25,7 +25,7 @@
 `else
     `include "user_project_wrapper.v"
     `include "soric_top.v"
-//    `include "user_proj_example.v"
+    `include "sky130_sram_2kbyte_1rw1r_32x512_8.v"
     `include "soric_netlists.vh"
     `include "cores_netlists.vh"
 `endif

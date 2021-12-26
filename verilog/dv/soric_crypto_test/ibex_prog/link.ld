@@ -4,17 +4,19 @@ OUTPUT_ARCH(riscv)
 
 MEMORY
 {
-    ram         : ORIGIN = 0x00000000, LENGTH = 0x800     /* 2  kB */
-    stack       : ORIGIN = 0x00000700, LENGTH = 0x100     /* 256 B */
+    ram         : ORIGIN = 0x00000000, LENGTH = 0x2000     /* 8  kB */
+    stack       : ORIGIN = 0x00001F00, LENGTH = 0x100     /* 256 B */
 }
 
 /* Stack */
-_min_stack      = 0x080;   /* 256 - minimum stack space to reserve */
-_stack_len     = LENGTH(stack);
+_min_stack   = 0x080;   /* 256 - minimum stack space to reserve */
+_stack_len   = LENGTH(stack);
 _stack_top   = ORIGIN(stack) + LENGTH(stack);
 
 _entry_point = _vectors_start + 0x80;
 ENTRY(_entry_point)
+
+_tohost      = 0x1FFC;
 
 SECTIONS
 {
@@ -27,6 +29,24 @@ SECTIONS
     } > ram
 
     .text : {
+        . = ALIGN(4);
+        *(.text)
+        *(.text.*)
+    }  > ram
+
+    .ramcross12 0x3FC: AT (0x3FC) {
+        . = ALIGN(4);
+        *(.text)
+        *(.text.*)
+    }  > ram
+
+    .ramcross23 0x7FC: AT (0x7FC) {
+        . = ALIGN(4);
+        *(.text)
+        *(.text.*)
+    }  > ram
+
+    .ramcross34 0xBFC: AT (0xBFC) {
         . = ALIGN(4);
         *(.text)
         *(.text.*)

@@ -1,5 +1,5 @@
 #include <stdint.h>
-//#include "aes_common.h"
+#include "aes_common.h"
 
 #define ROL32(x,n) (((x) << (n)) | ((x) >> (32 - (n))))
 #define ROR32(x,n) (((x) >> (n)) | ((x) << (32 - (n))))
@@ -11,11 +11,12 @@ static uint32_t lfsr(uint32_t x)
   uint32_t bit = (x ^ (x >> 1)) & 1;
   return (x >> 1) | (bit << 30);
 }
-/*
+
 extern uint32_t test_aes32dsi1(uint32_t a, uint32_t b);
 extern uint32_t test_aes32esi1(uint32_t a, uint32_t b);
 extern uint32_t test_aes32dsmi1(uint32_t a, uint32_t b);
 extern uint32_t test_aes32esmi1(uint32_t a, uint32_t b);
+
 
 extern uint32_t test_sha256sum0(uint32_t a);
 extern uint32_t test_sha256sum1(uint32_t a);
@@ -28,7 +29,7 @@ extern uint32_t test_sha512sig0l(uint32_t a, uint32_t b);
 extern uint32_t test_sha512sig0h(uint32_t a, uint32_t b);
 extern uint32_t test_sha512sig1l(uint32_t a, uint32_t b);
 extern uint32_t test_sha512sig1h(uint32_t a, uint32_t b);
-*/
+
 
 extern uint32_t test_ror(uint32_t a, uint32_t b);
 extern uint32_t test_rol(uint32_t a, uint32_t b);
@@ -39,20 +40,18 @@ extern uint32_t test_xnor(uint32_t a, uint32_t b);
 
 extern uint32_t test_pack(uint32_t a, uint32_t b);
 extern uint32_t test_packh(uint32_t a, uint32_t b);
+
 extern uint32_t test_brev8(uint32_t a);
 extern uint32_t test_rev8(uint32_t a);
 extern uint32_t test_zip(uint32_t a);
 extern uint32_t test_unzip(uint32_t a);
 
-/*
 extern uint32_t test_xperm8(uint32_t a, uint32_t b);
 extern uint32_t test_xperm4(uint32_t a, uint32_t b);
 
 extern uint32_t test_clmul(uint32_t a, uint32_t b);
 extern uint32_t test_clmulh(uint32_t a, uint32_t b);
-*/
 
-/*
 uint32_t gold_aes32dsi(uint32_t a, uint32_t b, uint32_t bs){
 
     uint8_t     t0 = (b >> (8*bs)) & 0xFF;
@@ -73,7 +72,7 @@ uint32_t gold_aes32esi(uint32_t a, uint32_t b, uint32_t bs){
 
     return (r ^ a);
 }
-/*
+
 uint32_t gold_aes32dsmi(uint32_t a, uint32_t b, uint32_t bs){
 
     uint8_t     t0 = b >> (8*bs);
@@ -104,6 +103,7 @@ uint32_t gold_aes32esmi(uint32_t a, uint32_t b, uint32_t bs){
     return (r ^ a);
 }
 
+
 uint32_t gold_sha256sum0(uint32_t a){
     uint32_t     r = ROR32(a,  2) ^ ROR32(a,13) ^ ROR32(a, 22);
     return r;
@@ -120,6 +120,8 @@ uint32_t gold_sha256sig1(uint32_t a){
     uint32_t     r = ROR32(a, 17) ^ ROR32(a,19) ^ (a >> 10);
     return r;
 }
+
+
 uint32_t gold_sha512sum0r(uint32_t a, uint32_t b){
     uint32_t     r = (a << 25) ^ (a << 30) ^ (a >> 28) ^
                      (b >>  7) ^ (b >>  2) ^ (b <<  4);
@@ -150,8 +152,6 @@ uint32_t gold_sha512sig1h(uint32_t a, uint32_t b){
                      (b >> 29) ^             (b << 13);
     return r;
 }
-
-*/
 
 uint32_t gold_ror(uint32_t a, uint32_t b){
     return ROR32(a, b & 0x0000001F);
@@ -193,10 +193,12 @@ uint32_t gold_brev8(uint32_t a){
     x = ((x & 0x0F0F0F0F) <<  4) | ((x & 0xF0F0F0F0) >>  4);
     return x;
 }
+
+
 uint32_t gold_rev8(uint32_t a){
     uint32_t  x;
     x = ((a & 0x00FF00FF) <<  8) | ((a & 0xFF00FF00) >>  8);
-    x = ((x & 0x0000FFFF) << 16) | ((x & 0xFFFF0000) >> 16);
+    x = ((x & 0x0000FFFF) << 16) | ((x & 0xFFFF0000) >> 16);   
     return x;
 }
 
@@ -206,7 +208,6 @@ uint32_t shfl_st(uint32_t src, uint32_t maskL, uint32_t maskR, int N)
     x |= ((src << N) & maskL) | ((src >> N) & maskR);
     return x;
 }
-
 
 uint32_t gold_unzip(uint32_t a){
     uint32_t  x=a;
@@ -226,39 +227,24 @@ uint32_t gold_zip(uint32_t a){
     return x;
 }
 
-/*
-uint32_t gold_xperm8(uint32_t a,uint32_t b){
-    uint32_t  lut[256];
-    uint32_t  idx[4];
- 
-    for (int i =0;i<256;i++){
-        if (i<4){
-        	lut[i] = (a>>(8*i)) & 0xFF;
-        	idx[i] = (b>>(8*i)) & 0xFF;
-		} else {
-            lut[i] = 0;
-		}
-    }
-    uint32_t x = (lut[idx[3]] << 24) | (lut[idx[2]] << 16) | (lut[idx[1]] << 8) | lut[idx[0]];
-    return x;
+static inline uint32_t xperm32(uint32_t a, uint32_t b, int sz_log2)
+{
+	uint32_t r = 0;
+	uint32_t sz = 1LL << sz_log2;
+	uint32_t mask = (1LL << sz) - 1;
+	for (int i = 0; i < 32; i += sz) {
+		uint32_t pos = ((b >> i) & mask) << sz_log2;
+		if (pos < 32)
+			r |= ((a >> pos) & mask) << i;
+	}
+	return r;
 }
 
-uint32_t gold_xperm4(uint32_t a,uint32_t b){
-    uint32_t  lut[16];
-    uint32_t  idx[8];
- 
-    for (int i =0;i<16;i++){
-        if (i<8){
-          lut[i] = (a>>(4*i)) & 0xF;
-          idx[i] = (b>>(4*i)) & 0xF;
-        } else {
-           lut[i] = 0;
-        }
-    }
-    uint32_t x = 0;
-    for (int i =0;i<8;i++) x |= (lut[idx[i]] << (4*i));
-    return x;
-}
+uint32_t gold_xperm8(uint32_t a,uint32_t b)
+	{ return xperm32(a, b, 3); }
+
+uint32_t gold_xperm4(uint32_t a,uint32_t b)
+	{ return xperm32(a, b, 2); }
 
 uint32_t gold_clmul(uint32_t a,uint32_t b){
     uint32_t x = 0;
@@ -274,24 +260,24 @@ uint32_t gold_clmulh(uint32_t a,uint32_t b){
     return x;
 }
 
-*/
-
 //void error_log(uint32_t expect, uint32_t result){
 //puts("Expected: "); puthex(expect); puts(", got:"); puthex(result); putchar('\n');
 //}
 int fail;
 uint32_t expect, result;
 
+extern unsigned int _tohost;
+
 int main() {
-    volatile unsigned int *tohost = (unsigned int*)0x7FC;
     fail = 0;
 
     uint32_t lhs = 0x23456789;
-    uint32_t rhs = 0x01020304;
+    uint32_t rhs = 0x01020304; 
 
     //puts("# RV32Zkn Instruction Test \n");
-    for (int i=0;i<2;i++){
+    for (int i=0;i<20;i++){
     // puts("lhs: "); puthex(lhs); puts(", rhs:"); puthex(rhs); putchar('\n');
+
 /*
     // aes32dsi1    
     result = test_aes32dsi1(lhs, rhs);
@@ -332,6 +318,7 @@ int main() {
         //error_log(expect,result);
         fail = 1;
     }
+*/
 
     // sha256sum0
     result = test_sha256sum0(lhs);
@@ -430,7 +417,8 @@ int main() {
         //error_log(expect,result);
         fail = 1;
     }
-*/
+
+
     // ror    
     result = test_ror(lhs, rhs);
     expect = gold_ror(lhs, rhs);
@@ -550,7 +538,7 @@ int main() {
         //error_log(expect,result);
         fail = 1;
     }
-/*
+
     // xperm8
    result = test_xperm8(lhs,rhs);
    expect = gold_xperm8(lhs,rhs);
@@ -588,13 +576,13 @@ int main() {
         //error_log(expect,result);
         fail = 1;
     }
-*/
+
     rhs = lfsr(lhs);
     lhs = lfsr(rhs);
     }
 
-    if (fail == 0) *tohost = 0XCAFEBABE;    //Pass the test
-    else           *tohost = 0XDEADBEEF;    //The test fails
+    if (fail == 0) _tohost = 0XCAFEBABE;    //Pass the test
+    else           _tohost = 0XDEADBEEF;    //The test fails
 
     return fail;
 

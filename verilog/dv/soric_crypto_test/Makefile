@@ -28,11 +28,10 @@ CARAVEL_BEHAVIOURAL_MODELS = $(CARAVEL_VERILOG_PATH)/dv/caravel
 ## User Project Pointers
 UPRJ_VERILOG_PATH ?= ../../../verilog
 UPRJ_BEHAVIOURAL_MODELS = ../
-UPRJ_RTL_PATH      = $(UPRJ_VERILOG_PATH)/rtl
-UPRJ_RTL_ICESOC    = $(UPRJ_VERILOG_PATH)/rtl/icesoc
-UPRJ_RTL_IBEXCORE  = $(UPRJ_VERILOG_PATH)/rtl/ibex_core
-UPRJ_RTL_EFPGACORE = $(UPRJ_VERILOG_PATH)/rtl/eFPGA_core
-UPRJ_RTL_EFPGACONF = $(UPRJ_VERILOG_PATH)/rtl/eFPGA_conf
+UPRJ_RTL_PATH  = $(UPRJ_VERILOG_PATH)/rtl
+UPRJ_RTL_SORIC = $(UPRJ_VERILOG_PATH)/rtl/soric
+UPRJ_RTL_CORES = $(UPRJ_VERILOG_PATH)/rtl/cores
+UPRJ_RTL_MEM   = $(UPRJ_VERILOG_PATH)/rtl/mem
 
 ## RISCV GCC 
 GCC_PATH?=/ef/apps/bin
@@ -44,7 +43,7 @@ SIM?=RTL
 
 .SUFFIXES:
 
-PATTERN = wb_test_icesoc
+PATTERN = soric_crypto_test
 
 all:  ${PATTERN:=.vcd}
 
@@ -55,10 +54,9 @@ ifeq ($(SIM),RTL)
 	iverilog $(SIM_DEFINES) -I $(PDK_PATH) \
 	-I $(CARAVEL_BEHAVIOURAL_MODELS) -I $(CARAVEL_RTL_PATH) -I $(UPRJ_BEHAVIOURAL_MODELS) \
 	-I $(UPRJ_RTL_PATH) \
-	-I $(UPRJ_RTL_ICESOC) \
-	-I $(UPRJ_RTL_IBEXCORE) \
-	-I $(UPRJ_RTL_EFPGACORE) \
-	-I $(UPRJ_RTL_EFPGACONF) \
+	-I $(UPRJ_RTL_SORIC) \
+	-I $(UPRJ_RTL_CORES) \
+	-I $(UPRJ_RTL_MEM) \
 	$< -o $@ -g2012
 else  
 	iverilog $(SIM_DEFINES) -DGL -I $(PDK_PATH) \
@@ -103,6 +101,6 @@ endif
 # ---- Clean ----
 
 clean:
-	rm -f *.elf *.hex *.bin *.vvp *.vcd *.log
+	rm -rf *.elf *.hex *.bin *.vvp *.vcd *.log $(ibex_prog) ./ibex_prog/build
 
 .PHONY: clean hex all

@@ -98,6 +98,10 @@ end
 
 //CPU instantiation
 soric_soc   soric_soc_i (
+`ifdef USE_POWER_PINS
+    .vccd1(vccd1),
+    .vssd1(vssd1),    
+`endif
     //core 1
     .debug_req_1_i(debug_req_1),       //todo needs LA in PIN
     .fetch_enable_1_i(fetch_enable_1), //todo needs LA in PIN

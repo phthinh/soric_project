@@ -1,0 +1,41 @@
+[*]
+[*] GTKWave Analyzer v3.3.86 (w)1999-2017 BSI
+[*] Sun Dec 26 00:10:44 2021
+[*]
+[dumpfile] "/home/phthinh/mnt/SCARV/soric_project/verilog/dv/soric_crypto_test/soric_crypto_test.vcd"
+[dumpfile_mtime] "Sun Dec 26 00:10:44 2021"
+[dumpfile_size] 71290880
+[savefile] "/home/phthinh/mnt/SCARV/soric_project/verilog/dv/soric_crypto_test/loadrun_program.gtkw"
+[timestart] 0
+[size] 1299 713
+[pos] -51 -51
+*-32.000000 3733462500 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] soric_crypto_test_tb.
+[treeopen] soric_crypto_test_tb.uut.
+[treeopen] soric_crypto_test_tb.uut.mprj.
+[treeopen] soric_crypto_test_tb.uut.mprj.inst_soric_top.
+[treeopen] soric_crypto_test_tb.uut.mprj.inst_soric_top.soric_soc_i.
+[sst_width] 381
+[signals_width] 182
+[sst_expanded] 1
+[sst_vpaned_height] 192
+@28
+soric_crypto_test_tb.uut.mprj.inst_soric_top.wb_clk_i
+soric_crypto_test_tb.uut.mprj.inst_soric_top.wbs_cyc_i
+soric_crypto_test_tb.uut.mprj.inst_soric_top.wbs_stb_i
+soric_crypto_test_tb.uut.mprj.inst_soric_top.wbs_we_i
+soric_crypto_test_tb.uut.mprj.inst_soric_top.wbs_ack_o
+@22
+soric_crypto_test_tb.uut.mprj.inst_soric_top.wbs_adr_i[31:0]
+soric_crypto_test_tb.uut.mprj.inst_soric_top.wbs_dat_i[31:0]
+@28
+soric_crypto_test_tb.uut.mprj.inst_soric_top.soric_soc_i.fetch_enable_1_i
+soric_crypto_test_tb.uut.mprj.inst_soric_top.soric_soc_i.ibex_core_1.instr_req_o
+soric_crypto_test_tb.uut.mprj.inst_soric_top.soric_soc_i.ibex_core_1.instr_gnt_i
+soric_crypto_test_tb.uut.mprj.inst_soric_top.soric_soc_i.ibex_core_1.instr_rvalid_i
+@23
+soric_crypto_test_tb.uut.mprj.inst_soric_top.soric_soc_i.ibex_core_1.instr_addr_o[31:0]
+@22
+soric_crypto_test_tb.uut.mprj.inst_soric_top.soric_soc_i.ibex_core_1.instr_rdata_i[31:0]
+[pattern_trace] 1
+[pattern_trace] 0

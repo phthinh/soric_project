@@ -72,22 +72,22 @@ void main()
     reg_mprj_io_17 = GPIO_MODE_MGMT_STD_OUTPUT;
     reg_mprj_io_16 = GPIO_MODE_MGMT_STD_OUTPUT;
 
-	// Configure lower 8-IOs as user output
-	// Observe counter value in the testbench
-	reg_mprj_io_0  =  GPIO_MODE_MGMT_STD_INPUT_PULLDOWN;
-	reg_mprj_io_1  =  GPIO_MODE_MGMT_STD_INPUT_PULLDOWN;
-	reg_mprj_io_2  =  GPIO_MODE_MGMT_STD_INPUT_PULLDOWN;
-	reg_mprj_io_3  =  GPIO_MODE_MGMT_STD_INPUT_PULLDOWN;
-	reg_mprj_io_4  =  GPIO_MODE_MGMT_STD_INPUT_PULLDOWN;
-	reg_mprj_io_5  =  GPIO_MODE_MGMT_STD_INPUT_PULLDOWN;
-	reg_mprj_io_6  =  GPIO_MODE_MGMT_STD_INPUT_PULLDOWN;
-	reg_mprj_io_7  =  GPIO_MODE_MGMT_STD_INPUT_PULLDOWN;
+    // Configure lower 8-IOs as user output
+    // Observe counter value in the testbench
+    reg_mprj_io_0  =  GPIO_MODE_MGMT_STD_INPUT_PULLDOWN;
+    reg_mprj_io_1  =  GPIO_MODE_MGMT_STD_INPUT_PULLDOWN;
+    reg_mprj_io_2  =  GPIO_MODE_MGMT_STD_INPUT_PULLDOWN;
+    reg_mprj_io_3  =  GPIO_MODE_MGMT_STD_INPUT_PULLDOWN;
+    reg_mprj_io_4  =  GPIO_MODE_MGMT_STD_INPUT_PULLDOWN;
+    reg_mprj_io_5  =  GPIO_MODE_MGMT_STD_INPUT_PULLDOWN;
+    reg_mprj_io_6  =  GPIO_MODE_MGMT_STD_INPUT_PULLDOWN;
+    reg_mprj_io_7  =  GPIO_MODE_MGMT_STD_INPUT_PULLDOWN;
 
-	reg_mprj_io_8  =  GPIO_MODE_MGMT_STD_INPUT_PULLDOWN;
-	reg_mprj_io_9  =  GPIO_MODE_MGMT_STD_INPUT_PULLDOWN;
-	reg_mprj_io_10 =  GPIO_MODE_USER_STD_OUTPUT;
-	reg_mprj_io_11 =  GPIO_MODE_USER_STD_OUTPUT;
-	reg_mprj_io_12 =  GPIO_MODE_USER_STD_OUTPUT;
+    reg_mprj_io_8  =  GPIO_MODE_MGMT_STD_INPUT_PULLDOWN;
+    reg_mprj_io_9  =  GPIO_MODE_MGMT_STD_INPUT_PULLDOWN;
+    reg_mprj_io_10 =  GPIO_MODE_USER_STD_OUTPUT;
+    reg_mprj_io_11 =  GPIO_MODE_USER_STD_OUTPUT;
+    reg_mprj_io_12 =  GPIO_MODE_USER_STD_OUTPUT;
 
      /* Apply configuration */
     reg_mprj_xfer = 1;
@@ -106,12 +106,12 @@ void main()
     for (i = 0; i< pro_len-32;i++) {
         sram[i+32] = pro_data[i+32];
     }
-    sram[511] =0;
+    sram[2047] =0;
     // Flag run ibex_core
     reg_mprj_datal = 0x00030000;
 
     while (1) {
-       if       (sram[511] == 0xDEADBEEF)  reg_mprj_datal = 0x00040000; // simulation end with failed test
-       else if  (sram[511] == 0xCAFEBABE)  reg_mprj_datal = 0x00050000; // simulation end with successful test
+       if       (sram[2047] == 0xDEADBEEF)  reg_mprj_datal = 0x00040000; // simulation end with failed test
+       else if  (sram[2047] == 0xCAFEBABE)  reg_mprj_datal = 0x00050000; // simulation end with successful test
     }
 }   

@@ -25,4 +25,5 @@ $(DISASM) : $(OUTPUT)
 
 clean:
 	rm -rf $(work_dir)
+
 .PHONY: clean

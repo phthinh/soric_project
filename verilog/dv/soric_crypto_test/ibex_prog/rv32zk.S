@@ -1,7 +1,6 @@
 #include    "zkn.h"
 .text
 
-/*
 .global test_aes32dsi1
 .func   test_aes32dsi1
 test_aes32dsi1:
@@ -101,7 +100,6 @@ test_sha512sig1h:
     sha512sig1h a0, a0, a1
     ret
 .endfunc
-*/
 
 .global test_ror
 .func   test_ror
@@ -187,7 +185,7 @@ test_unzip:
     unzip a0, a0
     ret
 .endfunc
-/*
+
 .global test_xperm8
 .func   test_xperm8
 test_xperm8:
@@ -215,4 +213,4 @@ test_clmulh:
     clmulh a0, a0,a1
     ret
 .endfunc
-*/
+

@@ -21,7 +21,7 @@
 `include "caravel_netlists.v"
 `include "spiflash.v"
 
-module wb_test_icesoc_tb;
+module soric_crypto_test_tb;
 	reg clock;
 	reg RSTB;
 	reg CSB;
@@ -48,11 +48,11 @@ module wb_test_icesoc_tb;
 	end
 
 	initial begin
-                $dumpfile("wb_test_icesoc.vcd");
-                $dumpvars(0, wb_test_icesoc_tb.uut.mprj);
+                $dumpfile("soric_crypto_test.vcd");
+                $dumpvars(0, soric_crypto_test_tb.uut.mprj);
 
 		// Repeat cycles of 1000 clock edges as needed to complete testbench
-                repeat (700) begin
+                repeat (1700) begin
 			repeat (1000) @(posedge clock);
                         $display("+1000 cycles");
 		end
@@ -160,7 +160,7 @@ module wb_test_icesoc_tb;
 	);
 
 	spiflash #(
-                .FILENAME("wb_test_icesoc.hex")
+                .FILENAME("soric_crypto_test.hex")
 	) spiflash (
 		.csb(flash_csb),
 		.clk(flash_clk),
