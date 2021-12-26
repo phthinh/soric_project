@@ -48,8 +48,8 @@ module soric_top (
     input   user_clock2
 );
 
-assign io_oeb[ 7:0] =  8'b00000000; //CLK and configuration
-assign io_oeb[12:8] =  5'b11100; //CPU
+assign io_oeb[ 7:0] =  8'b11111111; //CLK and configuration
+assign io_oeb[12:8] =  5'b00011; //CPU
 
 wire [1:0]  clk_sel = {io_in[2],io_in[1]};
 wire external_clock = io_in[0];
