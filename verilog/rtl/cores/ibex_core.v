@@ -1,3 +1,10 @@
+// SPDX-FileCopyrightText: 2021 Thinh Pham
+//
+// Copyright lowRISC contributors.
+//
+// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// SPDX-License-Identifier: Apache-2.0
+
 module ibex_core (
 	clk_i,
 	rst_ni,

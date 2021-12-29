@@ -18,7 +18,14 @@
 
 `default_nettype none
 
-module soric_top (
+module soric_top #(
+    parameter NCORE = 2,  
+    parameter D_ADDR_W = 14, // data bus address width
+    parameter I_ADDR_W = 13, // inst bus address width
+
+    parameter NSRAM = 4,
+    parameter SRAM_ADDR_W =11 // 2kB blocks
+)  (
 `ifdef USE_POWER_PINS
     inout vccd1,	// User area 1 1.8V supply
     inout vssd1,	// User area 1 digital ground
@@ -51,10 +58,11 @@ module soric_top (
 assign io_oeb[ 7:0] =  8'b11111111; //CLK and configuration
 assign io_oeb[12:8] =  5'b00011; //CPU
 
-wire [1:0]  clk_sel = {io_in[2],io_in[1]};
-wire external_clock = io_in[0];
+//wire [1:0]  clk_sel = {io_in[2],io_in[1]};
+//wire external_clock = io_in[0];
 // This clock can go to the CPU (connects to the fabric LUT output flops
-wire            CLK = clk_sel[0] ? (clk_sel[1] ? wb_clk_i : user_clock2) : external_clock;
+//wire            CLK = clk_sel[0] ? (clk_sel[1] ? wb_clk_i : user_clock2) : external_clock;
+//assign CLK=wb_clk_i;
 
 // To CPU
 wire [36-1:0] W_OPA; //from RISCV
@@ -82,46 +90,70 @@ reg debug_req_2;
 reg fetch_enable_2;
 
 always @(*) begin
-	if(io_in[3] == 1'b1 )begin
+/*	if(io_in[3] == 1'b1 )begin
 		debug_req_1 =  la_data_in[0];
 		fetch_enable_1 = la_data_in[1];
 		debug_req_2 = la_data_in[2];
 		fetch_enable_2 = la_data_in[3];
 	end 
-	else begin
+	else begin*/
 		debug_req_1 = io_in[4];
 		fetch_enable_1 = io_in[5];
 		debug_req_2 = io_in[6];
 		fetch_enable_2 = io_in[7];
-	end
+//	end
 end 
 
-//CPU instantiation
-soric_soc   soric_soc_i (
+   localparam MASTERS          = NCORE + 2;
+   localparam SLAVES           = NSRAM + NPERI;    //3
+   localparam SLAVE_ADDR_WIDTH = 11;     // SRAM blocks of 2 kB
+   localparam ADDR_WIDTH       = 14;      //12
+   localparam ROMASTER_ADDR_WIDTH=13;   //11
+
+    wire clk_i = wb_clk_i;      //main clock 20mhz
+    wire reset = wb_rst_i;
+    wire reset_ni = ~reset;
+
+// Data bus
+    wire [ NCORE                - 1:0]  master_data_req_to_inter;
+    wire [(NCORE * D_ADDR_W)    - 1:0]  master_data_addr_to_inter;
+    wire [ NCORE                - 1:0]  master_data_we_to_inter;
+    wire [(NCORE *  4)          - 1:0]  master_data_be_to_inter;
+    wire [(NCORE * 32)          - 1:0]  master_data_wdata_to_inter;
+    wire [(NCORE * 32)          - 1:0]  master_data_rdata_to_inter;
+    wire [ NCORE                - 1:0]  master_data_rvalid_to_inter;
+    wire [ NCORE                - 1:0]  master_data_gnt_to_inter;
+
+    wire [ NSRAM                - 1:0]  slave_data_req_to_inter;
+    wire [(NSRAM * SRAM_ADDR_W) - 1:0]  slave_data_addr_to_inter;
+    wire [ NSRAM                - 1:0]  slave_data_we_to_inter;
+    wire [(NSRAM *  4)          - 1:0]  slave_data_be_to_inter;
+    wire [(NSRAM * 32)          - 1:0]  slave_data_wdata_to_inter;
+    wire [(NSRAM * 32)          - 1:0]  slave_data_rdata_to_inter;
+
+// Intructions bus
+    wire [ NCORE                - 1:0] master_data_req_to_inter_ro;
+    wire [(NCORE * I_ADDR_W)    - 1:0] master_data_addr_to_inter_ro;
+    wire [(NCORE * 32)          - 1:0] master_data_rdata_to_inter_ro;
+    wire [ NCORE                - 1:0] master_data_rvalid_to_inter_ro;
+    wire [ NCORE                - 1:0] master_data_gnt_to_inter_ro;
+
+    wire [ NSRAM                - 1:0] slave_data_req_to_inter_ro;
+    wire [(NSRAM * SRAM_ADDR_W) - 1:0] slave_data_addr_to_inter_ro;
+    wire [(NSRAM * 32)          - 1:0] slave_data_rdata_to_inter_ro;
+
+soric_soc #(
+    .NCORE(NCORE),
+    .NSRAM(NSRAM),
+    .SRAM_ADDR_W(SRAM_ADDR_W)
+) soric_soc_i (
 `ifdef USE_POWER_PINS
     .vccd1(vccd1),
     .vssd1(vssd1),    
 `endif
-    //core 1
-    .debug_req_1_i(debug_req_1),       //todo needs LA in PIN
-    .fetch_enable_1_i(fetch_enable_1), //todo needs LA in PIN
-    .irq_ack_1_o(W_OPA[0]),
-    .irq_1_i(W_RES1[33]),
-    .irq_id_1_i({W_RES1[32],W_RES0[35:32]}),
-    .irq_id_1_o(W_OPA[2:1]),
-    .eFPGA_operand_a_1_o(eFPGA_operand_a_1_o),
-    .eFPGA_operand_b_1_o(W_OPB[31:0]),
-    .eFPGA_result_a_1_i(W_RES0[31:0]),
-    .eFPGA_result_b_1_i(W_RES1[31:0]),
-    .eFPGA_result_c_1_i(W_RES2[31:0]),
-    .eFPGA_write_strobe_1_o(SelfWriteStrobe),//todo write strobe connection
-    .eFPGA_fpga_done_1_i(W_RES1[34]), 
-    .eFPGA_delay_1_o(W_OPB[33:32]),
-    .eFPGA_en_1_o(W_OPA[35]),
-    .eFPGA_operator_1_o(W_OPB[35:34]),
 
     //Wishbone to carvel
-    .wb_clk_i(CLK), 
+    .wb_clk_i(clk_i), 
     .wb_rst_i(wb_rst_i),
     .wbs_stb_i(wbs_stb_i),
     .wbs_cyc_i(wbs_cyc_i),
@@ -132,23 +164,31 @@ soric_soc   soric_soc_i (
     .wbs_ack_o(wbs_ack_o),
     .wbs_dat_o(wbs_dat_o),
 
-    //core 2
-    .debug_req_2_i(debug_req_2),       //todo needs LA in PIN
-    .fetch_enable_2_i(fetch_enable_2), //todo needs LA in PIN
-    .irq_ack_2_o(E_OPA[0]), 
-    .irq_2_i(E_RES1[33]),
-    .irq_id_2_i({E_RES1[32],E_RES0[35:32]}),
-    .irq_id_2_o(E_OPA[2:1]),
-    .eFPGA_operand_a_2_o(E_OPA[34:3]),
-    .eFPGA_operand_b_2_o(E_OPB[31:0]),
-    .eFPGA_result_a_2_i(E_RES0[31:0]),
-    .eFPGA_result_b_2_i(E_RES1[31:0]),
-    .eFPGA_result_c_2_i(E_RES2[31:0]),
-    .eFPGA_write_strobe_2_o(io_out[16]),
-    .eFPGA_fpga_done_2_i(E_RES1[34]),
-    .eFPGA_delay_2_o(E_OPB[33:32]),
-    .eFPGA_en_2_o(E_OPA[35]),
-    .eFPGA_operator_2_o(E_OPB[35:34]),
+    //instrucion bus
+    .master_data_req_to_inter_ro(master_data_req_to_inter_ro),
+    .master_data_addr_to_inter_ro(master_data_addr_to_inter_ro),
+    .master_data_rdata_to_inter_ro(master_data_rdata_to_inter_ro),
+    .master_data_rvalid_to_inter_ro(master_data_rvalid_to_inter_ro),
+    .master_data_gnt_to_inter_ro(master_data_gnt_to_inter_ro),
+    .slave_data_req_to_inter_ro(slave_data_req_to_inter_ro),
+    .slave_data_addr_to_inter_ro(slave_data_addr_to_inter_ro),
+    .slave_data_rdata_to_inter_ro(slave_data_rdata_to_inter_ro),
+
+    //data bus
+    .master_data_req_to_inter_i(master_data_req_to_inter),
+    .master_data_addr_to_inter_i(master_data_addr_to_inter),
+    .master_data_we_to_inter_i(master_data_we_to_inter),
+    .master_data_be_to_inter_i(master_data_be_to_inter),
+    .master_data_wdata_to_inter_i(master_data_wdata_to_inter),
+    .master_data_rdata_to_inter_o(master_data_rdata_to_inter),
+    .master_data_rvalid_to_inter_o(master_data_rvalid_to_inter),
+    .master_data_gnt_to_inter_o(master_data_gnt_to_inter),
+    .slave_data_req_to_inter_o(slave_data_req_to_inter),
+    .slave_data_addr_to_inter_o(slave_data_addr_to_inter),
+    .slave_data_we_to_inter_o(slave_data_we_to_inter),
+    .slave_data_be_to_inter_o(slave_data_be_to_inter),
+    .slave_data_wdata_to_inter_o(slave_data_wdata_to_inter),
+    .slave_data_rdata_to_inter_i(slave_data_rdata_to_inter),
 
     //uart pins to USER area off chip IO
     .rxd_uart(io_in[8]),
@@ -157,6 +197,214 @@ soric_soc   soric_soc_i (
     .txd_uart_to_mem(io_out[11]),
     .error_uart_to_mem(io_out[12])
 );
+
+//CPU instantiation
+ibex_top #(
+    .PMPEnable        (1'b0),
+    .RV32E            (1'b0),    //None
+    .RV32M            (2),       //RV32MFast
+    .RV32B            (0),       //RV32BNone
+    .RV32Zk           (2),       //RV32Zkn
+    .DmHaltAddr       (32'h00000000),
+    .DmExceptionAddr  (32'h00000000)
+) ibex_core_1 (
+`ifdef USE_POWER_PINS
+    .vccd1(vccd1),
+    .vssd1(vssd1),    
+`endif
+    .clk_i (clk_i),
+    .rst_ni(reset_ni),
+
+    .test_en_i(1'b1),
+    .ram_cfg_i(1'b0),  // not in use
+    .hart_id_i  (32'd0),
+    .boot_addr_i(32'h00000000),
+
+    .instr_req_o(       master_data_req_to_inter_ro[0]),
+    .instr_gnt_i(       master_data_gnt_to_inter_ro[0]),
+    .instr_rvalid_i(    master_data_rvalid_to_inter_ro[0]),
+    .instr_addr_o(      master_data_addr_to_inter_ro[  ROMASTER_ADDR_WIDTH - 1 : 0]),
+    .instr_rdata_i(     master_data_rdata_to_inter_ro[ 31: 0 ]),
+    .instr_rdata_intg_i(7'd0),
+    .instr_err_i(       1'b0),
+
+    .data_req_o(        master_data_req_to_inter[0]),
+    .data_gnt_i(        master_data_gnt_to_inter[0]),
+    .data_rvalid_i(     master_data_rvalid_to_inter[0]),
+    .data_we_o(         master_data_we_to_inter[0]),
+    .data_be_o(         master_data_be_to_inter[   (32 / 8)   - 1 : 0]),
+    .data_addr_o(       master_data_addr_to_inter[ ADDR_WIDTH - 1 : 0]),
+    .data_wdata_o(      master_data_wdata_to_inter[31: 0]),
+    .data_wdata_intg_o(),
+    .data_rdata_i(      master_data_rdata_to_inter[31: 0]),
+    .data_rdata_intg_i(7'd0),
+    .data_err_i(       1'b0),
+
+    .debug_req_i(debug_req_1),       //todo needs LA in PIN
+    .fetch_enable_i(fetch_enable_1), //todo needs LA in PIN
+    .irq_external_i(W_RES1[33]),
+
+    .eFPGA_operand_a_o(eFPGA_operand_a_1_o),
+    .eFPGA_operand_b_o(W_OPB[31:0]),
+    .eFPGA_result_a_i(W_RES0[31:0]),
+    .eFPGA_result_b_i(W_RES1[31:0]),
+    .eFPGA_result_c_i(W_RES2[31:0]),
+    .eFPGA_write_strobe_o(SelfWriteStrobe),//todo write strobe connection
+    .eFPGA_fpga_done_i(W_RES1[34]), 
+    .eFPGA_delay_o(W_OPB[33:32]),
+    .eFPGA_en_o(W_OPA[35]),
+    .eFPGA_operator_o(W_OPB[35:34]),
+
+    .crash_dump_o(),
+    .alert_minor_o         (),
+    .alert_major_o         (),
+    .core_sleep_o          (),
+
+    // Interrupt inputs
+    .irq_software_i( 1'b0  ),
+    .irq_timer_i(    1'b0  ),
+    .irq_fast_i(    15'd0  ),
+    .irq_nm_i(       1'b0  ),      // non-maskeable interrupt
+
+    .scan_rst_ni(    1'b1  )    //unactivated
+);
+
+wire [ADDR_WIDTH-1:0] flexbex_addr_o;
+//need to set the debug vector
+flexbex_ibex_core ibex_core_2 (
+`ifdef USE_POWER_PINS
+    .vccd1(vccd1),
+    .vssd1(vssd1),    
+`endif
+    .clk_i(clk_i),
+    .boot_addr_i(32'h0),
+    .cluster_id_i(6'd0),
+    .core_id_i(4'd1),
+
+    .data_addr_o(   flexbex_addr_o),
+    .data_be_o(     master_data_be_to_inter[ (  (2 * (32 / 8)))  - 1 : 1 * (32 / 8)]),
+    .data_err_i(    1'b0),
+    .data_gnt_i(    master_data_gnt_to_inter[1]),
+    .data_rdata_i(  master_data_rdata_to_inter[ (2 *  32)        - 1 : 1 *  32]),
+    .data_req_o(    master_data_req_to_inter[1]),
+    .data_rvalid_i( master_data_rvalid_to_inter[1]),
+    .data_wdata_o(  master_data_wdata_to_inter[ (2 *  32)        - 1 : 1 *  32]),
+    .data_we_o(     master_data_we_to_inter[1]),
+
+    .instr_addr_o(  master_data_addr_to_inter_ro[ (2 * ROMASTER_ADDR_WIDTH) - 1 : ROMASTER_ADDR_WIDTH]),
+    .instr_gnt_i(   master_data_gnt_to_inter_ro[1]),
+    .instr_rdata_i( master_data_rdata_to_inter_ro[(2 * 32)       - 1 : 1 * 32 ]),
+    .instr_req_o(   master_data_req_to_inter_ro[1]),
+    .instr_rvalid_i(master_data_rvalid_to_inter_ro[1]),
+
+    .debug_req_i(         debug_req_2),
+    .fetch_enable_i(      fetch_enable_2),
+    .ext_perf_counters_i( 1'b0 ),
+
+    .irq_ack_o(E_OPA[0]), 
+    .irq_i(E_RES1[33]),
+    .irq_id_i({E_RES1[32],E_RES0[35:32]}),
+    .irq_id_o(E_OPA[2:1]),
+    .eFPGA_operand_a_o(E_OPA[34:3]),
+    .eFPGA_operand_b_o(E_OPB[31:0]),
+    .eFPGA_result_a_i(E_RES0[31:0]),
+    .eFPGA_result_b_i(E_RES1[31:0]),
+    .eFPGA_result_c_i(E_RES2[31:0]),
+    .eFPGA_write_strobe_o(io_out[16]),
+    .eFPGA_fpga_done_i(E_RES1[34]),
+    .eFPGA_delay_o(E_OPB[33:32]),
+    .eFPGA_en_o(E_OPA[35]),
+    .eFPGA_operator_o(E_OPB[35:34]),
+
+    .rst_ni(        reset_ni),
+    .test_en_i(     1'b1    )
+);
+
+assign master_data_addr_to_inter[  (2 * ADDR_WIDTH) - 1 : 1 * ADDR_WIDTH]= {flexbex_addr_o[ADDR_WIDTH-1:2], 2'b00};
+
+
+sky130_sram_2kbyte_1rw1r_32x512_8 sram_1_i(
+//sram sram_1_i(
+`ifdef USE_POWER_PINS
+    .vccd1(vccd1),
+    .vssd1(vssd1),    
+`endif
+// Port 0: RW
+    .clk0(clk_i),
+    .csb0(!slave_data_req_to_inter[0]),
+    .web0(!slave_data_we_to_inter[0]),
+    .wmask0(slave_data_be_to_inter[( ((32 / 8))) - 1 :0]),
+    .addr0(slave_data_addr_to_inter[ (SLAVE_ADDR_WIDTH) - 1 : 2]),
+    .din0(slave_data_wdata_to_inter[  31 : 0 ]),
+    .dout0(slave_data_rdata_to_inter[ 31 : 0 ]),
+// Port 1: R
+    .clk1(clk_i),
+    .csb1(!slave_data_req_to_inter_ro[0]),
+    .addr1(slave_data_addr_to_inter_ro[(SLAVE_ADDR_WIDTH) - 1 : 2]),
+    .dout1(slave_data_rdata_to_inter_ro[31 : 0])
+  );
+
+sky130_sram_2kbyte_1rw1r_32x512_8 sram_2_i(
+//sram sram_2_i(
+`ifdef USE_POWER_PINS
+    .vccd1(vccd1),
+    .vssd1(vssd1),    
+`endif
+// Port 0: RW
+    .clk0(clk_i),
+    .csb0(!slave_data_req_to_inter[1]),
+    .web0(!slave_data_we_to_inter[ 1]),
+    .wmask0(slave_data_be_to_inter[(    (2 * (32 / 8))) - 1 -: ((32 / 8))]),
+    .addr0(slave_data_addr_to_inter[    (2 * SLAVE_ADDR_WIDTH) - 1 -: (SLAVE_ADDR_WIDTH  - 2)]),
+    .din0(slave_data_wdata_to_inter[    (2 * 32) - 1 -: 32 ]),
+    .dout0(slave_data_rdata_to_inter[   (2 * 32) - 1 -: 32 ]),
+// Port 1: R
+    .clk1(clk_i),
+    .csb1(!slave_data_req_to_inter_ro[1]),
+    .addr1(slave_data_addr_to_inter_ro[ (2 * SLAVE_ADDR_WIDTH) - 1 -: (SLAVE_ADDR_WIDTH  - 2)]),
+    .dout1(slave_data_rdata_to_inter_ro[(2 * 32) - 1 -: 32 ])
+  );
+sky130_sram_2kbyte_1rw1r_32x512_8 sram_3_i(
+//sram sram_3_i(
+`ifdef USE_POWER_PINS
+    .vccd1(vccd1),
+    .vssd1(vssd1),    
+`endif
+// Port 0: RW
+    .clk0(clk_i),
+    .csb0(!slave_data_req_to_inter[2]),
+    .web0(!slave_data_we_to_inter[ 2]),
+    .wmask0(slave_data_be_to_inter[(  (3 * (32/8))) - 1 -: ((32/8))]),
+    .addr0(slave_data_addr_to_inter[  (3 * SLAVE_ADDR_WIDTH) - 1 -: (SLAVE_ADDR_WIDTH  - 2)]),
+    .din0(slave_data_wdata_to_inter[  (3 * 32) - 1 -: 32 ]),
+    .dout0(slave_data_rdata_to_inter[ (3 * 32) - 1 -: 32 ]),
+// Port 1: R
+    .clk1(clk_i),
+    .csb1(!slave_data_req_to_inter_ro[2]),
+    .addr1(slave_data_addr_to_inter_ro[ (3 * SLAVE_ADDR_WIDTH) - 1 -: (SLAVE_ADDR_WIDTH  - 2)]),
+    .dout1(slave_data_rdata_to_inter_ro[(3 * 32) - 1 -: 32 ])
+  );
+
+sky130_sram_2kbyte_1rw1r_32x512_8 sram_4_i(
+//sram sram_2_i(
+`ifdef USE_POWER_PINS
+    .vccd1(vccd1),
+    .vssd1(vssd1),    
+`endif
+// Port 0: RW
+    .clk0(clk_i),
+    .csb0(!slave_data_req_to_inter[3]),
+    .web0(!slave_data_we_to_inter[ 3]),
+    .wmask0(slave_data_be_to_inter[( (4 * (32 / 8))) - 1 -: ((32 / 8))]),
+    .addr0(slave_data_addr_to_inter[ (4 * SLAVE_ADDR_WIDTH) - 1 -: (SLAVE_ADDR_WIDTH  - 2)]),
+    .din0(slave_data_wdata_to_inter[ (4 * 32) - 1 -: 32 ]),
+    .dout0(slave_data_rdata_to_inter[(4 * 32) - 1 -: 32 ]),
+// Port 1: R
+    .clk1(clk_i),
+    .csb1(!slave_data_req_to_inter_ro[3]),
+    .addr1(slave_data_addr_to_inter_ro[ (4 * SLAVE_ADDR_WIDTH) - 1 -: (SLAVE_ADDR_WIDTH  - 2)]),
+    .dout1(slave_data_rdata_to_inter_ro[(4 * 32) - 1 -: 32 ])
+  );
 
 assign la_data_out[2:0] = 3'b000;
 assign io_out[6]        = 1'b0;

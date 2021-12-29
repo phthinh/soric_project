@@ -1,5 +1,7 @@
 /*
- * SPDX-FileCopyrightText: 2020 Efabless Corporation
+ * SPDX-FileCopyrightText: 
+ * 2021 Thinh Pham
+ * 2020 Efabless Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
