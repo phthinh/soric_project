@@ -22,7 +22,7 @@ module uart (
 	output wire is_receiving;
 	output wire is_transmitting;
 	output wire recv_error;
-	parameter CLOCK_DIVIDE = 2;
+	parameter CLOCK_DIVIDE = 260;
 	parameter RX_IDLE = 0;
 	parameter RX_CHECK_START = 1;
 	parameter RX_READ_BITS = 2;
