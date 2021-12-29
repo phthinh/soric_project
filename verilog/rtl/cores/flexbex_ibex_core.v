@@ -1,4 +1,8 @@
 module flexbex_ibex_core (
+`ifdef USE_POWER_PINS
+	vccd1,
+	vssd1,
+`endif
 	clk_i,
 	rst_ni,
 	test_en_i,
@@ -42,6 +46,10 @@ module flexbex_ibex_core (
 	parameter [0:0] RV32M = 1;
 	parameter DM_HALT_ADDRESS = 32'h000000d8;
 	parameter DM_EXCEPTION_ADDRESS = 32'h000000f4;
+`ifdef USE_POWER_PINS
+	input vccd1;
+	input vssd1;
+`endif
 	input wire clk_i;
 	input wire rst_ni;
 	input wire test_en_i;
@@ -161,6 +169,7 @@ module flexbex_ibex_core (
 	wire perf_tbranch;
 	wire clk;
 	wire clock_en;
+/*
 	assign core_busy_int = (if_busy | ctrl_busy) | lsu_busy;
 	always @(posedge clk_i or negedge rst_ni)
 		if (!rst_ni)
@@ -175,6 +184,8 @@ module flexbex_ibex_core (
 		.test_en_i(test_en_i),
 		.clk_o(clk)
 	);
+*/
+        assign clk = clk_i;
 	flexbex_ibex_if_stage #(
 		.DM_HALT_ADDRESS(DM_HALT_ADDRESS),
 		.DM_EXCEPTION_ADDRESS(DM_EXCEPTION_ADDRESS)

@@ -53,31 +53,31 @@ module inter #(
      //   wire arb_active;
         genvar i;
         //genvar j;
-        logic [(SLAVES * MASTERS) - 1:0] arbiter_request;
+        reg [(SLAVES * MASTERS) - 1:0] arbiter_request;
         wire [(SLAVES * MASTERS) - 1:0] arbiter_grant;
        //parameter [$clog2(SLAVES):0] PARAM_SLAVE_ADDR = 2'b10;
 
-                for (i = 0; i < SLAVES; i = i + 1)
+            for (i = 0; i < SLAVES; i = i + 1) begin 
                 always @(*)
-                begin
+                begin : gen_arbiter_request
                         integer j;
                         for (j = 0; j < MASTERS; j = j + 1)
                                arbiter_request[(i * MASTERS) + j] = (( master_data_addr_i[ j * MASTER_ADDR_WIDTH +: MASTER_ADDR_WIDTH ] & MASTER_ADDR_MASK[ i * MASTER_ADDR_WIDTH +: MASTER_ADDR_WIDTH ]) ==  MASTER_ADDR_MATCH[ i * MASTER_ADDR_WIDTH +: MASTER_ADDR_WIDTH ] )? master_data_req_i[j] : 0;
                 end
-                for (i = 0; i < MASTERS; i = i + 1)
-                        begin : sv2v_autoblock_1
-                           always @(*)begin :always_block
-                                reg local_arb_grant;
-                                local_arb_grant = 1'b0;
-                                begin : sv2v_autoblock_2
+            end
+            for (i = 0; i < MASTERS; i = i + 1) begin : sv2v_autoblock_1
+                always @(*)begin :always_block
+                    reg local_arb_grant;
+                    local_arb_grant = 1'b0;
+                    begin : sv2v_autoblock_2
      //                                   reg signed [31:0] j;
                                         integer j;
                                         for (j = 0; j < SLAVES; j = j + 1)
                                                 local_arb_grant = local_arb_grant | arbiter_grant[(j * MASTERS) + i];
                                 end
                                 arb_to_master_grant[i] = local_arb_grant;
-                           end
-                        end
+                    end
+            end
 
 
         generate

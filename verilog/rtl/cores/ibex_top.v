@@ -1,4 +1,9 @@
 module ibex_top (
+
+`ifdef USE_POWER_PINS
+	vccd1,
+	vssd1,
+`endif
 	clk_i,
 	rst_ni,
 	test_en_i,
@@ -71,6 +76,12 @@ module ibex_top (
 	parameter [159:0] RndCnstLfsrPerm = ibex_pkg_RndCnstLfsrPermDefault;
 	parameter [31:0] DmHaltAddr = 32'h1a110800;
 	parameter [31:0] DmExceptionAddr = 32'h1a110808;
+
+`ifdef USE_POWER_PINS
+	input vccd1;
+	input vssd1;
+`endif
+
 	input wire clk_i;
 	input wire rst_ni;
 	input wire test_en_i;
@@ -164,19 +175,21 @@ module ibex_top (
 	wire core_alert_minor;
 	wire lockstep_alert_major;
 	wire lockstep_alert_minor;
-	always @(posedge clk_i or negedge rst_ni)
+/*	always @(posedge clk_i or negedge rst_ni)
 		if (!rst_ni)
 			core_busy_q <= 1'b0;
 		else
 			core_busy_q <= core_busy_d;
 	assign clock_en = ((core_busy_q | debug_req_i) | irq_pending) | irq_nm_i;
-	assign core_sleep_o = ~clock_en;
 	prim_clock_gating core_clock_gate_i(
 		.clk_i(clk_i),
 		.en_i(clock_en),
 		.test_en_i(test_en_i),
 		.clk_o(clk)
 	);
+*/
+	assign core_sleep_o = 1'b0;
+        assign clk = clk_i;
 	ibex_core #(
 		.PMPEnable(PMPEnable),
 		.PMPGranularity(PMPGranularity),
