@@ -54,7 +54,7 @@ set ::env(FP_PDN_MACRO_HOOKS) "\
 
 ### Macro Placement
 set ::env(MACRO_PLACEMENT_CFG) $script_dir/macro.cfg
-
+set ::env(SYNTH_READ_BLACKBOX_LIB) 1
 ### Black-box verilog and views
 set ::env(VERILOG_FILES_BLACKBOX) "\
         $script_dir/../../verilog/rtl/soric/peripheral.v \
