@@ -1,0 +1,861 @@
+VERSION 5.7 ;
+  NOWIREEXTENSIONATPIN ON ;
+  DIVIDERCHAR "/" ;
+  BUSBITCHARS "[]" ;
+MACRO peripheral
+  CLASS BLOCK ;
+  FOREIGN peripheral ;
+  ORIGIN 0.000 0.000 ;
+  SIZE 136.975 BY 147.695 ;
+  PIN clk
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 3.310 0.000 3.590 4.000 ;
+    END
+  END clk
+  PIN data_req_i
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 9.750 0.000 10.030 4.000 ;
+    END
+  END data_req_i
+  PIN reset
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 16.190 0.000 16.470 4.000 ;
+    END
+  END reset
+  PIN rxd_uart
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 0.000 4.120 4.000 4.720 ;
+    END
+  END rxd_uart
+  PIN slave_data_addr_i[0]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 132.975 3.440 136.975 4.040 ;
+    END
+  END slave_data_addr_i[0]
+  PIN slave_data_addr_i[1]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 132.975 17.040 136.975 17.640 ;
+    END
+  END slave_data_addr_i[1]
+  PIN slave_data_addr_i[2]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 29.070 0.000 29.350 4.000 ;
+    END
+  END slave_data_addr_i[2]
+  PIN slave_data_addr_i[3]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 132.975 38.120 136.975 38.720 ;
+    END
+  END slave_data_addr_i[3]
+  PIN slave_data_addr_i[4]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 46.090 143.695 46.370 147.695 ;
+    END
+  END slave_data_addr_i[4]
+  PIN slave_data_addr_i[5]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 56.210 143.695 56.490 147.695 ;
+    END
+  END slave_data_addr_i[5]
+  PIN slave_data_addr_i[6]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 132.975 52.400 136.975 53.000 ;
+    END
+  END slave_data_addr_i[6]
+  PIN slave_data_addr_i[7]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 61.730 0.000 62.010 4.000 ;
+    END
+  END slave_data_addr_i[7]
+  PIN slave_data_addr_i[8]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 68.170 0.000 68.450 4.000 ;
+    END
+  END slave_data_addr_i[8]
+  PIN slave_data_addr_i[9]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 0.000 49.680 4.000 50.280 ;
+    END
+  END slave_data_addr_i[9]
+  PIN slave_data_be_i[0]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 132.975 10.240 136.975 10.840 ;
+    END
+  END slave_data_be_i[0]
+  PIN slave_data_be_i[1]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 0.000 12.960 4.000 13.560 ;
+    END
+  END slave_data_be_i[1]
+  PIN slave_data_be_i[2]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 132.975 24.520 136.975 25.120 ;
+    END
+  END slave_data_be_i[2]
+  PIN slave_data_be_i[3]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 36.430 143.695 36.710 147.695 ;
+    END
+  END slave_data_be_i[3]
+  PIN slave_data_gnt_o
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 2.390 143.695 2.670 147.695 ;
+    END
+  END slave_data_gnt_o
+  PIN slave_data_rdata_o[0]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 22.630 0.000 22.910 4.000 ;
+    END
+  END slave_data_rdata_o[0]
+  PIN slave_data_rdata_o[10]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 132.975 73.480 136.975 74.080 ;
+    END
+  END slave_data_rdata_o[10]
+  PIN slave_data_rdata_o[11]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 70.930 143.695 71.210 147.695 ;
+    END
+  END slave_data_rdata_o[11]
+  PIN slave_data_rdata_o[12]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 75.530 143.695 75.810 147.695 ;
+    END
+  END slave_data_rdata_o[12]
+  PIN slave_data_rdata_o[13]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 132.975 87.760 136.975 88.360 ;
+    END
+  END slave_data_rdata_o[13]
+  PIN slave_data_rdata_o[14]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 0.000 68.040 4.000 68.640 ;
+    END
+  END slave_data_rdata_o[14]
+  PIN slave_data_rdata_o[15]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 90.250 143.695 90.530 147.695 ;
+    END
+  END slave_data_rdata_o[15]
+  PIN slave_data_rdata_o[16]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 132.975 94.560 136.975 95.160 ;
+    END
+  END slave_data_rdata_o[16]
+  PIN slave_data_rdata_o[17]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 99.910 143.695 100.190 147.695 ;
+    END
+  END slave_data_rdata_o[17]
+  PIN slave_data_rdata_o[18]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 0.000 87.080 4.000 87.680 ;
+    END
+  END slave_data_rdata_o[18]
+  PIN slave_data_rdata_o[19]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 94.390 0.000 94.670 4.000 ;
+    END
+  END slave_data_rdata_o[19]
+  PIN slave_data_rdata_o[1]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 26.770 143.695 27.050 147.695 ;
+    END
+  END slave_data_rdata_o[1]
+  PIN slave_data_rdata_o[20]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 110.030 143.695 110.310 147.695 ;
+    END
+  END slave_data_rdata_o[20]
+  PIN slave_data_rdata_o[21]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 132.975 108.840 136.975 109.440 ;
+    END
+  END slave_data_rdata_o[21]
+  PIN slave_data_rdata_o[22]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 132.975 115.640 136.975 116.240 ;
+    END
+  END slave_data_rdata_o[22]
+  PIN slave_data_rdata_o[23]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 100.830 0.000 101.110 4.000 ;
+    END
+  END slave_data_rdata_o[23]
+  PIN slave_data_rdata_o[24]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 107.730 0.000 108.010 4.000 ;
+    END
+  END slave_data_rdata_o[24]
+  PIN slave_data_rdata_o[25]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 114.170 0.000 114.450 4.000 ;
+    END
+  END slave_data_rdata_o[25]
+  PIN slave_data_rdata_o[26]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 119.690 143.695 119.970 147.695 ;
+    END
+  END slave_data_rdata_o[26]
+  PIN slave_data_rdata_o[27]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 124.750 143.695 125.030 147.695 ;
+    END
+  END slave_data_rdata_o[27]
+  PIN slave_data_rdata_o[28]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 132.975 143.520 136.975 144.120 ;
+    END
+  END slave_data_rdata_o[28]
+  PIN slave_data_rdata_o[29]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 134.410 143.695 134.690 147.695 ;
+    END
+  END slave_data_rdata_o[29]
+  PIN slave_data_rdata_o[2]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 35.510 0.000 35.790 4.000 ;
+    END
+  END slave_data_rdata_o[2]
+  PIN slave_data_rdata_o[30]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 120.610 0.000 120.890 4.000 ;
+    END
+  END slave_data_rdata_o[30]
+  PIN slave_data_rdata_o[31]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 133.490 0.000 133.770 4.000 ;
+    END
+  END slave_data_rdata_o[31]
+  PIN slave_data_rdata_o[3]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 41.490 143.695 41.770 147.695 ;
+    END
+  END slave_data_rdata_o[3]
+  PIN slave_data_rdata_o[4]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 51.150 143.695 51.430 147.695 ;
+    END
+  END slave_data_rdata_o[4]
+  PIN slave_data_rdata_o[5]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 132.975 45.600 136.975 46.200 ;
+    END
+  END slave_data_rdata_o[5]
+  PIN slave_data_rdata_o[6]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 0.000 31.320 4.000 31.920 ;
+    END
+  END slave_data_rdata_o[6]
+  PIN slave_data_rdata_o[7]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 0.000 40.840 4.000 41.440 ;
+    END
+  END slave_data_rdata_o[7]
+  PIN slave_data_rdata_o[8]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 75.070 0.000 75.350 4.000 ;
+    END
+  END slave_data_rdata_o[8]
+  PIN slave_data_rdata_o[9]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 132.975 59.200 136.975 59.800 ;
+    END
+  END slave_data_rdata_o[9]
+  PIN slave_data_rvalid_o
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 6.990 143.695 7.270 147.695 ;
+    END
+  END slave_data_rvalid_o
+  PIN slave_data_wdata_i[0]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 21.710 143.695 21.990 147.695 ;
+    END
+  END slave_data_wdata_i[0]
+  PIN slave_data_wdata_i[10]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 65.870 143.695 66.150 147.695 ;
+    END
+  END slave_data_wdata_i[10]
+  PIN slave_data_wdata_i[11]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 132.975 80.280 136.975 80.880 ;
+    END
+  END slave_data_wdata_i[11]
+  PIN slave_data_wdata_i[12]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 80.590 143.695 80.870 147.695 ;
+    END
+  END slave_data_wdata_i[12]
+  PIN slave_data_wdata_i[13]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 0.000 59.200 4.000 59.800 ;
+    END
+  END slave_data_wdata_i[13]
+  PIN slave_data_wdata_i[14]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 85.190 143.695 85.470 147.695 ;
+    END
+  END slave_data_wdata_i[14]
+  PIN slave_data_wdata_i[15]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 0.000 77.560 4.000 78.160 ;
+    END
+  END slave_data_wdata_i[15]
+  PIN slave_data_wdata_i[16]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 95.310 143.695 95.590 147.695 ;
+    END
+  END slave_data_wdata_i[16]
+  PIN slave_data_wdata_i[17]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 87.950 0.000 88.230 4.000 ;
+    END
+  END slave_data_wdata_i[17]
+  PIN slave_data_wdata_i[18]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 0.000 95.920 4.000 96.520 ;
+    END
+  END slave_data_wdata_i[18]
+  PIN slave_data_wdata_i[19]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 104.970 143.695 105.250 147.695 ;
+    END
+  END slave_data_wdata_i[19]
+  PIN slave_data_wdata_i[1]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 31.370 143.695 31.650 147.695 ;
+    END
+  END slave_data_wdata_i[1]
+  PIN slave_data_wdata_i[20]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 132.975 101.360 136.975 101.960 ;
+    END
+  END slave_data_wdata_i[20]
+  PIN slave_data_wdata_i[21]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 114.630 143.695 114.910 147.695 ;
+    END
+  END slave_data_wdata_i[21]
+  PIN slave_data_wdata_i[22]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 132.975 122.440 136.975 123.040 ;
+    END
+  END slave_data_wdata_i[22]
+  PIN slave_data_wdata_i[23]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 0.000 105.440 4.000 106.040 ;
+    END
+  END slave_data_wdata_i[23]
+  PIN slave_data_wdata_i[24]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 0.000 114.280 4.000 114.880 ;
+    END
+  END slave_data_wdata_i[24]
+  PIN slave_data_wdata_i[25]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 132.975 129.920 136.975 130.520 ;
+    END
+  END slave_data_wdata_i[25]
+  PIN slave_data_wdata_i[26]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 132.975 136.720 136.975 137.320 ;
+    END
+  END slave_data_wdata_i[26]
+  PIN slave_data_wdata_i[27]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 129.350 143.695 129.630 147.695 ;
+    END
+  END slave_data_wdata_i[27]
+  PIN slave_data_wdata_i[28]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 0.000 123.800 4.000 124.400 ;
+    END
+  END slave_data_wdata_i[28]
+  PIN slave_data_wdata_i[29]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 0.000 132.640 4.000 133.240 ;
+    END
+  END slave_data_wdata_i[29]
+  PIN slave_data_wdata_i[2]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 132.975 31.320 136.975 31.920 ;
+    END
+  END slave_data_wdata_i[2]
+  PIN slave_data_wdata_i[30]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 127.050 0.000 127.330 4.000 ;
+    END
+  END slave_data_wdata_i[30]
+  PIN slave_data_wdata_i[31]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 0.000 142.160 4.000 142.760 ;
+    END
+  END slave_data_wdata_i[31]
+  PIN slave_data_wdata_i[3]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 0.000 22.480 4.000 23.080 ;
+    END
+  END slave_data_wdata_i[3]
+  PIN slave_data_wdata_i[4]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 42.410 0.000 42.690 4.000 ;
+    END
+  END slave_data_wdata_i[4]
+  PIN slave_data_wdata_i[5]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 48.850 0.000 49.130 4.000 ;
+    END
+  END slave_data_wdata_i[5]
+  PIN slave_data_wdata_i[6]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 55.290 0.000 55.570 4.000 ;
+    END
+  END slave_data_wdata_i[6]
+  PIN slave_data_wdata_i[7]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 60.810 143.695 61.090 147.695 ;
+    END
+  END slave_data_wdata_i[7]
+  PIN slave_data_wdata_i[8]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 81.510 0.000 81.790 4.000 ;
+    END
+  END slave_data_wdata_i[8]
+  PIN slave_data_wdata_i[9]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met3 ;
+        RECT 132.975 66.680 136.975 67.280 ;
+    END
+  END slave_data_wdata_i[9]
+  PIN slave_data_we_i
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 12.050 143.695 12.330 147.695 ;
+    END
+  END slave_data_we_i
+  PIN txd_uart
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER met2 ;
+        RECT 16.650 143.695 16.930 147.695 ;
+    END
+  END txd_uart
+  PIN vccd1
+    DIRECTION INPUT ;
+    USE POWER ;
+    PORT
+      LAYER met4 ;
+        RECT 25.650 10.640 27.250 136.240 ;
+    END
+    PORT
+      LAYER met4 ;
+        RECT 67.510 10.640 69.110 136.240 ;
+    END
+    PORT
+      LAYER met4 ;
+        RECT 109.370 10.640 110.970 136.240 ;
+    END
+  END vccd1
+  PIN vssd1
+    DIRECTION INPUT ;
+    USE GROUND ;
+    PORT
+      LAYER met4 ;
+        RECT 46.580 10.640 48.180 136.240 ;
+    END
+    PORT
+      LAYER met4 ;
+        RECT 88.440 10.640 90.040 136.240 ;
+    END
+  END vssd1
+  OBS
+      LAYER li1 ;
+        RECT 5.520 10.795 131.875 143.735 ;
+      LAYER met1 ;
+        RECT 2.370 6.500 134.710 143.780 ;
+      LAYER met2 ;
+        RECT 2.950 143.415 6.710 144.005 ;
+        RECT 7.550 143.415 11.770 144.005 ;
+        RECT 12.610 143.415 16.370 144.005 ;
+        RECT 17.210 143.415 21.430 144.005 ;
+        RECT 22.270 143.415 26.490 144.005 ;
+        RECT 27.330 143.415 31.090 144.005 ;
+        RECT 31.930 143.415 36.150 144.005 ;
+        RECT 36.990 143.415 41.210 144.005 ;
+        RECT 42.050 143.415 45.810 144.005 ;
+        RECT 46.650 143.415 50.870 144.005 ;
+        RECT 51.710 143.415 55.930 144.005 ;
+        RECT 56.770 143.415 60.530 144.005 ;
+        RECT 61.370 143.415 65.590 144.005 ;
+        RECT 66.430 143.415 70.650 144.005 ;
+        RECT 71.490 143.415 75.250 144.005 ;
+        RECT 76.090 143.415 80.310 144.005 ;
+        RECT 81.150 143.415 84.910 144.005 ;
+        RECT 85.750 143.415 89.970 144.005 ;
+        RECT 90.810 143.415 95.030 144.005 ;
+        RECT 95.870 143.415 99.630 144.005 ;
+        RECT 100.470 143.415 104.690 144.005 ;
+        RECT 105.530 143.415 109.750 144.005 ;
+        RECT 110.590 143.415 114.350 144.005 ;
+        RECT 115.190 143.415 119.410 144.005 ;
+        RECT 120.250 143.415 124.470 144.005 ;
+        RECT 125.310 143.415 129.070 144.005 ;
+        RECT 129.910 143.415 134.130 144.005 ;
+        RECT 2.400 4.280 134.680 143.415 ;
+        RECT 2.400 3.555 3.030 4.280 ;
+        RECT 3.870 3.555 9.470 4.280 ;
+        RECT 10.310 3.555 15.910 4.280 ;
+        RECT 16.750 3.555 22.350 4.280 ;
+        RECT 23.190 3.555 28.790 4.280 ;
+        RECT 29.630 3.555 35.230 4.280 ;
+        RECT 36.070 3.555 42.130 4.280 ;
+        RECT 42.970 3.555 48.570 4.280 ;
+        RECT 49.410 3.555 55.010 4.280 ;
+        RECT 55.850 3.555 61.450 4.280 ;
+        RECT 62.290 3.555 67.890 4.280 ;
+        RECT 68.730 3.555 74.790 4.280 ;
+        RECT 75.630 3.555 81.230 4.280 ;
+        RECT 82.070 3.555 87.670 4.280 ;
+        RECT 88.510 3.555 94.110 4.280 ;
+        RECT 94.950 3.555 100.550 4.280 ;
+        RECT 101.390 3.555 107.450 4.280 ;
+        RECT 108.290 3.555 113.890 4.280 ;
+        RECT 114.730 3.555 120.330 4.280 ;
+        RECT 121.170 3.555 126.770 4.280 ;
+        RECT 127.610 3.555 133.210 4.280 ;
+        RECT 134.050 3.555 134.680 4.280 ;
+      LAYER met3 ;
+        RECT 3.070 143.160 132.575 143.985 ;
+        RECT 4.400 143.120 132.575 143.160 ;
+        RECT 4.400 141.760 132.975 143.120 ;
+        RECT 3.070 137.720 132.975 141.760 ;
+        RECT 3.070 136.320 132.575 137.720 ;
+        RECT 3.070 133.640 132.975 136.320 ;
+        RECT 4.400 132.240 132.975 133.640 ;
+        RECT 3.070 130.920 132.975 132.240 ;
+        RECT 3.070 129.520 132.575 130.920 ;
+        RECT 3.070 124.800 132.975 129.520 ;
+        RECT 4.400 123.440 132.975 124.800 ;
+        RECT 4.400 123.400 132.575 123.440 ;
+        RECT 3.070 122.040 132.575 123.400 ;
+        RECT 3.070 116.640 132.975 122.040 ;
+        RECT 3.070 115.280 132.575 116.640 ;
+        RECT 4.400 115.240 132.575 115.280 ;
+        RECT 4.400 113.880 132.975 115.240 ;
+        RECT 3.070 109.840 132.975 113.880 ;
+        RECT 3.070 108.440 132.575 109.840 ;
+        RECT 3.070 106.440 132.975 108.440 ;
+        RECT 4.400 105.040 132.975 106.440 ;
+        RECT 3.070 102.360 132.975 105.040 ;
+        RECT 3.070 100.960 132.575 102.360 ;
+        RECT 3.070 96.920 132.975 100.960 ;
+        RECT 4.400 95.560 132.975 96.920 ;
+        RECT 4.400 95.520 132.575 95.560 ;
+        RECT 3.070 94.160 132.575 95.520 ;
+        RECT 3.070 88.760 132.975 94.160 ;
+        RECT 3.070 88.080 132.575 88.760 ;
+        RECT 4.400 87.360 132.575 88.080 ;
+        RECT 4.400 86.680 132.975 87.360 ;
+        RECT 3.070 81.280 132.975 86.680 ;
+        RECT 3.070 79.880 132.575 81.280 ;
+        RECT 3.070 78.560 132.975 79.880 ;
+        RECT 4.400 77.160 132.975 78.560 ;
+        RECT 3.070 74.480 132.975 77.160 ;
+        RECT 3.070 73.080 132.575 74.480 ;
+        RECT 3.070 69.040 132.975 73.080 ;
+        RECT 4.400 67.680 132.975 69.040 ;
+        RECT 4.400 67.640 132.575 67.680 ;
+        RECT 3.070 66.280 132.575 67.640 ;
+        RECT 3.070 60.200 132.975 66.280 ;
+        RECT 4.400 58.800 132.575 60.200 ;
+        RECT 3.070 53.400 132.975 58.800 ;
+        RECT 3.070 52.000 132.575 53.400 ;
+        RECT 3.070 50.680 132.975 52.000 ;
+        RECT 4.400 49.280 132.975 50.680 ;
+        RECT 3.070 46.600 132.975 49.280 ;
+        RECT 3.070 45.200 132.575 46.600 ;
+        RECT 3.070 41.840 132.975 45.200 ;
+        RECT 4.400 40.440 132.975 41.840 ;
+        RECT 3.070 39.120 132.975 40.440 ;
+        RECT 3.070 37.720 132.575 39.120 ;
+        RECT 3.070 32.320 132.975 37.720 ;
+        RECT 4.400 30.920 132.575 32.320 ;
+        RECT 3.070 25.520 132.975 30.920 ;
+        RECT 3.070 24.120 132.575 25.520 ;
+        RECT 3.070 23.480 132.975 24.120 ;
+        RECT 4.400 22.080 132.975 23.480 ;
+        RECT 3.070 18.040 132.975 22.080 ;
+        RECT 3.070 16.640 132.575 18.040 ;
+        RECT 3.070 13.960 132.975 16.640 ;
+        RECT 4.400 12.560 132.975 13.960 ;
+        RECT 3.070 11.240 132.975 12.560 ;
+        RECT 3.070 9.840 132.575 11.240 ;
+        RECT 3.070 5.120 132.975 9.840 ;
+        RECT 4.400 4.440 132.975 5.120 ;
+        RECT 4.400 3.720 132.575 4.440 ;
+        RECT 3.070 3.575 132.575 3.720 ;
+      LAYER met4 ;
+        RECT 43.535 16.495 46.180 110.665 ;
+        RECT 48.580 16.495 67.110 110.665 ;
+        RECT 69.510 16.495 88.040 110.665 ;
+        RECT 90.440 16.495 108.970 110.665 ;
+        RECT 111.370 16.495 112.865 110.665 ;
+  END
+END peripheral
+END LIBRARY
+

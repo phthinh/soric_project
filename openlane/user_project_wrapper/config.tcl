@@ -20,10 +20,10 @@ set ::env(PDK) "sky130A"
 set ::env(STD_CELL_LIBRARY) "sky130_fd_sc_hd"
 
 # YOU ARE NOT ALLOWED TO CHANGE ANY VARIABLES DEFINED IN THE FIXED WRAPPER CFGS 
-source $::env(CARAVEL_ROOT)/openlane/user_project_wrapper_empty/fixed_wrapper_cfgs.tcl
+source $::env(CARAVEL_ROOT)/openlane/user_project_wrapper/fixed_wrapper_cfgs.tcl
 
 # YOU CAN CHANGE ANY VARIABLES DEFINED IN THE DEFAULT WRAPPER CFGS BY OVERRIDING THEM IN THIS CONFIG.TCL
-source $::env(CARAVEL_ROOT)/openlane/user_project_wrapper_empty/default_wrapper_cfgs.tcl
+source $::env(CARAVEL_ROOT)/openlane/user_project_wrapper/default_wrapper_cfgs.tcl
 
 set script_dir [file dirname [file normalize [info script]]]
 
@@ -35,13 +35,17 @@ set ::env(DESIGN_NAME) user_project_wrapper
 ## Source Verilog Files
 set ::env(VERILOG_FILES) "\
 	$::env(CARAVEL_ROOT)/verilog/rtl/defines.v \
-	$script_dir/../../verilog/rtl/user_project_wrapper.v"
+	$script_dir/../../verilog/rtl/user_project_wrapper.v \
+	$script_dir/../../verilog/rtl/soric_top.v \
+	$script_dir/../../verilog/rtl/soric/inter.sv \
+	$script_dir/../../verilog/rtl/soric/inter_read.sv \
+	$script_dir/../../verilog/rtl/soric/soric_soc.v"
 
 ## Clock configurations
 set ::env(CLOCK_PORT) "user_clock2"
-set ::env(CLOCK_NET) "mprj.clk"
+set ::env(CLOCK_NET) "inst_soric_top.CLK"
 
-set ::env(CLOCK_PERIOD) "10"
+set ::env(CLOCK_PERIOD) "100"
 
 ## Internal Macros
 ### Macro PDN Connections
@@ -53,14 +57,25 @@ set ::env(MACRO_PLACEMENT_CFG) $script_dir/macro.cfg
 
 ### Black-box verilog and views
 set ::env(VERILOG_FILES_BLACKBOX) "\
-	$::env(CARAVEL_ROOT)/verilog/rtl/defines.v \
-	$script_dir/../../verilog/rtl/user_proj_example.v"
+        $script_dir/../../verilog/rtl/soric/peripheral.v \
+        $script_dir/../../verilog/rtl/soric/uart_to_mem.v  \
+        $script_dir/../../verilog/rtl/cores/ibex_top.v \
+        $script_dir/../../verilog/rtl/cores/flexbex_ibex_core.v \
+        $script_dir/../../verilog/rtl/soric/sky130_sram_2kbyte_1rw1r_32x512_8.v"
 
 set ::env(EXTRA_LEFS) "\
-	$script_dir/../../lef/user_proj_example.lef"
+        $script_dir/../../lef/peripheral.lef \
+        $script_dir/../../lef/uart_to_mem.lef \
+        $script_dir/../../lef/ibex_top.lef \
+        $script_dir/../../lef/flexbex_ibex_core.lef
+        $script_dir/../../lef/sky130_sram_2kbyte_1rw1r_32x512_8.lef "
 
 set ::env(EXTRA_GDS_FILES) "\
-	$script_dir/../../gds/user_proj_example.gds"
+        $script_dir/../../gds/peripheral.gds \
+        $script_dir/../../gds/uart_to_mem.gds \
+        $script_dir/../../gds/ibex_top.gds \
+        $script_dir/../../gds/flexbex_ibex_core.gds \
+        $script_dir/../../gds/sky130_sram_2kbyte_1rw1r_32x512_8.gds"
 
 set ::env(GLB_RT_MAXLAYER) 5
 
@@ -69,7 +84,7 @@ set ::env(GLB_RT_MAXLAYER) 5
 set ::env(FP_PDN_CHECK_NODES) 0
 
 # The following is because there are no std cells in the example wrapper project.
-set ::env(SYNTH_TOP_LEVEL) 1
+set ::env(SYNTH_TOP_LEVEL) 0
 set ::env(PL_RANDOM_GLB_PLACEMENT) 1
 
 set ::env(PL_RESIZER_DESIGN_OPTIMIZATIONS) 0
