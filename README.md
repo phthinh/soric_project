@@ -1,4 +1,4 @@
-# Caravel User Project
+# Soric SoC
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![UPRJ_CI](https://github.com/efabless/caravel_project_example/actions/workflows/user_project_ci.yml/badge.svg)](https://github.com/efabless/caravel_project_example/actions/workflows/user_project_ci.yml) [![Caravel Build](https://github.com/efabless/caravel_project_example/actions/workflows/caravel_build.yml/badge.svg)](https://github.com/efabless/caravel_project_example/actions/workflows/caravel_build.yml)
 
@@ -8,5 +8,7 @@ Soric (Source Opened RISC-V for Cryptography) is an open heterogeneous SoC targe
    <img src="./bin/soric.png" width="50%" height="50%">
    </p>
 
+   <p align="center">
+   <img src="./bin/soc.png" width="50%" height="50%">
+   </p>
 
-Refer to [README](docs/source/index.rst) for this sample project documentation. 
