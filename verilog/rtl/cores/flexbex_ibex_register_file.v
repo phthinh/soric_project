@@ -1,3 +1,24 @@
+// Copyright lowRISC contributors.
+// Copyright 2018 ETH Zurich and University of Bologna.
+// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// SPDX-License-Identifier: Apache-2.0
+
+////////////////////////////////////////////////////////////////////////////////
+// Engineer:       Francesco Conti - f.conti@unibo.it                         //
+//                                                                            //
+// Additional contributions by:                                               //
+//                 Markus Wegmann - markus.wegmann@technokrat.ch              //
+//                                                                            //
+// Design Name:    RISC-V register file                                       //
+// Project Name:   ibex                                                       //
+// Language:       SystemVerilog                                              //
+//                                                                            //
+// Description:    Register file with 31 or 15x 32 bit wide registers.        //
+//                 Register 0 is fixed to 0. This register file is based on   //
+//                 flip flops.                                                //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+
 module flexbex_ibex_register_file (
 	clk,
 	rst_n,

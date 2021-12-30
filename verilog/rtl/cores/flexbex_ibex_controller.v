@@ -1,3 +1,25 @@
+// Copyright lowRISC contributors.
+// Copyright 2018 ETH Zurich and University of Bologna.
+// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// SPDX-License-Identifier: Apache-2.0
+
+////////////////////////////////////////////////////////////////////////////////
+// Engineer:       Matthias Baer - baermatt@student.ethz.ch                   //
+//                                                                            //
+// Additional contributions by:                                               //
+//                 Igor Loi - igor.loi@unibo.it                               //
+//                 Andreas Traber - atraber@student.ethz.ch                   //
+//                 Sven Stucki - svstucki@student.ethz.ch                     //
+//                 Davide Schiavone - pschiavo@iis.ee.ethz.ch                 //
+//                                                                            //
+// Design Name:    Main controller                                            //
+// Project Name:   ibex                                                       //
+// Language:       SystemVerilog                                              //
+//                                                                            //
+// Description:    Main CPU controller of the processor                       //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+
 module flexbex_ibex_controller (
 	clk,
 	rst_n,

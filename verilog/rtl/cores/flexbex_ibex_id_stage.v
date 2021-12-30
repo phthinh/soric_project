@@ -1,3 +1,26 @@
+// Copyright lowRISC contributors.
+// Copyright 2018 ETH Zurich and University of Bologna.
+// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// SPDX-License-Identifier: Apache-2.0
+
+////////////////////////////////////////////////////////////////////////////////
+// Engineer:       Renzo Andri - andrire@student.ethz.ch                      //
+//                                                                            //
+// Additional contributions by:                                               //
+//                 Igor Loi - igor.loi@unibo.it                               //
+//                 Andreas Traber - atraber@student.ethz.ch                   //
+//                 Sven Stucki - svstucki@student.ethz.ch                     //
+//                 Davide Schiavone - pschiavo@iis.ee.ethz.ch                 //
+//                                                                            //
+// Design Name:    Instruction Decode Stage                                   //
+// Project Name:   ibex                                                       //
+// Language:       SystemVerilog                                              //
+//                                                                            //
+// Description:    Decode stage of the core. It decodes the instructions      //
+//                 and hosts the register file.                               //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+
 module flexbex_ibex_id_stage (
 	clk,
 	rst_n,

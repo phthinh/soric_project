@@ -1,3 +1,20 @@
+// Copyright lowRISC contributors.
+// Copyright 2018 ETH Zurich and University of Bologna.
+// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// SPDX-License-Identifier: Apache-2.0
+
+////////////////////////////////////////////////////////////////////////////////
+// Engineer:       Andreas Traber - atraber@iis.ee.ethz.ch                    //
+//                                                                            //
+// Design Name:    Prefetcher Buffer for 32 bit memory interface              //
+// Project Name:   ibex                                                       //
+// Language:       SystemVerilog                                              //
+//                                                                            //
+// Description:    Prefetch Buffer that caches instructions. This cuts overly //
+//                 long critical paths to the instruction cache               //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+
 module flexbex_ibex_prefetch_buffer (
 	clk,
 	rst_n,

@@ -1,3 +1,24 @@
+// Copyright lowRISC contributors.
+// Copyright 2018 ETH Zurich and University of Bologna.
+// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// SPDX-License-Identifier: Apache-2.0
+
+////////////////////////////////////////////////////////////////////////////////
+// Engineer:       Sven Stucki - svstucki@student.ethz.ch                     //
+//                                                                            //
+// Additional contributions by:                                               //
+//                 Andreas Traber - atraber@iis.ee.ethz.ch                    //
+//                 Davide Schiavone - pschiavo@iis.ee.ethz.ch                 //
+//                                                                            //
+// Design Name:    Control and Status Registers                               //
+// Project Name:   ibex                                                       //
+// Language:       SystemVerilog                                              //
+//                                                                            //
+// Description:    Control and Status Registers (CSRs) loosely following the  //
+//                 RiscV draft priviledged instruction set spec (v1.9)        //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+
 module flexbex_ibex_cs_registers (
 	clk,
 	rst_n,

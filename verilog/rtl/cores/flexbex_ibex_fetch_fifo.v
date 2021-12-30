@@ -1,3 +1,18 @@
+// Copyright lowRISC contributors.
+// Copyright 2018 ETH Zurich and University of Bologna.
+// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// SPDX-License-Identifier: Apache-2.0
+
+////////////////////////////////////////////////////////////////////////////////
+// Engineer:       Andreas Traber - atraber@iis.ee.ethz.ch                    //
+//                                                                            //
+// Design Name:    Fetch Fifo for 32 bit memory interface                     //
+// Project Name:   ibex                                                       //
+// Language:       SystemVerilog                                              //
+//                                                                            //
+// Description:    Fetch fifo                                                 //
+////////////////////////////////////////////////////////////////////////////////
+
 module flexbex_ibex_fetch_fifo (
 	clk,
 	rst_n,

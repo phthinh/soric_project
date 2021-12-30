@@ -1,3 +1,21 @@
+// Copyright lowRISC contributors.
+// Copyright 2018 ETH Zurich and University of Bologna.
+// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// SPDX-License-Identifier: Apache-2.0
+
+////////////////////////////////////////////////////////////////////////////////
+//                                                                            //
+// Engineer:       Sven Stucki - svstucki@student.ethz.ch                     //
+//                                                                            //
+// Design Name:    Compressed instruction decoder                             //
+// Project Name:   ibex                                                       //
+// Language:       SystemVerilog                                              //
+//                                                                            //
+// Description:    Decodes RISC-V compressed instructions into their RV32     //
+//                 equivalent. This module is fully combinatorial.            //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+
 module flexbex_ibex_compressed_decoder (
 	instr_i,
 	instr_o,

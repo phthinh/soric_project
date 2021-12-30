@@ -1,3 +1,20 @@
+// Copyright lowRISC contributors.
+// Copyright 2018 ETH Zurich and University of Bologna.
+// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// SPDX-License-Identifier: Apache-2.0
+
+////////////////////////////////////////////////////////////////////////////////
+// Engineer:       Davide Schiavone - pschiavo@iis.ee.ethz.ch                 //
+//                                                                            //
+//                                                                            //
+// Design Name:    Fast Multiplier and Division                               //
+// Project Name:   ibex                                                       //
+// Language:       SystemVerilog                                              //
+//                                                                            //
+// Description:    16x16 kernel multiplier and Long Division                  //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+
 module flexbex_ibex_multdiv_fast (
 	clk,
 	rst_n,

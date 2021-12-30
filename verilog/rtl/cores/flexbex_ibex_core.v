@@ -1,3 +1,26 @@
+// Copyright lowRISC contributors.
+// Copyright 2018 ETH Zurich and University of Bologna.
+// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// SPDX-License-Identifier: Apache-2.0
+
+////////////////////////////////////////////////////////////////////////////////
+// Engineer:       Matthias Baer - baermatt@student.ethz.ch                   //
+//                                                                            //
+// Additional contributions by:                                               //
+//                 Igor Loi - igor.loi@unibo.it                               //
+//                 Andreas Traber - atraber@student.ethz.ch                   //
+//                 Sven Stucki - svstucki@student.ethz.ch                     //
+//                 Markus Wegmann - markus.wegmann@technokrat.ch              //
+//                 Davide Schiavone - pschiavo@iis.ee.ethz.ch                 //
+//                                                                            //
+// Design Name:    Top level module                                           //
+// Project Name:   ibex                                                       //
+// Language:       SystemVerilog                                              //
+//                                                                            //
+// Description:    Top level module of the RISC-V core.                       //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+
 module flexbex_ibex_core (
 `ifdef USE_POWER_PINS
 	vccd1,

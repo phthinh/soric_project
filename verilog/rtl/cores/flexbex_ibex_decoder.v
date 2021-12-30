@@ -1,3 +1,27 @@
+// Copyright lowRISC contributors.
+// Copyright 2018 ETH Zurich and University of Bologna.
+// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// SPDX-License-Identifier: Apache-2.0
+
+////////////////////////////////////////////////////////////////////////////////
+// Engineer        Andreas Traber - atraber@iis.ee.ethz.ch                    //
+//                                                                            //
+// Additional contributions by:                                               //
+//                 Matthias Baer - baermatt@student.ethz.ch                   //
+//                 Igor Loi - igor.loi@unibo.it                               //
+//                 Sven Stucki - svstucki@student.ethz.ch                     //
+//                 Davide Schiavone - pschiavo@iis.ee.ethz.ch                 //
+//                 Markus Wegmann - markus.wegmann@technokrat.ch              //
+//                                                                            //
+// Design Name:    Decoder                                                    //
+// Project Name:   ibex                                                       //
+// Language:       SystemVerilog                                              //
+//                                                                            //
+// Description:    Decoder                                                    //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+
+
 module flexbex_ibex_decoder (
 	deassert_we_i,
 	data_misaligned_i,

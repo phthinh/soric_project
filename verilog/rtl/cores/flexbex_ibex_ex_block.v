@@ -1,3 +1,26 @@
+// Copyright lowRISC contributors.
+// Copyright 2018 ETH Zurich and University of Bologna.
+// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// SPDX-License-Identifier: Apache-2.0
+
+////////////////////////////////////////////////////////////////////////////////
+// Engineer:       Renzo Andri - andrire@student.ethz.ch                      //
+//                                                                            //
+// Additional contributions by:                                               //
+//                 Igor Loi - igor.loi@unibo.it                               //
+//                 Sven Stucki - svstucki@student.ethz.ch                     //
+//                 Andreas Traber - atraber@iis.ee.ethz.ch                    //
+//                 Markus Wegmann - markus.wegmann@technokrat.ch              //
+//                 Davide Schiavone - pschiavo@iis.ee.ethz.ch                 //
+//                                                                            //
+// Design Name:    Execute stage                                              //
+// Project Name:   ibex                                                       //
+// Language:       SystemVerilog                                              //
+//                                                                            //
+// Description:    Execution block: Hosts ALU and MUL/DIV unit                //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+
 module flexbex_ibex_ex_block (
 	clk,
 	rst_n,
