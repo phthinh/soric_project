@@ -1,0 +1,18 @@
+---
+project:
+  description: "A SoC with two crypto-supported RISC-V cores"
+  foundry: "SkyWater"
+  git_url: "https://github.com/phthinh/soric_project.git"
+  organization: ""
+  organization_url: ""
+  owner: "Thinh Pham - Andrew Attworth - Nguyen Dao"
+  process: "SKY130A"
+  project_name: "SORIC"
+  project_id: "321"
+  tags:
+    - "Open MPW"
+  category: "SORIC Caravel User Project"
+  top_level_netlist: "caravel/verilog/gl/caravel.v"
+  user_level_netlist: "verilog/gl/user_project_wrapper.v"
+  version: "1.00"
+  cover_image: "bin/soric.png"
