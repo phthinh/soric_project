@@ -55,12 +55,10 @@ set ::env(FP_PDN_MACRO_HOOKS) "\
 ### Macro Placement
 set ::env(MACRO_PLACEMENT_CFG) $script_dir/macro.cfg
 
-set ::env(GLB_RT_MAXLAYER) 5
-
 # disable pdn check nodes becuase it hangs with multiple power domains.
 # any issue with pdn connections will be flagged with LVS so it is not a critical check.
 set ::env(FP_PDN_CHECK_NODES) 0
-
+set ::env(FP_PDN_ENABLE_RAILS) 0
 
 #set ::env(PL_RANDOM_GLB_PLACEMENT) 1
 
@@ -76,12 +74,31 @@ set ::env(PL_RESIZER_TIMING_OPTIMIZATIONS) 0
 #set ::env(PL_RESIZER_BUFFER_INPUT_PORTS) 0
 #set ::env(PL_RESIZER_BUFFER_OUTPUT_PORTS) 0
 
-set ::env(FP_PDN_ENABLE_RAILS) 0
+set ::env(GLB_RT_MAXLAYER) 5
+
+#SRAM SIZE 683.1 X 416.54  => 690x420
+set ::env(GLB_RT_OBS) " \
+	met1  600  700 1283 1116,\
+	met1  600 1350 1283 1766,\
+	met1 1600  700 2283 1116,\
+	met1 1600 1350 2283 1766, \
+	met2  600  700 1283 1116,\
+	met2  600 1350 1283 1766,\
+	met2 1600  700 2283 1116,\
+	met2 1600 1350 2283 1766, \
+	met3  600  700 1283 1116,\
+	met3  600 1350 1283 1766,\
+	met3 1600  700 2283 1116,\
+	met3 1600 1350 2283 1766"
 
 set ::env(DIODE_INSERTION_STRATEGY) 4
-set ::env(FILL_INSERTION) 0
+#set ::env(DECAP_CELL) "sky130_ef_sc_hd__decap_12 sky130_fd_sc_hd__decap_8 sky130_fd_sc_hd__decap_6 sky130_fd_sc_hd__decap_4 sky130_fd_sc_hd__decap_3"
+#set ::env(FILL_CELL) "sky130_ef_sc_hd__fill_12 sky130_ef_sc_hd__fill_8 sky130_fd_sc_hd__fill_4 sky130_fd_sc_hd__fill_2 sky130_fd_sc_hd__fill_1"
+#set ::env(FILL_INSERTION) 0
 set ::env(TAP_DECAP_INSERTION) 0
-set ::env(CLOCK_TREE_SYNTH) 0
+set ::env(CLOCK_TREE_SYNTH) 1
+
+set ::env(QUIT_ON_LVS_ERROR) 0
 
 ### Black-box verilog and views
 set ::env(VERILOG_FILES_BLACKBOX) "\
