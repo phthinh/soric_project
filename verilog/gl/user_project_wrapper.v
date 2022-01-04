@@ -397,155 +397,6 @@ module user_project_wrapper (user_clock2,
  wire \master_data_wdata_to_inter[9] ;
  wire \master_data_we_to_inter[0] ;
  wire \master_data_we_to_inter[1] ;
- wire net1;
- wire net10;
- wire net100;
- wire net101;
- wire net102;
- wire net103;
- wire net104;
- wire net105;
- wire net106;
- wire net107;
- wire net108;
- wire net109;
- wire net11;
- wire net110;
- wire net111;
- wire net112;
- wire net113;
- wire net114;
- wire net115;
- wire net116;
- wire net117;
- wire net118;
- wire net119;
- wire net12;
- wire net120;
- wire net121;
- wire net122;
- wire net123;
- wire net124;
- wire net125;
- wire net126;
- wire net127;
- wire net128;
- wire net129;
- wire net13;
- wire net130;
- wire net131;
- wire net132;
- wire net133;
- wire net134;
- wire net135;
- wire net136;
- wire net137;
- wire net138;
- wire net139;
- wire net14;
- wire net140;
- wire net141;
- wire net142;
- wire net143;
- wire net144;
- wire net145;
- wire net146;
- wire net147;
- wire net148;
- wire net149;
- wire net15;
- wire net16;
- wire net17;
- wire net18;
- wire net19;
- wire net2;
- wire net20;
- wire net21;
- wire net22;
- wire net23;
- wire net24;
- wire net25;
- wire net26;
- wire net27;
- wire net28;
- wire net29;
- wire net3;
- wire net30;
- wire net31;
- wire net32;
- wire net33;
- wire net34;
- wire net35;
- wire net36;
- wire net37;
- wire net38;
- wire net39;
- wire net4;
- wire net40;
- wire net41;
- wire net42;
- wire net43;
- wire net44;
- wire net45;
- wire net46;
- wire net47;
- wire net48;
- wire net49;
- wire net5;
- wire net50;
- wire net51;
- wire net52;
- wire net53;
- wire net54;
- wire net55;
- wire net56;
- wire net57;
- wire net58;
- wire net59;
- wire net6;
- wire net60;
- wire net61;
- wire net62;
- wire net63;
- wire net64;
- wire net65;
- wire net66;
- wire net67;
- wire net68;
- wire net69;
- wire net7;
- wire net70;
- wire net71;
- wire net72;
- wire net73;
- wire net74;
- wire net75;
- wire net76;
- wire net77;
- wire net78;
- wire net79;
- wire net8;
- wire net80;
- wire net81;
- wire net82;
- wire net83;
- wire net84;
- wire net85;
- wire net86;
- wire net87;
- wire net88;
- wire net89;
- wire net9;
- wire net90;
- wire net91;
- wire net92;
- wire net93;
- wire net94;
- wire net95;
- wire net96;
- wire net97;
- wire net98;
- wire net99;
  wire \slave_data_addr_to_inter[0] ;
  wire \slave_data_addr_to_inter[10] ;
  wire \slave_data_addr_to_inter[11] ;
@@ -1052,12 +903,12 @@ module user_project_wrapper (user_clock2,
     .data_req_o(\master_data_req_to_inter[0] ),
     .data_rvalid_i(\master_data_rvalid_to_inter[0] ),
     .data_we_o(\master_data_we_to_inter[0] ),
-    .debug_req_i(net82),
-    .fetch_enable_i(net80),
+    .debug_req_i(io_in[4]),
+    .fetch_enable_i(io_in[5]),
     .instr_gnt_i(\master_data_gnt_to_inter_ro[0] ),
     .instr_req_o(\master_data_req_to_inter_ro[0] ),
     .instr_rvalid_i(\master_data_rvalid_to_inter_ro[0] ),
-    .rst_i(net1),
+    .rst_i(wb_rst_i),
     .data_addr_o({_08_,
     _07_,
     _06_,
@@ -1230,16 +1081,16 @@ module user_project_wrapper (user_clock2,
     \master_data_rdata_to_inter_ro[1] ,
     \master_data_rdata_to_inter_ro[0] }));
  flexbex_core ibex_core_2 (.clk_i(wb_clk_i),
-    .data_gnt_i(net74),
+    .data_gnt_i(\master_data_gnt_to_inter[1] ),
     .data_req_o(\master_data_req_to_inter[1] ),
-    .data_rvalid_i(net8),
+    .data_rvalid_i(\master_data_rvalid_to_inter[1] ),
     .data_we_o(\master_data_we_to_inter[1] ),
-    .debug_req_i(net79),
-    .fetch_enable_i(net78),
-    .instr_gnt_i(net73),
+    .debug_req_i(io_in[6]),
+    .fetch_enable_i(io_in[7]),
+    .instr_gnt_i(\master_data_gnt_to_inter_ro[1] ),
     .instr_req_o(\master_data_req_to_inter_ro[1] ),
-    .instr_rvalid_i(net7),
-    .rst_i(net1),
+    .instr_rvalid_i(\master_data_rvalid_to_inter_ro[1] ),
+    .rst_i(wb_rst_i),
     .data_addr_o({_64_,
     _63_,
     _62_,
@@ -1276,38 +1127,38 @@ module user_project_wrapper (user_clock2,
     \master_data_be_to_inter[6] ,
     \master_data_be_to_inter[5] ,
     \master_data_be_to_inter[4] }),
-    .data_rdata_i({net41,
-    net42,
-    net43,
-    net44,
-    net45,
-    net46,
-    net47,
-    net48,
-    net49,
-    net50,
-    net51,
-    net52,
-    net53,
-    net54,
-    net55,
-    net56,
-    net57,
-    net58,
-    net59,
-    net60,
-    net61,
-    net62,
-    net63,
-    net64,
-    net65,
-    net66,
-    net67,
-    net68,
-    net69,
-    net70,
-    net71,
-    net72}),
+    .data_rdata_i({\master_data_rdata_to_inter[63] ,
+    \master_data_rdata_to_inter[62] ,
+    \master_data_rdata_to_inter[61] ,
+    \master_data_rdata_to_inter[60] ,
+    \master_data_rdata_to_inter[59] ,
+    \master_data_rdata_to_inter[58] ,
+    \master_data_rdata_to_inter[57] ,
+    \master_data_rdata_to_inter[56] ,
+    \master_data_rdata_to_inter[55] ,
+    \master_data_rdata_to_inter[54] ,
+    \master_data_rdata_to_inter[53] ,
+    \master_data_rdata_to_inter[52] ,
+    \master_data_rdata_to_inter[51] ,
+    \master_data_rdata_to_inter[50] ,
+    \master_data_rdata_to_inter[49] ,
+    \master_data_rdata_to_inter[48] ,
+    \master_data_rdata_to_inter[47] ,
+    \master_data_rdata_to_inter[46] ,
+    \master_data_rdata_to_inter[45] ,
+    \master_data_rdata_to_inter[44] ,
+    \master_data_rdata_to_inter[43] ,
+    \master_data_rdata_to_inter[42] ,
+    \master_data_rdata_to_inter[41] ,
+    \master_data_rdata_to_inter[40] ,
+    \master_data_rdata_to_inter[39] ,
+    \master_data_rdata_to_inter[38] ,
+    \master_data_rdata_to_inter[37] ,
+    \master_data_rdata_to_inter[36] ,
+    \master_data_rdata_to_inter[35] ,
+    \master_data_rdata_to_inter[34] ,
+    \master_data_rdata_to_inter[33] ,
+    \master_data_rdata_to_inter[32] }),
     .data_wdata_intg_o({_NC8,
     _NC9,
     _NC10,
@@ -1379,361 +1230,63 @@ module user_project_wrapper (user_clock2,
     \master_data_addr_to_inter_ro[15] ,
     \master_data_addr_to_inter_ro[14] ,
     \master_data_addr_to_inter_ro[13] }),
-    .instr_rdata_i({net9,
-    net10,
-    net11,
-    net12,
-    net13,
-    net14,
-    net15,
-    net16,
-    net17,
-    net18,
-    net19,
-    net20,
-    net21,
-    net22,
-    net23,
-    net24,
-    net25,
-    net26,
-    net27,
-    net28,
-    net29,
-    net30,
-    net31,
-    net32,
-    net33,
-    net34,
-    net35,
-    net36,
-    net37,
-    net38,
-    net39,
-    net40}));
- sky130_fd_sc_hd__buf_12 repeater1 (.A(net2),
-    .X(net1));
- sky130_fd_sc_hd__buf_12 repeater10 (.A(\master_data_rdata_to_inter_ro[62] ),
-    .X(net10));
- sky130_fd_sc_hd__buf_12 repeater100 (.A(\master_data_wdata_to_inter[40] ),
-    .X(net100));
- sky130_fd_sc_hd__buf_12 repeater101 (.A(\master_data_wdata_to_inter[39] ),
-    .X(net101));
- sky130_fd_sc_hd__buf_12 repeater102 (.A(\master_data_wdata_to_inter[38] ),
-    .X(net102));
- sky130_fd_sc_hd__buf_12 repeater103 (.A(\master_data_wdata_to_inter[37] ),
-    .X(net103));
- sky130_fd_sc_hd__buf_12 repeater104 (.A(\master_data_wdata_to_inter[36] ),
-    .X(net104));
- sky130_fd_sc_hd__buf_12 repeater105 (.A(\master_data_wdata_to_inter[35] ),
-    .X(net105));
- sky130_fd_sc_hd__buf_12 repeater106 (.A(\master_data_wdata_to_inter[63] ),
-    .X(net106));
- sky130_fd_sc_hd__buf_12 repeater107 (.A(\master_data_wdata_to_inter[62] ),
-    .X(net107));
- sky130_fd_sc_hd__buf_12 repeater108 (.A(\master_data_wdata_to_inter[34] ),
-    .X(net108));
- sky130_fd_sc_hd__buf_12 repeater109 (.A(\master_data_wdata_to_inter[61] ),
-    .X(net109));
- sky130_fd_sc_hd__buf_12 repeater11 (.A(\master_data_rdata_to_inter_ro[61] ),
-    .X(net11));
- sky130_fd_sc_hd__buf_12 repeater110 (.A(\master_data_wdata_to_inter[60] ),
-    .X(net110));
- sky130_fd_sc_hd__buf_12 repeater111 (.A(\master_data_wdata_to_inter[59] ),
-    .X(net111));
- sky130_fd_sc_hd__buf_12 repeater112 (.A(\master_data_wdata_to_inter[58] ),
-    .X(net112));
- sky130_fd_sc_hd__buf_12 repeater113 (.A(\master_data_wdata_to_inter[57] ),
-    .X(net113));
- sky130_fd_sc_hd__buf_12 repeater114 (.A(\master_data_wdata_to_inter[56] ),
-    .X(net114));
- sky130_fd_sc_hd__buf_12 repeater115 (.A(\master_data_wdata_to_inter[55] ),
-    .X(net115));
- sky130_fd_sc_hd__buf_12 repeater116 (.A(\master_data_wdata_to_inter[54] ),
-    .X(net116));
- sky130_fd_sc_hd__buf_12 repeater117 (.A(\master_data_wdata_to_inter[53] ),
-    .X(net117));
- sky130_fd_sc_hd__buf_12 repeater118 (.A(\master_data_wdata_to_inter[52] ),
-    .X(net118));
- sky130_fd_sc_hd__buf_12 repeater119 (.A(\master_data_wdata_to_inter[33] ),
-    .X(net119));
- sky130_fd_sc_hd__buf_12 repeater12 (.A(\master_data_rdata_to_inter_ro[60] ),
-    .X(net12));
- sky130_fd_sc_hd__buf_12 repeater120 (.A(\master_data_wdata_to_inter[51] ),
-    .X(net120));
- sky130_fd_sc_hd__buf_12 repeater121 (.A(\master_data_wdata_to_inter[50] ),
-    .X(net121));
- sky130_fd_sc_hd__buf_12 repeater122 (.A(\master_data_wdata_to_inter[49] ),
-    .X(net122));
- sky130_fd_sc_hd__buf_12 repeater123 (.A(\master_data_wdata_to_inter[48] ),
-    .X(net123));
- sky130_fd_sc_hd__buf_12 repeater124 (.A(\master_data_wdata_to_inter[47] ),
-    .X(net124));
- sky130_fd_sc_hd__buf_12 repeater125 (.A(\master_data_wdata_to_inter[46] ),
-    .X(net125));
- sky130_fd_sc_hd__buf_12 repeater126 (.A(\master_data_wdata_to_inter[45] ),
-    .X(net126));
- sky130_fd_sc_hd__buf_12 repeater127 (.A(\master_data_wdata_to_inter[44] ),
-    .X(net127));
- sky130_fd_sc_hd__buf_12 repeater128 (.A(\master_data_wdata_to_inter[43] ),
-    .X(net128));
- sky130_fd_sc_hd__buf_12 repeater129 (.A(\master_data_wdata_to_inter[42] ),
-    .X(net129));
- sky130_fd_sc_hd__buf_12 repeater13 (.A(\master_data_rdata_to_inter_ro[59] ),
-    .X(net13));
- sky130_fd_sc_hd__buf_12 repeater130 (.A(\master_data_wdata_to_inter[32] ),
-    .X(net130));
- sky130_fd_sc_hd__buf_12 repeater131 (.A(\master_data_req_to_inter[1] ),
-    .X(net131));
- sky130_fd_sc_hd__buf_12 repeater132 (.A(\master_data_be_to_inter[7] ),
-    .X(net132));
- sky130_fd_sc_hd__buf_12 repeater133 (.A(\master_data_be_to_inter[6] ),
-    .X(net133));
- sky130_fd_sc_hd__buf_12 repeater134 (.A(\master_data_be_to_inter[5] ),
-    .X(net134));
- sky130_fd_sc_hd__buf_12 repeater135 (.A(\master_data_be_to_inter[4] ),
-    .X(net135));
- sky130_fd_sc_hd__buf_12 repeater136 (.A(\master_data_addr_to_inter[23] ),
-    .X(net136));
- sky130_fd_sc_hd__buf_12 repeater137 (.A(\master_data_addr_to_inter[22] ),
-    .X(net137));
- sky130_fd_sc_hd__buf_12 repeater138 (.A(\master_data_addr_to_inter[21] ),
-    .X(net138));
- sky130_fd_sc_hd__buf_12 repeater139 (.A(\master_data_addr_to_inter[20] ),
-    .X(net139));
- sky130_fd_sc_hd__buf_12 repeater14 (.A(\master_data_rdata_to_inter_ro[58] ),
-    .X(net14));
- sky130_fd_sc_hd__buf_12 repeater140 (.A(\master_data_addr_to_inter[19] ),
-    .X(net140));
- sky130_fd_sc_hd__buf_12 repeater141 (.A(\master_data_addr_to_inter[18] ),
-    .X(net141));
- sky130_fd_sc_hd__buf_12 repeater142 (.A(\master_data_addr_to_inter[17] ),
-    .X(net142));
- sky130_fd_sc_hd__buf_12 repeater143 (.A(\master_data_addr_to_inter[16] ),
-    .X(net143));
- sky130_fd_sc_hd__buf_12 repeater144 (.A(\master_data_addr_to_inter[15] ),
-    .X(net144));
- sky130_fd_sc_hd__buf_12 repeater145 (.A(\master_data_addr_to_inter[27] ),
-    .X(net145));
- sky130_fd_sc_hd__buf_12 repeater146 (.A(\master_data_addr_to_inter[26] ),
-    .X(net146));
- sky130_fd_sc_hd__buf_12 repeater147 (.A(\master_data_addr_to_inter[25] ),
-    .X(net147));
- sky130_fd_sc_hd__buf_12 repeater148 (.A(\master_data_addr_to_inter[24] ),
-    .X(net148));
- sky130_fd_sc_hd__buf_12 repeater149 (.A(\master_data_addr_to_inter[14] ),
-    .X(net149));
- sky130_fd_sc_hd__buf_12 repeater15 (.A(\master_data_rdata_to_inter_ro[57] ),
-    .X(net15));
- sky130_fd_sc_hd__buf_12 repeater16 (.A(\master_data_rdata_to_inter_ro[56] ),
-    .X(net16));
- sky130_fd_sc_hd__buf_12 repeater17 (.A(\master_data_rdata_to_inter_ro[55] ),
-    .X(net17));
- sky130_fd_sc_hd__buf_12 repeater18 (.A(\master_data_rdata_to_inter_ro[54] ),
-    .X(net18));
- sky130_fd_sc_hd__buf_12 repeater19 (.A(\master_data_rdata_to_inter_ro[53] ),
-    .X(net19));
- sky130_fd_sc_hd__buf_12 repeater2 (.A(net3),
-    .X(net2));
- sky130_fd_sc_hd__buf_12 repeater20 (.A(\master_data_rdata_to_inter_ro[52] ),
-    .X(net20));
- sky130_fd_sc_hd__buf_12 repeater21 (.A(\master_data_rdata_to_inter_ro[51] ),
-    .X(net21));
- sky130_fd_sc_hd__buf_12 repeater22 (.A(\master_data_rdata_to_inter_ro[50] ),
-    .X(net22));
- sky130_fd_sc_hd__buf_12 repeater23 (.A(\master_data_rdata_to_inter_ro[49] ),
-    .X(net23));
- sky130_fd_sc_hd__buf_12 repeater24 (.A(\master_data_rdata_to_inter_ro[48] ),
-    .X(net24));
- sky130_fd_sc_hd__buf_12 repeater25 (.A(\master_data_rdata_to_inter_ro[47] ),
-    .X(net25));
- sky130_fd_sc_hd__buf_12 repeater26 (.A(\master_data_rdata_to_inter_ro[46] ),
-    .X(net26));
- sky130_fd_sc_hd__buf_12 repeater27 (.A(\master_data_rdata_to_inter_ro[45] ),
-    .X(net27));
- sky130_fd_sc_hd__buf_12 repeater28 (.A(\master_data_rdata_to_inter_ro[44] ),
-    .X(net28));
- sky130_fd_sc_hd__buf_12 repeater29 (.A(\master_data_rdata_to_inter_ro[43] ),
-    .X(net29));
- sky130_fd_sc_hd__buf_12 repeater3 (.A(net4),
-    .X(net3));
- sky130_fd_sc_hd__buf_12 repeater30 (.A(\master_data_rdata_to_inter_ro[42] ),
-    .X(net30));
- sky130_fd_sc_hd__buf_12 repeater31 (.A(\master_data_rdata_to_inter_ro[41] ),
-    .X(net31));
- sky130_fd_sc_hd__buf_12 repeater32 (.A(\master_data_rdata_to_inter_ro[40] ),
-    .X(net32));
- sky130_fd_sc_hd__buf_12 repeater33 (.A(\master_data_rdata_to_inter_ro[39] ),
-    .X(net33));
- sky130_fd_sc_hd__buf_12 repeater34 (.A(\master_data_rdata_to_inter_ro[38] ),
-    .X(net34));
- sky130_fd_sc_hd__buf_12 repeater35 (.A(\master_data_rdata_to_inter_ro[37] ),
-    .X(net35));
- sky130_fd_sc_hd__buf_12 repeater36 (.A(\master_data_rdata_to_inter_ro[36] ),
-    .X(net36));
- sky130_fd_sc_hd__buf_12 repeater37 (.A(\master_data_rdata_to_inter_ro[35] ),
-    .X(net37));
- sky130_fd_sc_hd__buf_12 repeater38 (.A(\master_data_rdata_to_inter_ro[34] ),
-    .X(net38));
- sky130_fd_sc_hd__buf_12 repeater39 (.A(\master_data_rdata_to_inter_ro[33] ),
-    .X(net39));
- sky130_fd_sc_hd__buf_12 repeater4 (.A(wb_rst_i),
-    .X(net4));
- sky130_fd_sc_hd__buf_12 repeater40 (.A(\master_data_rdata_to_inter_ro[32] ),
-    .X(net40));
- sky130_fd_sc_hd__buf_12 repeater41 (.A(\master_data_rdata_to_inter[63] ),
-    .X(net41));
- sky130_fd_sc_hd__buf_12 repeater42 (.A(\master_data_rdata_to_inter[62] ),
-    .X(net42));
- sky130_fd_sc_hd__buf_12 repeater43 (.A(\master_data_rdata_to_inter[61] ),
-    .X(net43));
- sky130_fd_sc_hd__buf_12 repeater44 (.A(\master_data_rdata_to_inter[60] ),
-    .X(net44));
- sky130_fd_sc_hd__buf_12 repeater45 (.A(\master_data_rdata_to_inter[59] ),
-    .X(net45));
- sky130_fd_sc_hd__buf_12 repeater46 (.A(\master_data_rdata_to_inter[58] ),
-    .X(net46));
- sky130_fd_sc_hd__buf_12 repeater47 (.A(\master_data_rdata_to_inter[57] ),
-    .X(net47));
- sky130_fd_sc_hd__buf_12 repeater48 (.A(\master_data_rdata_to_inter[56] ),
-    .X(net48));
- sky130_fd_sc_hd__buf_12 repeater49 (.A(\master_data_rdata_to_inter[55] ),
-    .X(net49));
- sky130_fd_sc_hd__buf_2 repeater5 (.A(net5),
-    .X(io_out[11]));
- sky130_fd_sc_hd__buf_12 repeater50 (.A(\master_data_rdata_to_inter[54] ),
-    .X(net50));
- sky130_fd_sc_hd__buf_12 repeater51 (.A(\master_data_rdata_to_inter[53] ),
-    .X(net51));
- sky130_fd_sc_hd__buf_12 repeater52 (.A(\master_data_rdata_to_inter[52] ),
-    .X(net52));
- sky130_fd_sc_hd__buf_12 repeater53 (.A(\master_data_rdata_to_inter[51] ),
-    .X(net53));
- sky130_fd_sc_hd__buf_12 repeater54 (.A(\master_data_rdata_to_inter[50] ),
-    .X(net54));
- sky130_fd_sc_hd__buf_12 repeater55 (.A(\master_data_rdata_to_inter[49] ),
-    .X(net55));
- sky130_fd_sc_hd__buf_12 repeater56 (.A(\master_data_rdata_to_inter[48] ),
-    .X(net56));
- sky130_fd_sc_hd__buf_12 repeater57 (.A(\master_data_rdata_to_inter[47] ),
-    .X(net57));
- sky130_fd_sc_hd__buf_12 repeater58 (.A(\master_data_rdata_to_inter[46] ),
-    .X(net58));
- sky130_fd_sc_hd__buf_12 repeater59 (.A(\master_data_rdata_to_inter[45] ),
-    .X(net59));
- sky130_fd_sc_hd__buf_2 repeater6 (.A(net6),
-    .X(io_out[10]));
- sky130_fd_sc_hd__buf_12 repeater60 (.A(\master_data_rdata_to_inter[44] ),
-    .X(net60));
- sky130_fd_sc_hd__buf_12 repeater61 (.A(\master_data_rdata_to_inter[43] ),
-    .X(net61));
- sky130_fd_sc_hd__buf_12 repeater62 (.A(\master_data_rdata_to_inter[42] ),
-    .X(net62));
- sky130_fd_sc_hd__buf_12 repeater63 (.A(\master_data_rdata_to_inter[41] ),
-    .X(net63));
- sky130_fd_sc_hd__buf_12 repeater64 (.A(\master_data_rdata_to_inter[40] ),
-    .X(net64));
- sky130_fd_sc_hd__buf_12 repeater65 (.A(\master_data_rdata_to_inter[39] ),
-    .X(net65));
- sky130_fd_sc_hd__buf_12 repeater66 (.A(\master_data_rdata_to_inter[38] ),
-    .X(net66));
- sky130_fd_sc_hd__buf_12 repeater67 (.A(\master_data_rdata_to_inter[37] ),
-    .X(net67));
- sky130_fd_sc_hd__buf_12 repeater68 (.A(\master_data_rdata_to_inter[36] ),
-    .X(net68));
- sky130_fd_sc_hd__buf_12 repeater69 (.A(\master_data_rdata_to_inter[35] ),
-    .X(net69));
- sky130_fd_sc_hd__buf_12 repeater7 (.A(\master_data_rvalid_to_inter_ro[1] ),
-    .X(net7));
- sky130_fd_sc_hd__buf_12 repeater70 (.A(\master_data_rdata_to_inter[34] ),
-    .X(net70));
- sky130_fd_sc_hd__buf_12 repeater71 (.A(\master_data_rdata_to_inter[33] ),
-    .X(net71));
- sky130_fd_sc_hd__buf_12 repeater72 (.A(\master_data_rdata_to_inter[32] ),
-    .X(net72));
- sky130_fd_sc_hd__buf_12 repeater73 (.A(\master_data_gnt_to_inter_ro[1] ),
-    .X(net73));
- sky130_fd_sc_hd__buf_12 repeater74 (.A(\master_data_gnt_to_inter[1] ),
-    .X(net74));
- sky130_fd_sc_hd__buf_2 repeater75 (.A(net75),
-    .X(io_out[12]));
- sky130_fd_sc_hd__buf_12 repeater76 (.A(io_in[9]),
-    .X(net76));
- sky130_fd_sc_hd__buf_12 repeater77 (.A(io_in[8]),
-    .X(net77));
- sky130_fd_sc_hd__buf_12 repeater78 (.A(io_in[7]),
-    .X(net78));
- sky130_fd_sc_hd__buf_12 repeater79 (.A(io_in[6]),
-    .X(net79));
- sky130_fd_sc_hd__buf_12 repeater8 (.A(\master_data_rvalid_to_inter[1] ),
-    .X(net8));
- sky130_fd_sc_hd__buf_12 repeater80 (.A(net81),
-    .X(net80));
- sky130_fd_sc_hd__buf_12 repeater81 (.A(io_in[5]),
-    .X(net81));
- sky130_fd_sc_hd__buf_12 repeater82 (.A(net83),
-    .X(net82));
- sky130_fd_sc_hd__buf_12 repeater83 (.A(io_in[4]),
-    .X(net83));
- sky130_fd_sc_hd__buf_12 repeater84 (.A(\master_data_req_to_inter_ro[1] ),
-    .X(net84));
- sky130_fd_sc_hd__buf_12 repeater85 (.A(\master_data_addr_to_inter_ro[22] ),
-    .X(net85));
- sky130_fd_sc_hd__buf_12 repeater86 (.A(\master_data_addr_to_inter_ro[21] ),
-    .X(net86));
- sky130_fd_sc_hd__buf_12 repeater87 (.A(\master_data_addr_to_inter_ro[20] ),
-    .X(net87));
- sky130_fd_sc_hd__buf_12 repeater88 (.A(\master_data_addr_to_inter_ro[19] ),
-    .X(net88));
- sky130_fd_sc_hd__buf_12 repeater89 (.A(\master_data_addr_to_inter_ro[18] ),
-    .X(net89));
- sky130_fd_sc_hd__buf_12 repeater9 (.A(\master_data_rdata_to_inter_ro[63] ),
-    .X(net9));
- sky130_fd_sc_hd__buf_12 repeater90 (.A(\master_data_addr_to_inter_ro[17] ),
-    .X(net90));
- sky130_fd_sc_hd__buf_12 repeater91 (.A(\master_data_addr_to_inter_ro[16] ),
-    .X(net91));
- sky130_fd_sc_hd__buf_12 repeater92 (.A(\master_data_addr_to_inter_ro[15] ),
-    .X(net92));
- sky130_fd_sc_hd__buf_12 repeater93 (.A(\master_data_addr_to_inter_ro[14] ),
-    .X(net93));
- sky130_fd_sc_hd__buf_12 repeater94 (.A(\master_data_addr_to_inter_ro[25] ),
-    .X(net94));
- sky130_fd_sc_hd__buf_12 repeater95 (.A(\master_data_addr_to_inter_ro[24] ),
-    .X(net95));
- sky130_fd_sc_hd__buf_12 repeater96 (.A(\master_data_addr_to_inter_ro[23] ),
-    .X(net96));
- sky130_fd_sc_hd__buf_12 repeater97 (.A(\master_data_addr_to_inter_ro[13] ),
-    .X(net97));
- sky130_fd_sc_hd__buf_12 repeater98 (.A(\master_data_we_to_inter[1] ),
-    .X(net98));
- sky130_fd_sc_hd__buf_12 repeater99 (.A(\master_data_wdata_to_inter[41] ),
-    .X(net99));
- soric_soc soric_soc_i (.error_uart_to_mem(net75),
-    .rxd_uart(net77),
-    .rxd_uart_to_mem(net76),
-    .txd_uart(net6),
-    .txd_uart_to_mem(net5),
+    .instr_rdata_i({\master_data_rdata_to_inter_ro[63] ,
+    \master_data_rdata_to_inter_ro[62] ,
+    \master_data_rdata_to_inter_ro[61] ,
+    \master_data_rdata_to_inter_ro[60] ,
+    \master_data_rdata_to_inter_ro[59] ,
+    \master_data_rdata_to_inter_ro[58] ,
+    \master_data_rdata_to_inter_ro[57] ,
+    \master_data_rdata_to_inter_ro[56] ,
+    \master_data_rdata_to_inter_ro[55] ,
+    \master_data_rdata_to_inter_ro[54] ,
+    \master_data_rdata_to_inter_ro[53] ,
+    \master_data_rdata_to_inter_ro[52] ,
+    \master_data_rdata_to_inter_ro[51] ,
+    \master_data_rdata_to_inter_ro[50] ,
+    \master_data_rdata_to_inter_ro[49] ,
+    \master_data_rdata_to_inter_ro[48] ,
+    \master_data_rdata_to_inter_ro[47] ,
+    \master_data_rdata_to_inter_ro[46] ,
+    \master_data_rdata_to_inter_ro[45] ,
+    \master_data_rdata_to_inter_ro[44] ,
+    \master_data_rdata_to_inter_ro[43] ,
+    \master_data_rdata_to_inter_ro[42] ,
+    \master_data_rdata_to_inter_ro[41] ,
+    \master_data_rdata_to_inter_ro[40] ,
+    \master_data_rdata_to_inter_ro[39] ,
+    \master_data_rdata_to_inter_ro[38] ,
+    \master_data_rdata_to_inter_ro[37] ,
+    \master_data_rdata_to_inter_ro[36] ,
+    \master_data_rdata_to_inter_ro[35] ,
+    \master_data_rdata_to_inter_ro[34] ,
+    \master_data_rdata_to_inter_ro[33] ,
+    \master_data_rdata_to_inter_ro[32] }));
+ soric_soc soric_soc_i (.error_uart_to_mem(io_out[12]),
+    .rxd_uart(io_in[8]),
+    .rxd_uart_to_mem(io_in[9]),
+    .txd_uart(io_out[10]),
+    .txd_uart_to_mem(io_out[11]),
     .wb_clk_i(wb_clk_i),
-    .wb_rst_i(net3),
+    .wb_rst_i(wb_rst_i),
     .wbs_ack_o(wbs_ack_o),
     .wbs_cyc_i(wbs_cyc_i),
     .wbs_stb_i(wbs_stb_i),
     .wbs_we_i(wbs_we_i),
-    .master_data_addr_to_inter_i({net145,
-    net146,
-    net147,
-    net148,
-    net136,
-    net137,
-    net138,
-    net139,
-    net140,
-    net141,
-    net142,
-    net143,
-    net144,
-    net149,
+    .master_data_addr_to_inter_i({\master_data_addr_to_inter[27] ,
+    \master_data_addr_to_inter[26] ,
+    \master_data_addr_to_inter[25] ,
+    \master_data_addr_to_inter[24] ,
+    \master_data_addr_to_inter[23] ,
+    \master_data_addr_to_inter[22] ,
+    \master_data_addr_to_inter[21] ,
+    \master_data_addr_to_inter[20] ,
+    \master_data_addr_to_inter[19] ,
+    \master_data_addr_to_inter[18] ,
+    \master_data_addr_to_inter[17] ,
+    \master_data_addr_to_inter[16] ,
+    \master_data_addr_to_inter[15] ,
+    \master_data_addr_to_inter[14] ,
     \master_data_addr_to_inter[13] ,
     \master_data_addr_to_inter[12] ,
     \master_data_addr_to_inter[11] ,
@@ -1748,19 +1301,19 @@ module user_project_wrapper (user_clock2,
     \master_data_addr_to_inter[2] ,
     \master_data_addr_to_inter[1] ,
     \master_data_addr_to_inter[0] }),
-    .master_data_addr_to_inter_ro_i({net94,
-    net95,
-    net96,
-    net85,
-    net86,
-    net87,
-    net88,
-    net89,
-    net90,
-    net91,
-    net92,
-    net93,
-    net97,
+    .master_data_addr_to_inter_ro_i({\master_data_addr_to_inter_ro[25] ,
+    \master_data_addr_to_inter_ro[24] ,
+    \master_data_addr_to_inter_ro[23] ,
+    \master_data_addr_to_inter_ro[22] ,
+    \master_data_addr_to_inter_ro[21] ,
+    \master_data_addr_to_inter_ro[20] ,
+    \master_data_addr_to_inter_ro[19] ,
+    \master_data_addr_to_inter_ro[18] ,
+    \master_data_addr_to_inter_ro[17] ,
+    \master_data_addr_to_inter_ro[16] ,
+    \master_data_addr_to_inter_ro[15] ,
+    \master_data_addr_to_inter_ro[14] ,
+    \master_data_addr_to_inter_ro[13] ,
     \master_data_addr_to_inter_ro[12] ,
     \master_data_addr_to_inter_ro[11] ,
     \master_data_addr_to_inter_ro[10] ,
@@ -1774,10 +1327,10 @@ module user_project_wrapper (user_clock2,
     \master_data_addr_to_inter_ro[2] ,
     \master_data_addr_to_inter_ro[1] ,
     \master_data_addr_to_inter_ro[0] }),
-    .master_data_be_to_inter_i({net132,
-    net133,
-    net134,
-    net135,
+    .master_data_be_to_inter_i({\master_data_be_to_inter[7] ,
+    \master_data_be_to_inter[6] ,
+    \master_data_be_to_inter[5] ,
+    \master_data_be_to_inter[4] ,
     \master_data_be_to_inter[3] ,
     \master_data_be_to_inter[2] ,
     \master_data_be_to_inter[1] ,
@@ -1914,46 +1467,46 @@ module user_project_wrapper (user_clock2,
     \master_data_rdata_to_inter_ro[2] ,
     \master_data_rdata_to_inter_ro[1] ,
     \master_data_rdata_to_inter_ro[0] }),
-    .master_data_req_to_inter_i({net131,
+    .master_data_req_to_inter_i({\master_data_req_to_inter[1] ,
     \master_data_req_to_inter[0] }),
-    .master_data_req_to_inter_ro_i({net84,
+    .master_data_req_to_inter_ro_i({\master_data_req_to_inter_ro[1] ,
     \master_data_req_to_inter_ro[0] }),
     .master_data_rvalid_to_inter_o({\master_data_rvalid_to_inter[1] ,
     \master_data_rvalid_to_inter[0] }),
     .master_data_rvalid_to_inter_ro_o({\master_data_rvalid_to_inter_ro[1] ,
     \master_data_rvalid_to_inter_ro[0] }),
-    .master_data_wdata_to_inter_i({net106,
-    net107,
-    net109,
-    net110,
-    net111,
-    net112,
-    net113,
-    net114,
-    net115,
-    net116,
-    net117,
-    net118,
-    net120,
-    net121,
-    net122,
-    net123,
-    net124,
-    net125,
-    net126,
-    net127,
-    net128,
-    net129,
-    net99,
-    net100,
-    net101,
-    net102,
-    net103,
-    net104,
-    net105,
-    net108,
-    net119,
-    net130,
+    .master_data_wdata_to_inter_i({\master_data_wdata_to_inter[63] ,
+    \master_data_wdata_to_inter[62] ,
+    \master_data_wdata_to_inter[61] ,
+    \master_data_wdata_to_inter[60] ,
+    \master_data_wdata_to_inter[59] ,
+    \master_data_wdata_to_inter[58] ,
+    \master_data_wdata_to_inter[57] ,
+    \master_data_wdata_to_inter[56] ,
+    \master_data_wdata_to_inter[55] ,
+    \master_data_wdata_to_inter[54] ,
+    \master_data_wdata_to_inter[53] ,
+    \master_data_wdata_to_inter[52] ,
+    \master_data_wdata_to_inter[51] ,
+    \master_data_wdata_to_inter[50] ,
+    \master_data_wdata_to_inter[49] ,
+    \master_data_wdata_to_inter[48] ,
+    \master_data_wdata_to_inter[47] ,
+    \master_data_wdata_to_inter[46] ,
+    \master_data_wdata_to_inter[45] ,
+    \master_data_wdata_to_inter[44] ,
+    \master_data_wdata_to_inter[43] ,
+    \master_data_wdata_to_inter[42] ,
+    \master_data_wdata_to_inter[41] ,
+    \master_data_wdata_to_inter[40] ,
+    \master_data_wdata_to_inter[39] ,
+    \master_data_wdata_to_inter[38] ,
+    \master_data_wdata_to_inter[37] ,
+    \master_data_wdata_to_inter[36] ,
+    \master_data_wdata_to_inter[35] ,
+    \master_data_wdata_to_inter[34] ,
+    \master_data_wdata_to_inter[33] ,
+    \master_data_wdata_to_inter[32] ,
     \master_data_wdata_to_inter[31] ,
     \master_data_wdata_to_inter[30] ,
     \master_data_wdata_to_inter[29] ,
@@ -1986,7 +1539,7 @@ module user_project_wrapper (user_clock2,
     \master_data_wdata_to_inter[2] ,
     \master_data_wdata_to_inter[1] ,
     \master_data_wdata_to_inter[0] }),
-    .master_data_we_to_inter_i({net98,
+    .master_data_we_to_inter_i({\master_data_we_to_inter[1] ,
     \master_data_we_to_inter[0] }),
     .slave_data_addr_to_inter_o({\slave_data_addr_to_inter[43] ,
     \slave_data_addr_to_inter[42] ,
