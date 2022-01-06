@@ -23,7 +23,7 @@ set ::env(ROUTING_CORES)   8
 set ::env(DESIGN_NAME) soric_soc
 
 set ::env(VERILOG_FILES) "\
-	$script_dir/../../verilog/rtl/soric/soric_soc.v \
+	$script_dir/../../verilog/rtl/soric_soc.v \
 	$script_dir/../../verilog/rtl/soric/inter.v \
 	$script_dir/../../verilog/rtl/soric/inter_read.v \
 	$script_dir/../../verilog/rtl/soric/uart_to_mem.v \
@@ -37,7 +37,7 @@ set ::env(DESIGN_IS_CORE) 0
 
 set ::env(CLOCK_PORT) "wb_clk_i"
 set ::env(CLOCK_NET)  "wb_clk_i"
-set ::env(CLOCK_PERIOD) "100"
+set ::env(CLOCK_PERIOD) "40"
 
 set ::env(SYNTH_STRATEGY) "DELAY 2"
 set ::env(SYNTH_MAX_FANOUT) 4
@@ -62,14 +62,25 @@ set ::env(FP_PIN_ORDER_CFG) $script_dir/pin_order.cfg
 set ::env(PL_TARGET_DENSITY) 0.2
 #set ::env(PL_RESIZER_DESIGN_OPTIMIZATIONS) 0
 set ::env(PL_RESIZER_TIMING_OPTIMIZATIONS) 1
+set ::env(PL_RESIZER_HOLD_SLACK_MARGIN) 0.2
+set ::env(PL_RESIZER_ALLOW_SETUP_VIOS) 1
 
 ### Routing
+set ::env(GLB_RESIZER_HOLD_SLACK_MARGIN) 0.2
 set ::env(GLB_RT_ADJUSTMENT) 0.25
 set ::env(GLB_RT_MAXLAYER)          5
 #set ::env(GLB_RT_ALLOW_CONGESTION) 0
 #set ::env(GLB_RT_OVERFLOW_ITERS) 200
 set ::env(DIODE_INSERTION_STRATEGY) 4
 
+#set ::env(DECAP_CELL) " \
+#			sky130_ef_sc_hd__decap_12 \
+#			sky130_fd_sc_hd__decap_3 \
+#			sky130_fd_sc_hd__decap_4 \
+#			sky130_fd_sc_hd__decap_6 \
+#			sky130_fd_sc_hd__decap_8"
+
+#set ::env(TAP_DECAP_INSERTION) 0
 
 #set ::env(SYNTH_MAX_FANOUT) 4
 
