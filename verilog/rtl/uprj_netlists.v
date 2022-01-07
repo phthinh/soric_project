@@ -21,10 +21,15 @@
     // Assume default net type to be wire because GL netlists don't have the wire definitions
     `default_nettype wire
     `include "gl/user_project_wrapper.v"
-//    `include "gl/user_project_wrapper.v"
+    `include "gl/soric_soc.v"
+    `include "gl/crypto_core.v"
+    `include "gl/flexbex_core.v"
+    `include "sky130_sram_2kbyte_1rw1r_32x512_8.v"
 `else
     `include "user_project_wrapper.v"
-    `include "soric_top.v"
+    `include "soric_soc.v"
+    `include "crypto_core.v"
+    `include "flexbex_core.v"
     `include "sky130_sram_2kbyte_1rw1r_32x512_8.v"
     `include "soric_netlists.vh"
     `include "cores_netlists.vh"

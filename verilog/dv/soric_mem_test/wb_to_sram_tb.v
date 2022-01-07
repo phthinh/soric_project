@@ -1,6 +1,4 @@
-// SPDX-FileCopyrightText:
-// 2021 Thinh Pham
-// 2020 Efabless Corporation
+// SPDX-FileCopyrightText: 2020 Efabless Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,7 +21,7 @@
 `include "caravel_netlists.v"
 `include "spiflash.v"
 
-module soric_crypto_test_tb;
+module wb_to_sram_tb;
 	reg clock;
 	reg RSTB;
 	reg CSB;
@@ -37,7 +35,7 @@ module soric_crypto_test_tb;
 	assign checkbits = mprj_io[31:16];
 
 	//assign mprj_io[3] = (CSB == 1'b1) ? 1'b1 : 1'bz;
-
+    assign mprj_io[9:0] = 10'b00_0000_0110;
 
 	// External clock is used by default.  Make this artificially fast for the
 	// simulation.  Normally this would be a slow clock and the digital PLL
@@ -50,11 +48,11 @@ module soric_crypto_test_tb;
 	end
 
 	initial begin
-                $dumpfile("soric_crypto_test.vcd");
-                $dumpvars(0, soric_crypto_test_tb.uut.mprj);
+                $dumpfile("wb_to_sram.vcd");
+                $dumpvars(0, wb_to_sram_tb.uut.mprj);
 
 		// Repeat cycles of 1000 clock edges as needed to complete testbench
-                repeat (1700) begin
+                repeat (300) begin
 			repeat (1000) @(posedge clock);
                         $display("+1000 cycles");
 		end
@@ -68,34 +66,29 @@ module soric_crypto_test_tb;
 		$finish;
 	end
 
-        reg [31:0] checkpoint;
-        reg [ 9:0] ibex_ctrl;
-	initial begin        
-           ibex_ctrl = 10'b00_0000_0110;
-	   wait(checkbits == 16'h0001);
-	   $display("Monitor: MPRJ-Logic WB Started");
-	   wait(checkbits == 16'h0002);
-	   $display("Monitor: Program ibex");
-           wait(checkbits == 16'h0003);
-	   $display("Monitor: Start ibex");
-           ibex_ctrl = 10'b00_0010_0110;
+	initial begin
+	   wait(checkbits == 16'h AB60);
+		$display("Monitor: MPRJ-Logic WB Started");
+		wait(checkbits == 16'h AB61);
+		`ifdef GL
+	    	$display("Monitor: Mega-Project WB (GL) Passed");
+		`else
+		    $display("Monitor: Mega-Project WB (RTL) Passed");
+		`endif
+	    $finish;
 	end
 
         initial begin
-           wait(checkbits == 16'h0004);
-           $display ("Monitor: ibex Failed");
-           #7000;
-           $finish;
+            wait(checkbits == 16'h AB60);
+            //$display("Monitor: MPRJ-Logic WB Started");
+            wait(checkbits == 16'h AB62);
+            `ifdef GL
+                $display("Monitor: Mega-Project WB (GL) reading back Failed");
+            `else
+                $display("Monitor: Mega-Project WB (RTL) reading back Failed");
+            `endif
+            $finish;
         end
-
-        initial begin
-           wait(checkbits == 16'h0005);
-           $display ("Monitor: ibex Passed");
-           #7000;
-           $finish;
-        end
-
-	assign mprj_io[9:0] = ibex_ctrl;
 
 	initial begin
 		RSTB <= 1'b0;
@@ -122,7 +115,7 @@ module soric_crypto_test_tb;
 	end
 
 	always @(mprj_io) begin
-		#1 $display("MPRJ-IO state = %b ", mprj_io);
+		#1 $display("MPRJ-IO state = %b ", mprj_io[7:0]);
 	end
 
 	wire flash_csb;
@@ -162,7 +155,7 @@ module soric_crypto_test_tb;
 	);
 
 	spiflash #(
-                .FILENAME("soric_crypto_test.hex")
+                .FILENAME("wb_to_sram.hex")
 	) spiflash (
 		.csb(flash_csb),
 		.clk(flash_clk),

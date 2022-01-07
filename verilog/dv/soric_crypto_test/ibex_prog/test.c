@@ -15,7 +15,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 #include <stdint.h>
-#include "aes_common.h"
+//#include "aes_common.h"
 
 #define ROL32(x,n) (((x) << (n)) | ((x) >> (32 - (n))))
 #define ROR32(x,n) (((x) >> (n)) | ((x) << (32 - (n))))
@@ -28,6 +28,7 @@ static uint32_t lfsr(uint32_t x)
   return (x >> 1) | (bit << 30);
 }
 
+/*
 extern uint32_t test_aes32dsi1(uint32_t a, uint32_t b);
 extern uint32_t test_aes32esi1(uint32_t a, uint32_t b);
 extern uint32_t test_aes32dsmi1(uint32_t a, uint32_t b);
@@ -45,7 +46,7 @@ extern uint32_t test_sha512sig0l(uint32_t a, uint32_t b);
 extern uint32_t test_sha512sig0h(uint32_t a, uint32_t b);
 extern uint32_t test_sha512sig1l(uint32_t a, uint32_t b);
 extern uint32_t test_sha512sig1h(uint32_t a, uint32_t b);
-
+*/
 
 extern uint32_t test_ror(uint32_t a, uint32_t b);
 extern uint32_t test_rol(uint32_t a, uint32_t b);
@@ -54,6 +55,7 @@ extern uint32_t test_andn(uint32_t a, uint32_t b);
 extern uint32_t test_orn(uint32_t a, uint32_t b);
 extern uint32_t test_xnor(uint32_t a, uint32_t b);
 
+/*
 extern uint32_t test_pack(uint32_t a, uint32_t b);
 extern uint32_t test_packh(uint32_t a, uint32_t b);
 
@@ -67,7 +69,9 @@ extern uint32_t test_xperm4(uint32_t a, uint32_t b);
 
 extern uint32_t test_clmul(uint32_t a, uint32_t b);
 extern uint32_t test_clmulh(uint32_t a, uint32_t b);
+*/
 
+/*
 uint32_t gold_aes32dsi(uint32_t a, uint32_t b, uint32_t bs){
 
     uint8_t     t0 = (b >> (8*bs)) & 0xFF;
@@ -168,7 +172,7 @@ uint32_t gold_sha512sig1h(uint32_t a, uint32_t b){
                      (b >> 29) ^             (b << 13);
     return r;
 }
-
+*/
 uint32_t gold_ror(uint32_t a, uint32_t b){
     return ROR32(a, b & 0x0000001F);
 }
@@ -193,6 +197,7 @@ uint32_t gold_xnor(uint32_t a, uint32_t b){
     return (a ^ (~b));
 }
 
+/*
 uint32_t gold_pack(uint32_t a, uint32_t b){
     return (b << 16) | (a & 0x0000FFFF);
 }
@@ -200,7 +205,6 @@ uint32_t gold_pack(uint32_t a, uint32_t b){
 uint32_t gold_packh(uint32_t a, uint32_t b){
     return ((b << 8) | (a & 0x000000FF)) & 0x0000FFFF;
 }
-
 
 uint32_t gold_brev8(uint32_t a){
     uint32_t  x;
@@ -275,7 +279,7 @@ uint32_t gold_clmulh(uint32_t a,uint32_t b){
         if ((b >> i) & 1) x ^= a >> (32-i);
     return x;
 }
-
+*/
 //void error_log(uint32_t expect, uint32_t result){
 //puts("Expected: "); puthex(expect); puts(", got:"); puthex(result); putchar('\n');
 //}
@@ -291,7 +295,7 @@ int main() {
     uint32_t rhs = 0x01020304; 
 
     //puts("# RV32Zkn Instruction Test \n");
-    for (int i=0;i<20;i++){
+    for (int i=0;i<5;i++){
     // puts("lhs: "); puthex(lhs); puts(", rhs:"); puthex(rhs); putchar('\n');
 
 /*
@@ -334,7 +338,6 @@ int main() {
         //error_log(expect,result);
         fail = 1;
     }
-*/
 
     // sha256sum0
     result = test_sha256sum0(lhs);
@@ -433,7 +436,7 @@ int main() {
         //error_log(expect,result);
         fail = 1;
     }
-
+*/
 
     // ror    
     result = test_ror(lhs, rhs);
@@ -494,7 +497,7 @@ int main() {
         //error_log(expect,result);
         fail = 1;
     }
-
+/*
     // pack
     result = test_pack(lhs, rhs);
     expect = gold_pack(lhs, rhs);
@@ -592,7 +595,7 @@ int main() {
         //error_log(expect,result);
         fail = 1;
     }
-
+*/
     rhs = lfsr(lhs);
     lhs = lfsr(rhs);
     }

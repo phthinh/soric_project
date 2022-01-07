@@ -159,8 +159,8 @@ endgenerate
     assign master_data_req_to_inter[    NCORE               - 1: 0] = master_data_req_to_inter_i;
     assign master_data_we_to_inter[     NCORE               - 1: 0] = master_data_we_to_inter_i;
     assign master_data_rdata_to_inter_o  = master_data_rdata_to_inter[(NCORE * 32) - 1 : 0];
-    assign master_data_rvalid_to_inter_o = master_data_rdata_to_inter[ NCORE       - 1 : 0];
-    assign master_data_gnt_to_inter_o    = master_data_rdata_to_inter[ NCORE       - 1 : 0];
+    assign master_data_rvalid_to_inter_o = master_data_rvalid_to_inter[NCORE       - 1 : 0];
+    assign master_data_gnt_to_inter_o    = master_data_gnt_to_inter[   NCORE       - 1 : 0];
 
     assign slave_data_addr_to_inter_o  =  slave_data_addr_to_inter[( NSRAM * SRAM_ADDR_W) - 1:0];
     assign slave_data_req_to_inter_o   = ~slave_data_req_to_inter[   NSRAM                - 1:0]; //active low

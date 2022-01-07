@@ -1,7 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 
- * 2021 Thinh Pham
- * 2020 Efabless Corporation
+ * SPDX-FileCopyrightText: 2020 Efabless Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +18,6 @@
 // This include is relative to $CARAVEL_PATH (see Makefile)
 #include "verilog/dv/caravel/defs.h"
 #include "verilog/dv/caravel/stub.c"
-#include "ibex_prog.h"
 
 /*
 	Wishbone Test:
@@ -93,25 +90,24 @@ void main()
     reg_mprj_xfer = 1;
     while (reg_mprj_xfer == 1);
 
-    // Flag start of the test
-    reg_mprj_datal = 0x00010000;
-    reg_la2_oenb = reg_la2_iena = 0xFFFFFFFF;    // [95:64]
+	reg_la2_oenb = reg_la2_iena = 0xFFFFFFFF;    // [95:64]
 
-    // Flag stop ibex_core to program
-    reg_mprj_datal = 0x00020000;
+    // Flag start of the test
+	reg_mprj_datal = 0xAB600000;
 
     uint32_t * sram = (uint32_t *) &reg_mprj_slave;
 
     //writting data to sram
-    for (i = 0; i< pro_len-32;i++) {
-        sram[i+32] = pro_data[i+32];
+    for (i = 0; i<32;i++) {
+        sram[i] = 0xCAFEBABE;
     }
-    sram[2047] =0;
-    // Flag run ibex_core
-    reg_mprj_datal = 0x00030000;
 
-    while (1) {
-       if       (sram[2047] == 0xDEADBEEF)  reg_mprj_datal = 0x00040000; // simulation end with failed test
-       else if  (sram[2047] == 0xCAFEBABE)  reg_mprj_datal = 0x00050000; // simulation end with successful test
+    //reading data from sram
+    for (i = 0; i<32;i++) {
+        if (sram[i] != 0xCAFEBABE) {
+            reg_mprj_datal = 0xAB620000;
+            chk = 1;
+        }
     }
+    if (chk == 0)  reg_mprj_datal = 0xAB610000;
 }   

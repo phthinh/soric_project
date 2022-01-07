@@ -43,7 +43,7 @@ SIM?=RTL
 
 .SUFFIXES:
 
-PATTERN = soric_crypto_test
+PATTERN = wb_to_sram
 
 all:  ${PATTERN:=.vcd}
 
@@ -68,17 +68,13 @@ endif
 %.vcd: %.vvp
 	vvp $<
 
-ibex_prog = ./ibex_prog.h 
-$(ibex_prog): ibex_prog/*.c
-	make -C ./ibex_prog all work_dir=build
- 
-%.elf: %.c $(ibex_prog) $(CARAVEL_FIRMWARE_PATH)/sections.lds $(CARAVEL_FIRMWARE_PATH)/start.s check-env 
+%.elf: %.c $(CARAVEL_FIRMWARE_PATH)/sections.lds $(CARAVEL_FIRMWARE_PATH)/start.s check-env
 	${GCC_PATH}/${GCC_PREFIX}-gcc -I $(CARAVEL_PATH) -march=rv32imc -mabi=ilp32 -Wl,-Bstatic,-T,$(CARAVEL_FIRMWARE_PATH)/sections.lds,--strip-debug -ffreestanding -nostdlib -o $@ $(CARAVEL_FIRMWARE_PATH)/start.s $<
 
 %.hex: %.elf
 	${GCC_PATH}/${GCC_PREFIX}-objcopy -O verilog $< $@ 
 	# to fix flash base address
-	sed -i 's/@1000/@0000/g' $@
+	sed -i 's/@10000000/@00000000/g' $@
 
 %.bin: %.elf
 	${GCC_PATH}/${GCC_PREFIX}-objcopy -O binary $< /dev/stdout | tail -c +1048577 > $@
@@ -99,8 +95,7 @@ SIM_DEFINES := ${SIM_DEFINES} -DEF_STYLE
 endif
 
 # ---- Clean ----
-
 clean:
-	rm -rf *.elf *.hex *.bin *.vvp *.vcd *.log $(ibex_prog) ./ibex_prog/build
+	rm -f *.elf *.hex *.bin *.vvp *.vcd *.log
 
 .PHONY: clean hex all
