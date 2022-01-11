@@ -42,6 +42,11 @@ module soric_soc #(
     output wire        wbs_ack_o,
     output wire [31:0] wbs_dat_o,
 
+    output wire [127:0] la_data_out,
+    output wire [ 35:0] io_out,
+    output wire [ 37:0] io_oeb,
+    output wire [  2:0] user_irq,
+
     input  wire [ NCORE                - 1:0] master_data_req_to_inter_ro_i,
     input  wire [(NCORE * I_ADDR_W)    - 1:0] master_data_addr_to_inter_ro_i,
     output wire [(NCORE * 32)          - 1:0] master_data_rdata_to_inter_ro_o,
@@ -78,6 +83,17 @@ module soric_soc #(
     wire clk_i = wb_clk_i;      //main clock 20mhz
     wire reset = wb_rst_i;
     wire reset_ni = ~reset;
+
+    //assign la_data_out   = {master_data_addr_to_inter_ro, master_data_rdata_to_inter_ro};
+    assign la_data_out   = 128'd0;
+    assign io_out[ 9: 0] = 10'd0;
+    assign io_out[37:13] = 25'd0;
+
+    assign io_oeb[ 7:0]  =  8'b11111111; //CPU controls
+    assign io_oeb[12:8]  =  5'b00011;    //2 x UARTs
+    assign io_oeb[37:13] = 25'd0;
+
+    assign user_irq = 3'b000;
 
 // Intructions read only interconnection
     wire [ NSRAM                - 1:0] slave_data_req_to_inter_ro;

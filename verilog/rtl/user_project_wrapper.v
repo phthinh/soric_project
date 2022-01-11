@@ -159,6 +159,11 @@ soric_soc #(
     .wbs_ack_o(wbs_ack_o),
     .wbs_dat_o(wbs_dat_o),
 
+    .la_data_out(la_data_out),
+    .io_out({io_out[37:13], io_out[ 9: 0]}),
+    .io_oeb(io_oeb),
+    .user_irq(user_irq),
+
     //instrucion bus
     .master_data_req_to_inter_ro_i(master_data_req_to_inter_ro),
     .master_data_addr_to_inter_ro_i(master_data_addr_to_inter_ro),
@@ -340,17 +345,6 @@ sky130_sram_2kbyte_1rw1r_32x512_8 sram_4_i(
     .addr1(slave_data_addr_to_inter_ro[ (4 * SRAM_ADDR_W) - 1 -: (SRAM_ADDR_W  - 2)]),
     .dout1(slave_data_rdata_to_inter_ro[(4 * 32) - 1 -: 32 ])
   );
-
-//assign la_data_out   = {master_data_addr_to_inter_ro, master_data_rdata_to_inter_ro};
-assign la_data_out   = 128'd0;
-assign io_out[ 9: 0] = 10'd0;
-assign io_out[37:13] = 25'd0;
-
-assign io_oeb[ 7:0]  =  8'b11111111; //CLK and configuration
-assign io_oeb[12:8]  =  5'b00011;    //CPU
-assign io_oeb[37:13] = 25'd0;
-
-assign user_irq = 3'b000;
 
 endmodule	// user_project_wrapper
 `default_nettype wire

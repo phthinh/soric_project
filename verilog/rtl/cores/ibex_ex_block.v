@@ -108,7 +108,7 @@ module ibex_ex_block (
 	assign imd_val_d_o[0+:34] = (multdiv_sel ? multdiv_imd_val_d[0+:34] : {2'b00, alu_imd_val_d[0+:32]});
 	assign imd_val_we_o = (multdiv_sel ? multdiv_imd_val_we : alu_imd_val_we);
 	assign alu_imd_val_q = {imd_val_q_i[65-:32], imd_val_q_i[31-:32]};
-	assign result_ex_o = (multdiv_sel ? multdiv_result : (zke_val ? zke_result : (eFPGA_val ? eFPGA_result : alu_result)));
+	assign result_ex_o = (multdiv_sel ? multdiv_result : (zke_val ? zke_result : (eFPGA_en_i ? eFPGA_result : alu_result)));
 	assign branch_decision_o = alu_cmp_result;
 	generate
 		if (BranchTargetALU) begin : g_branch_target_alu

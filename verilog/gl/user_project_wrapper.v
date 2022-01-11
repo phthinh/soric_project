@@ -53,8 +53,6 @@ module user_project_wrapper (user_clock2,
  output [31:0] wbs_dat_o;
  input [3:0] wbs_sel_i;
 
- wire one_;
- wire zero_;
  wire _00_;
  wire _01_;
  wire _02_;
@@ -129,6 +127,7 @@ module user_project_wrapper (user_clock2,
  wire _71_;
  wire _72_;
  wire _73_;
+ wire _74_;
  wire \master_data_addr_to_inter[0] ;
  wire \master_data_addr_to_inter[10] ;
  wire \master_data_addr_to_inter[11] ;
@@ -1095,14 +1094,15 @@ module user_project_wrapper (user_clock2,
     .rst_i(wb_rst_i),
     .vccd1(vccd1),
     .vssd1(vssd1),
-    .data_addr_o({_64_,
+    .data_addr_o({_65_,
+    _64_,
     _63_,
     _62_,
     _61_,
     _60_,
     _59_,
     _58_,
-    _57_,
+    _74_,
     _73_,
     _72_,
     _71_,
@@ -1111,8 +1111,7 @@ module user_project_wrapper (user_clock2,
     _68_,
     _67_,
     _66_,
-    _65_,
-    _56_,
+    _57_,
     \master_data_addr_to_inter[27] ,
     \master_data_addr_to_inter[26] ,
     \master_data_addr_to_inter[25] ,
@@ -1202,7 +1201,8 @@ module user_project_wrapper (user_clock2,
     \master_data_wdata_to_inter[34] ,
     \master_data_wdata_to_inter[33] ,
     \master_data_wdata_to_inter[32] }),
-    .instr_addr_o({_46_,
+    .instr_addr_o({_47_,
+    _46_,
     _45_,
     _44_,
     _43_,
@@ -1210,7 +1210,7 @@ module user_project_wrapper (user_clock2,
     _41_,
     _40_,
     _39_,
-    _38_,
+    _56_,
     _55_,
     _54_,
     _53_,
@@ -1219,8 +1219,7 @@ module user_project_wrapper (user_clock2,
     _50_,
     _49_,
     _48_,
-    _47_,
-    _37_,
+    _38_,
     \master_data_addr_to_inter_ro[25] ,
     \master_data_addr_to_inter_ro[24] ,
     \master_data_addr_to_inter_ro[23] ,
@@ -1279,6 +1278,208 @@ module user_project_wrapper (user_clock2,
     .wbs_cyc_i(wbs_cyc_i),
     .wbs_stb_i(wbs_stb_i),
     .wbs_we_i(wbs_we_i),
+    .io_oeb({io_oeb[37],
+    io_oeb[36],
+    io_oeb[35],
+    io_oeb[34],
+    io_oeb[33],
+    io_oeb[32],
+    io_oeb[31],
+    io_oeb[30],
+    io_oeb[29],
+    io_oeb[28],
+    io_oeb[27],
+    io_oeb[26],
+    io_oeb[25],
+    io_oeb[24],
+    io_oeb[23],
+    io_oeb[22],
+    io_oeb[21],
+    io_oeb[20],
+    io_oeb[19],
+    io_oeb[18],
+    io_oeb[17],
+    io_oeb[16],
+    io_oeb[15],
+    io_oeb[14],
+    io_oeb[13],
+    io_oeb[12],
+    io_oeb[11],
+    io_oeb[10],
+    io_oeb[9],
+    io_oeb[8],
+    io_oeb[7],
+    io_oeb[6],
+    io_oeb[5],
+    io_oeb[4],
+    io_oeb[3],
+    io_oeb[2],
+    io_oeb[1],
+    io_oeb[0]}),
+    .io_out({_37_,
+    io_out[37],
+    io_out[36],
+    io_out[35],
+    io_out[34],
+    io_out[33],
+    io_out[32],
+    io_out[31],
+    io_out[30],
+    io_out[29],
+    io_out[28],
+    io_out[27],
+    io_out[26],
+    io_out[25],
+    io_out[24],
+    io_out[23],
+    io_out[22],
+    io_out[21],
+    io_out[20],
+    io_out[19],
+    io_out[18],
+    io_out[17],
+    io_out[16],
+    io_out[15],
+    io_out[14],
+    io_out[13],
+    io_out[9],
+    io_out[8],
+    io_out[7],
+    io_out[6],
+    io_out[5],
+    io_out[4],
+    io_out[3],
+    io_out[2],
+    io_out[1],
+    io_out[0]}),
+    .la_data_out({la_data_out[127],
+    la_data_out[126],
+    la_data_out[125],
+    la_data_out[124],
+    la_data_out[123],
+    la_data_out[122],
+    la_data_out[121],
+    la_data_out[120],
+    la_data_out[119],
+    la_data_out[118],
+    la_data_out[117],
+    la_data_out[116],
+    la_data_out[115],
+    la_data_out[114],
+    la_data_out[113],
+    la_data_out[112],
+    la_data_out[111],
+    la_data_out[110],
+    la_data_out[109],
+    la_data_out[108],
+    la_data_out[107],
+    la_data_out[106],
+    la_data_out[105],
+    la_data_out[104],
+    la_data_out[103],
+    la_data_out[102],
+    la_data_out[101],
+    la_data_out[100],
+    la_data_out[99],
+    la_data_out[98],
+    la_data_out[97],
+    la_data_out[96],
+    la_data_out[95],
+    la_data_out[94],
+    la_data_out[93],
+    la_data_out[92],
+    la_data_out[91],
+    la_data_out[90],
+    la_data_out[89],
+    la_data_out[88],
+    la_data_out[87],
+    la_data_out[86],
+    la_data_out[85],
+    la_data_out[84],
+    la_data_out[83],
+    la_data_out[82],
+    la_data_out[81],
+    la_data_out[80],
+    la_data_out[79],
+    la_data_out[78],
+    la_data_out[77],
+    la_data_out[76],
+    la_data_out[75],
+    la_data_out[74],
+    la_data_out[73],
+    la_data_out[72],
+    la_data_out[71],
+    la_data_out[70],
+    la_data_out[69],
+    la_data_out[68],
+    la_data_out[67],
+    la_data_out[66],
+    la_data_out[65],
+    la_data_out[64],
+    la_data_out[63],
+    la_data_out[62],
+    la_data_out[61],
+    la_data_out[60],
+    la_data_out[59],
+    la_data_out[58],
+    la_data_out[57],
+    la_data_out[56],
+    la_data_out[55],
+    la_data_out[54],
+    la_data_out[53],
+    la_data_out[52],
+    la_data_out[51],
+    la_data_out[50],
+    la_data_out[49],
+    la_data_out[48],
+    la_data_out[47],
+    la_data_out[46],
+    la_data_out[45],
+    la_data_out[44],
+    la_data_out[43],
+    la_data_out[42],
+    la_data_out[41],
+    la_data_out[40],
+    la_data_out[39],
+    la_data_out[38],
+    la_data_out[37],
+    la_data_out[36],
+    la_data_out[35],
+    la_data_out[34],
+    la_data_out[33],
+    la_data_out[32],
+    la_data_out[31],
+    la_data_out[30],
+    la_data_out[29],
+    la_data_out[28],
+    la_data_out[27],
+    la_data_out[26],
+    la_data_out[25],
+    la_data_out[24],
+    la_data_out[23],
+    la_data_out[22],
+    la_data_out[21],
+    la_data_out[20],
+    la_data_out[19],
+    la_data_out[18],
+    la_data_out[17],
+    la_data_out[16],
+    la_data_out[15],
+    la_data_out[14],
+    la_data_out[13],
+    la_data_out[12],
+    la_data_out[11],
+    la_data_out[10],
+    la_data_out[9],
+    la_data_out[8],
+    la_data_out[7],
+    la_data_out[6],
+    la_data_out[5],
+    la_data_out[4],
+    la_data_out[3],
+    la_data_out[2],
+    la_data_out[1],
+    la_data_out[0]}),
     .master_data_addr_to_inter_i({\master_data_addr_to_inter[27] ,
     \master_data_addr_to_inter[26] ,
     \master_data_addr_to_inter[25] ,
@@ -2047,6 +2248,9 @@ module user_project_wrapper (user_clock2,
     \slave_data_we_to_inter[2] ,
     \slave_data_we_to_inter[1] ,
     \slave_data_we_to_inter[0] }),
+    .user_irq({user_irq[2],
+    user_irq[1],
+    user_irq[0]}),
     .wbs_adr_i({wbs_adr_i[31],
     wbs_adr_i[30],
     wbs_adr_i[29],
@@ -2647,208 +2851,4 @@ module user_project_wrapper (user_clock2,
     \slave_data_be_to_inter[14] ,
     \slave_data_be_to_inter[13] ,
     \slave_data_be_to_inter[12] }));
- assign io_oeb[0] = one_;
- assign io_oeb[10] = zero_;
- assign io_oeb[11] = zero_;
- assign io_oeb[12] = zero_;
- assign io_oeb[13] = zero_;
- assign io_oeb[14] = zero_;
- assign io_oeb[15] = zero_;
- assign io_oeb[16] = zero_;
- assign io_oeb[17] = zero_;
- assign io_oeb[18] = zero_;
- assign io_oeb[19] = zero_;
- assign io_oeb[1] = one_;
- assign io_oeb[20] = zero_;
- assign io_oeb[21] = zero_;
- assign io_oeb[22] = zero_;
- assign io_oeb[23] = zero_;
- assign io_oeb[24] = zero_;
- assign io_oeb[25] = zero_;
- assign io_oeb[26] = zero_;
- assign io_oeb[27] = zero_;
- assign io_oeb[28] = zero_;
- assign io_oeb[29] = zero_;
- assign io_oeb[2] = one_;
- assign io_oeb[30] = zero_;
- assign io_oeb[31] = zero_;
- assign io_oeb[32] = zero_;
- assign io_oeb[33] = zero_;
- assign io_oeb[34] = zero_;
- assign io_oeb[35] = zero_;
- assign io_oeb[36] = zero_;
- assign io_oeb[37] = zero_;
- assign io_oeb[3] = one_;
- assign io_oeb[4] = one_;
- assign io_oeb[5] = one_;
- assign io_oeb[6] = one_;
- assign io_oeb[7] = one_;
- assign io_oeb[8] = one_;
- assign io_oeb[9] = one_;
- assign io_out[0] = zero_;
- assign io_out[13] = zero_;
- assign io_out[14] = zero_;
- assign io_out[15] = zero_;
- assign io_out[16] = zero_;
- assign io_out[17] = zero_;
- assign io_out[18] = zero_;
- assign io_out[19] = zero_;
- assign io_out[1] = zero_;
- assign io_out[20] = zero_;
- assign io_out[21] = zero_;
- assign io_out[22] = zero_;
- assign io_out[23] = zero_;
- assign io_out[24] = zero_;
- assign io_out[25] = zero_;
- assign io_out[26] = zero_;
- assign io_out[27] = zero_;
- assign io_out[28] = zero_;
- assign io_out[29] = zero_;
- assign io_out[2] = zero_;
- assign io_out[30] = zero_;
- assign io_out[31] = zero_;
- assign io_out[32] = zero_;
- assign io_out[33] = zero_;
- assign io_out[34] = zero_;
- assign io_out[35] = zero_;
- assign io_out[36] = zero_;
- assign io_out[37] = zero_;
- assign io_out[3] = zero_;
- assign io_out[4] = zero_;
- assign io_out[5] = zero_;
- assign io_out[6] = zero_;
- assign io_out[7] = zero_;
- assign io_out[8] = zero_;
- assign io_out[9] = zero_;
- assign la_data_out[0] = zero_;
- assign la_data_out[100] = zero_;
- assign la_data_out[101] = zero_;
- assign la_data_out[102] = zero_;
- assign la_data_out[103] = zero_;
- assign la_data_out[104] = zero_;
- assign la_data_out[105] = zero_;
- assign la_data_out[106] = zero_;
- assign la_data_out[107] = zero_;
- assign la_data_out[108] = zero_;
- assign la_data_out[109] = zero_;
- assign la_data_out[10] = zero_;
- assign la_data_out[110] = zero_;
- assign la_data_out[111] = zero_;
- assign la_data_out[112] = zero_;
- assign la_data_out[113] = zero_;
- assign la_data_out[114] = zero_;
- assign la_data_out[115] = zero_;
- assign la_data_out[116] = zero_;
- assign la_data_out[117] = zero_;
- assign la_data_out[118] = zero_;
- assign la_data_out[119] = zero_;
- assign la_data_out[11] = zero_;
- assign la_data_out[120] = zero_;
- assign la_data_out[121] = zero_;
- assign la_data_out[122] = zero_;
- assign la_data_out[123] = zero_;
- assign la_data_out[124] = zero_;
- assign la_data_out[125] = zero_;
- assign la_data_out[126] = zero_;
- assign la_data_out[127] = zero_;
- assign la_data_out[12] = zero_;
- assign la_data_out[13] = zero_;
- assign la_data_out[14] = zero_;
- assign la_data_out[15] = zero_;
- assign la_data_out[16] = zero_;
- assign la_data_out[17] = zero_;
- assign la_data_out[18] = zero_;
- assign la_data_out[19] = zero_;
- assign la_data_out[1] = zero_;
- assign la_data_out[20] = zero_;
- assign la_data_out[21] = zero_;
- assign la_data_out[22] = zero_;
- assign la_data_out[23] = zero_;
- assign la_data_out[24] = zero_;
- assign la_data_out[25] = zero_;
- assign la_data_out[26] = zero_;
- assign la_data_out[27] = zero_;
- assign la_data_out[28] = zero_;
- assign la_data_out[29] = zero_;
- assign la_data_out[2] = zero_;
- assign la_data_out[30] = zero_;
- assign la_data_out[31] = zero_;
- assign la_data_out[32] = zero_;
- assign la_data_out[33] = zero_;
- assign la_data_out[34] = zero_;
- assign la_data_out[35] = zero_;
- assign la_data_out[36] = zero_;
- assign la_data_out[37] = zero_;
- assign la_data_out[38] = zero_;
- assign la_data_out[39] = zero_;
- assign la_data_out[3] = zero_;
- assign la_data_out[40] = zero_;
- assign la_data_out[41] = zero_;
- assign la_data_out[42] = zero_;
- assign la_data_out[43] = zero_;
- assign la_data_out[44] = zero_;
- assign la_data_out[45] = zero_;
- assign la_data_out[46] = zero_;
- assign la_data_out[47] = zero_;
- assign la_data_out[48] = zero_;
- assign la_data_out[49] = zero_;
- assign la_data_out[4] = zero_;
- assign la_data_out[50] = zero_;
- assign la_data_out[51] = zero_;
- assign la_data_out[52] = zero_;
- assign la_data_out[53] = zero_;
- assign la_data_out[54] = zero_;
- assign la_data_out[55] = zero_;
- assign la_data_out[56] = zero_;
- assign la_data_out[57] = zero_;
- assign la_data_out[58] = zero_;
- assign la_data_out[59] = zero_;
- assign la_data_out[5] = zero_;
- assign la_data_out[60] = zero_;
- assign la_data_out[61] = zero_;
- assign la_data_out[62] = zero_;
- assign la_data_out[63] = zero_;
- assign la_data_out[64] = zero_;
- assign la_data_out[65] = zero_;
- assign la_data_out[66] = zero_;
- assign la_data_out[67] = zero_;
- assign la_data_out[68] = zero_;
- assign la_data_out[69] = zero_;
- assign la_data_out[6] = zero_;
- assign la_data_out[70] = zero_;
- assign la_data_out[71] = zero_;
- assign la_data_out[72] = zero_;
- assign la_data_out[73] = zero_;
- assign la_data_out[74] = zero_;
- assign la_data_out[75] = zero_;
- assign la_data_out[76] = zero_;
- assign la_data_out[77] = zero_;
- assign la_data_out[78] = zero_;
- assign la_data_out[79] = zero_;
- assign la_data_out[7] = zero_;
- assign la_data_out[80] = zero_;
- assign la_data_out[81] = zero_;
- assign la_data_out[82] = zero_;
- assign la_data_out[83] = zero_;
- assign la_data_out[84] = zero_;
- assign la_data_out[85] = zero_;
- assign la_data_out[86] = zero_;
- assign la_data_out[87] = zero_;
- assign la_data_out[88] = zero_;
- assign la_data_out[89] = zero_;
- assign la_data_out[8] = zero_;
- assign la_data_out[90] = zero_;
- assign la_data_out[91] = zero_;
- assign la_data_out[92] = zero_;
- assign la_data_out[93] = zero_;
- assign la_data_out[94] = zero_;
- assign la_data_out[95] = zero_;
- assign la_data_out[96] = zero_;
- assign la_data_out[97] = zero_;
- assign la_data_out[98] = zero_;
- assign la_data_out[99] = zero_;
- assign la_data_out[9] = zero_;
- assign user_irq[0] = zero_;
- assign user_irq[1] = zero_;
- assign user_irq[2] = zero_;
 endmodule

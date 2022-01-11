@@ -2,6 +2,7 @@
 
 reset_handler:
   /* set all registers to zero */
+/*
   mv  x1, x0
   mv  x2, x1
   mv  x3, x1
@@ -33,7 +34,7 @@ reset_handler:
   mv x29, x1
   mv x30, x1
   mv x31, x1
-
+*/
   /* stack initilization */
   la   x2, _stack_top
   addi x2, x2, -8
@@ -42,6 +43,7 @@ _start:
   .global _start
 
   /* clear BSS */
+/*
   la x26, _bss_start
   la x27, _bss_end
 
@@ -52,7 +54,7 @@ zero_loop:
   addi x26, x26, 4
   ble x26, x27, zero_loop
 zero_loop_end:
-
+*/
 
 main_entry:
   /* jump to main program entry point (argc = argv = 0) */

@@ -28,15 +28,23 @@ module ibex_register_file_ff (
 	input wire [4:0] waddr_a_i;
 	input wire [DataWidth - 1:0] wdata_a_i;
 	input wire we_a_i;
+
 	localparam [31:0] ADDR_WIDTH = (RV32E ? 4 : 5);
 	localparam [31:0] NUM_WORDS = 2 ** ADDR_WIDTH;
-	wire [(NUM_WORDS * DataWidth) - 1:0] rf_reg;
-	reg [((NUM_WORDS - 1) >= 1 ? ((NUM_WORDS - 1) * DataWidth) + (DataWidth - 1) : ((3 - NUM_WORDS) * DataWidth) + (((NUM_WORDS - 1) * DataWidth) - 1)):((NUM_WORDS - 1) >= 1 ? DataWidth : (NUM_WORDS - 1) * DataWidth)] rf_reg_q;
-	reg [NUM_WORDS - 1:1] we_a_dec;
+
+//	wire [(NUM_WORDS * DataWidth) - 1:0] rf_reg;
+//	reg [((NUM_WORDS - 1) >= 1 ? ((NUM_WORDS - 1) * DataWidth) + (DataWidth - 1) : ((3 - NUM_WORDS) * DataWidth) + (((NUM_WORDS - 1) * DataWidth) - 1)):((NUM_WORDS - 1) >= 1 ? DataWidth : (NUM_WORDS - 1) * DataWidth)] rf_reg_q;
+//	reg [NUM_WORDS - 1:1] we_a_dec;
+
+    wire [( NUM_WORDS    * DataWidth) - 1:0] rf_reg ;
+    reg  [((NUM_WORDS-1) * DataWidth) - 1:0] rf_reg_q;
+    reg  [  NUM_WORDS-1                  :1] we_a_dec;
+
 	function automatic [4:0] sv2v_cast_5;
 		input reg [4:0] inp;
 		sv2v_cast_5 = inp;
 	endfunction
+
 	always @(*) begin : we_a_decoder
 		begin : sv2v_autoblock_1
 			reg [31:0] i;
@@ -44,14 +52,15 @@ module ibex_register_file_ff (
 				we_a_dec[i] = (waddr_a_i == sv2v_cast_5(i) ? we_a_i : 1'b0);
 		end
 	end
+
 	genvar i;
 	generate
-		for (i = 1; i < NUM_WORDS; i = i + 1) begin : g_rf_flops
+		for (i = 0; i < NUM_WORDS-1; i = i + 1) begin : g_rf_flops
 			always @(posedge clk_i or negedge rst_ni)
 				if (!rst_ni)
-					rf_reg_q[((NUM_WORDS - 1) >= 1 ? i : 1 - (i - (NUM_WORDS - 1))) * DataWidth+:DataWidth] <= 1'sb0;
-				else if (we_a_dec[i])
-					rf_reg_q[((NUM_WORDS - 1) >= 1 ? i : 1 - (i - (NUM_WORDS - 1))) * DataWidth+:DataWidth] <= wdata_a_i;
+					rf_reg_q[i* DataWidth +: DataWidth] <= 1'sb0;
+				else if (we_a_dec[i+1])
+					rf_reg_q[i* DataWidth +: DataWidth] <= wdata_a_i;
 		end
 		if (DummyInstructions) begin : g_dummy_r0
 			wire we_r0_dummy;
@@ -62,17 +71,17 @@ module ibex_register_file_ff (
 					rf_r0_q <= 1'sb0;
 				else if (we_r0_dummy)
 					rf_r0_q <= wdata_a_i;
-			assign rf_reg[0+:DataWidth] = (dummy_instr_id_i ? rf_r0_q : {DataWidth {1'sb0}});
+			assign rf_reg[0 +:DataWidth] = (dummy_instr_id_i ? rf_r0_q : {DataWidth {1'sb0}});
 		end
 		else begin : g_normal_r0
 			wire unused_dummy_instr_id;
 			assign unused_dummy_instr_id = dummy_instr_id_i;
-			assign rf_reg[0+:DataWidth] = 1'sb0;
+			assign rf_reg[0 +:DataWidth] = 1'sb0;
 		end
 	endgenerate
-	assign rf_reg[DataWidth * (((NUM_WORDS - 1) >= 1 ? NUM_WORDS - 1 : ((NUM_WORDS - 1) + ((NUM_WORDS - 1) >= 1 ? NUM_WORDS - 1 : 3 - NUM_WORDS)) - 1) - (((NUM_WORDS - 1) >= 1 ? NUM_WORDS - 1 : 3 - NUM_WORDS) - 1))+:DataWidth * ((NUM_WORDS - 1) >= 1 ? NUM_WORDS - 1 : 3 - NUM_WORDS)] = rf_reg_q[DataWidth * ((NUM_WORDS - 1) >= 1 ? ((NUM_WORDS - 1) >= 1 ? ((NUM_WORDS - 1) >= 1 ? NUM_WORDS - 1 : ((NUM_WORDS - 1) + ((NUM_WORDS - 1) >= 1 ? NUM_WORDS - 1 : 3 - NUM_WORDS)) - 1) - (((NUM_WORDS - 1) >= 1 ? NUM_WORDS - 1 : 3 - NUM_WORDS) - 1) : ((NUM_WORDS - 1) >= 1 ? NUM_WORDS - 1 : ((NUM_WORDS - 1) + ((NUM_WORDS - 1) >= 1 ? NUM_WORDS - 1 : 3 - NUM_WORDS)) - 1)) : 1 - (((NUM_WORDS - 1) >= 1 ? ((NUM_WORDS - 1) >= 1 ? NUM_WORDS - 1 : ((NUM_WORDS - 1) + ((NUM_WORDS - 1) >= 1 ? NUM_WORDS - 1 : 3 - NUM_WORDS)) - 1) - (((NUM_WORDS - 1) >= 1 ? NUM_WORDS - 1 : 3 - NUM_WORDS) - 1) : ((NUM_WORDS - 1) >= 1 ? NUM_WORDS - 1 : ((NUM_WORDS - 1) + ((NUM_WORDS - 1) >= 1 ? NUM_WORDS - 1 : 3 - NUM_WORDS)) - 1)) - (NUM_WORDS - 1)))+:DataWidth * ((NUM_WORDS - 1) >= 1 ? NUM_WORDS - 1 : 3 - NUM_WORDS)];
-	assign rdata_a_o = rf_reg[raddr_a_i * DataWidth+:DataWidth];
-	assign rdata_b_o = rf_reg[raddr_b_i * DataWidth+:DataWidth];
+	assign rf_reg[( NUM_WORDS    * DataWidth) - 1 : DataWidth] = rf_reg_q[((NUM_WORDS-1) * DataWidth) - 1:0];
+	assign rdata_a_o = rf_reg[raddr_a_i * DataWidth +:DataWidth];
+	assign rdata_b_o = rf_reg[raddr_b_i * DataWidth +:DataWidth];
 	wire unused_test_en;
 	assign unused_test_en = test_en_i;
 endmodule
