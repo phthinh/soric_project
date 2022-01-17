@@ -36,8 +36,8 @@ Soric is an open heterogeneous SoC targeting for application in cryptography and
   - Clone the repository and setup environment 
   
     ```sh
-    git clone https://github.com/scarv/crypto-ibex-test ./crypto-ibex-test
-    cd ./crypto-ibex-test
+    git clone https://github.com/phthinh/soric_project.git ./soric_project
+    cd ./soric_project
     ```
   
   - Fix paths of the env. variables in bin/conf.sh file suitable for your machine, and
@@ -51,11 +51,11 @@ Soric is an open heterogeneous SoC targeting for application in cryptography and
   -  Install and integrate the caravel system
   -  Build the Sky130 PDK
 
-- Run tests on Soric. Notes that Soric including two cores of which functions are verified with more comprehensive tests on other repos. 
-For example, the ibex core and crypto core are tested in lowrisc ibex [2], and crypto-ibex-test [3]. 
-Here are the tests for the integration of Soric into caravel user project. 
+- Run tests on Soric. Notes that Soric includes two cores of which functions are verified with more comprehensive tests on other repos. For example, the ibex core and crypto core are tested in lowrisc ibex [2], and crypto-ibex-test [3]. Here are the tests for the integration of Soric into the caravel user project. 
   
-  - To test memory access from the caravel systems to the Soric's srams at RTL level
+  - To test memory access from the caravel systems to the Soric's srams
+  
+  at RTL level
   
   ```sh
   make -C verilog/dv/soric_mem_test
@@ -67,7 +67,9 @@ Here are the tests for the integration of Soric into caravel user project.
   make -C verilog/dv/soric_mem_test SIM=GL
   ```
   
-  - To test downloading and running a simple program on Soric from the caravel systems at RTL level
+  - To test downloading and running a simple program on Soric from the caravel system
+  
+  at RTL level
   
   ```sh
   make -C verilog/dv/soric_simple_test
@@ -80,6 +82,7 @@ Here are the tests for the integration of Soric into caravel user project.
   ```
   
   - To test downloading and running a program testing some crypto instructions. 
+  
   at RTL level
   
   ```sh
@@ -99,10 +102,3 @@ Here are the tests for the integration of Soric into caravel user project.
 [2] https://github.com/lowRISC/ibex
 
 [3] https://github.com/scarv/crypto-ibex-test
-
-## Acknowledgements
-
-This work has been supported in part
-by EPSRC via grant
-[EP/R012288/1](https://gow.epsrc.ukri.org/NGBOViewGrant.aspx?GrantRef=EP/R012288/1) (under the [RISE](http://www.ukrise.org) programme).
-
