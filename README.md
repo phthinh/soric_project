@@ -27,7 +27,7 @@ Soric is an open heterogeneous SoC targeting for application in cryptography and
 │   ├── dv               - the verification of integrating Soric into the Caravel system at RTL and Gate Level netlist
 │   ├── gl               - Generated gate level netlists of Soric for verification
 │   └── rtl              - verilog codes of Soric
-└── others(def, lef,...) - contains other output files to adhere to the same directory structure of the efabless caravel user project.
+└── others(def, lef,...) - contains other outputs to adhere to the same directory structure of the efabless caravel user project.
 ```
 ## Quickstart
 
