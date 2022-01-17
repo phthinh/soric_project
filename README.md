@@ -51,7 +51,7 @@ Soric is an open heterogeneous SoC targeting for application in cryptography and
   -  Install and integrate the caravel system
   -  Build the Sky130 PDK
 
-- Run tests on Soric. Notes that Soric includes two cores of which functions are verified with more comprehensive tests on other repos. For example, the ibex core and crypto core are tested in lowrisc ibex [2], and crypto-ibex-test [3]. Here are the tests for the integration of Soric into the caravel user project. 
+- Run tests on Soric. Notes that Soric includes two cores of which functions are verified with more comprehensive tests on other repos. For example, the ibex core and crypto core are tested in lowrisc ibex [2], and crypto ibex [3]. Here are the tests for the integration of Soric into the caravel user project. 
   
   - To test memory access from the caravel systems to the Soric's srams
   
