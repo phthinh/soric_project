@@ -8,11 +8,12 @@
 Soric is an open heterogeneous SoC targeting for application in cryptography and trusted devices. The SoC consists of two RISC-V cores, 4x2kB SRAM and Peripherals (e.g., UART, GPIO). One of the cores supports the RISC-V scalar cryptography extension V1.0.0 [1] which is specified for cryptographic and security critical applications while the other core is responsible for the security non-critical applications.
 
    <p align="left">
-   <img src="./bin/soc.png" width="50%" height="50%">
+   <img src="./bin/soc.png" width="45%" height="50%">
+   <img src="./bin/soric.png" width="50%" height="50%">
+
    </p>
 
    <p align="left">
-   <img src="./bin/soric.png" width="50%" height="50%">
    </p>
 
 ## Organisation
